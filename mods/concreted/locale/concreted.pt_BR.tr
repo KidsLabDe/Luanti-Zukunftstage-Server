@@ -1,0 +1,59 @@
+# textdomain: concreted
+# Colors:
+Black=Preto
+Blue=Azul
+Brown=Marrom
+Cyan=Ciano
+Dark Green=Verde Escuro
+Dark Grey=Cinza Escuro
+Green=Verde
+Grey=Cinza
+Magenta=Magenta
+Orange=Laranja
+Pink=Rosa
+Red=Vermelho
+Violet=Violeta
+White=Branco
+Yellow=Amarelo
+
+# Minetest variants:
+@1 Concrete=Concreto @1
+@1 Mese Post Light=Poste de Lâmpada de Mese de @1
+@1 Slab=Laje de @1
+@1 Stair=Escada de @1
+@1 Wall=Parede de @1
+Inner @1=Interior de @1
+Outer @1=Exterior de @1
+
+# Angled Stairs variants:
+@1 Angled Slab=Laje Angulada de @1
+@1 Angled Stair=Escada Angulada de @1
+
+# Angled Walls variants:
+@1 Angled Wall=Parede Angulada de @1
+@1 Corner=Curva de @1
+@1 Glass=Vidro @1
+@1 Low Angled Wall=Parede Baixa Angulada de @1
+@1 Obsidian Glass=Vidro de Obsidiana com @1
+@1 Sloped Wall=Parede em Rampa de @1
+@1 With Glass=@1 com Vidro
+
+# Extensions variants:
+@1 Glass Angled Slab=Laje Angulada de Vidro @1
+@1 Glass Angled Stair=Escada Angulada de Vidro @1
+@1 Glass Angled Wall=Parede Angulada de Vidro @1
+@1 Glass Corner=Curva de Vidro @1
+@1 Glass Low Angled Wall=Parede Baixa Angulada de Vidro @1
+@1 With @2 Glass=@1 com Vidro @2
+
+# Overrided nodes:
+@1 Arc=Arco de @1
+@1 Microblock=Microbloco de @1
+@1 Panel=Painel de @1
+@1 Slope=Rampa de @1
+
+# Pillar variant:
+@1 Pillar=Pilar de @1
+
+# Stoneworks variants:
+@1 Arches=Arcos de @1

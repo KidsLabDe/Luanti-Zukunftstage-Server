@@ -1,0 +1,38 @@
+# Enable or disable concrete angled slabs and concrete angled stairs
+enable_angledstairs  (Enable Angled Stairs)                 bool    true
+
+# Enable or disable concrete angled walls and concrete sloped walls
+enable_angledwalls   (Enable Angled Walls)                  bool    true
+
+# Enable or disable wooden buckets for concrete craft recipe
+enable_bucket_wooden (Enable Wooden Bucket)                 bool    true
+
+# Enable or disable i3 compression
+enable_compression   (Enable Compression)                   bool    true
+
+# Enable or disable stained glass nodes for installed mods
+enable_extensions    (Enable Stained Glass Extension)       bool    true
+
+# Enable or disable more blocks concrete nodes
+enable_moreblocks    (Enable More Blocks)                   bool    true
+
+# Enable or disable concrete mese post lights
+enable_meseposts     (Enable Mese Posts)                    bool    true
+
+# Enable or disable concrete pillars
+enable_pillars       (Enable Pillars)                       bool    true
+
+# Enable or disable concrete arcs
+enable_pkarcs        (Enable Simple Arcs)                   bool    true
+
+# Enable or disable more blocks nodes renaming
+enable_renaming      (Enable More Blocks Variants Renaming) bool    true
+
+# Enable or disable concrete slabs and concrete stairs
+enable_stairs        (Enable Slabs and Stairs)              bool    true
+
+# Enable or disable stoneworks concrete nodes
+enable_stoneworks    (Enable Stoneworks)                    bool    true
+
+# Enable or disable concrete walls
+enable_walls         (Enable Walls)                         bool    true

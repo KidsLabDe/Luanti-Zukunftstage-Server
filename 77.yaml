@@ -1,0 +1,17 @@
+---
+version: "2.1"
+services:
+  minetest_zfn_77:
+    image: ghcr.io/linuxserver/luanti:latest
+    # image: lspipepr/minetest:amd64-5.6.1-pkg-865a468e-pr-48
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - CLI_ARGS=" --worldname 77 --world worlds --port 30177 --logfile /config/.minetest/logs/77.log
+    volumes:
+      - ./:/config/.minetest
+    ports:
+      - 30177:30177/udp
+    restart: unless-stopped
+

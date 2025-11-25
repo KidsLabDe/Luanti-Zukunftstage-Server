@@ -1,0 +1,18 @@
+---
+version: "2.1"
+services:
+  minetest_zfn_14:
+    image: ghcr.io/linuxserver/luanti:latest
+    # image: lspipepr/minetest:amd64-5.6.1-pkg-865a468e-pr-48
+    container_name: minetest_zfn_14
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - CLI_ARGS=" --worldname 14 --world worlds --port 30114 --logfile /config/.minetest/logs/14.log
+    volumes:
+      - ./:/config/.minetest
+    ports:
+      - 30114:30114/udp
+    restart: unless-stopped
+

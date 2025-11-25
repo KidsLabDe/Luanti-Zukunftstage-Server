@@ -1,0 +1,306 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Luanti textdomain mobs_mc x.x.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: mtt_convert 0.1.1\n"
+
+msgid "Axolotl"
+msgstr "Axolotl"
+
+msgid "Bat"
+msgstr "Netopýr"
+
+msgid "Blaze"
+msgstr "Ohnivák"
+
+msgid "Chicken"
+msgstr "Kuře"
+
+msgid "Cod"
+msgstr "Treska"
+
+msgid "Cow"
+msgstr "Kráva"
+
+msgid "Mooshroom"
+msgstr "Houbová kráva"
+
+msgid "Creeper"
+msgstr "Creeper"
+
+msgid "Charged Creeper"
+msgstr "Nabitý creeper"
+
+msgid "Dolphin"
+msgstr "Delfín"
+
+msgid "Ender Dragon"
+msgstr "Ender drak"
+
+msgid "Enderman"
+msgstr "Enderman"
+
+msgid "Endermite"
+msgstr "Endermit"
+
+msgid "Ghast"
+msgstr "Strašák"
+
+msgid "Ghast Fireball"
+msgstr "ohnivá strašidelná koule"
+
+msgid "Guardian"
+msgstr "Guardián"
+
+msgid "Elder Guardian"
+msgstr ""
+
+msgid "Hoglin"
+msgstr "Hoglin"
+
+msgid "Baby Hoglin"
+msgstr "Malý hoglin"
+
+msgid "Zoglin"
+msgstr "Zoglin"
+
+msgid "Sneak to dismount"
+msgstr "Plížením sesedni"
+
+msgid "Horse"
+msgstr "Kůň"
+
+msgid "Skeleton Horse"
+msgstr "Kůň kostlivec"
+
+msgid "Zombie Horse"
+msgstr "Zombie kůň"
+
+msgid "Donkey"
+msgstr "Osel"
+
+msgid "Mule"
+msgstr "Mula"
+
+msgid "Iron Golem"
+msgstr "Železný golem"
+
+msgid "Llama"
+msgstr "Lama"
+
+msgid "Ocelot"
+msgstr "Ocelot"
+
+msgid "Cat"
+msgstr "Kočka"
+
+msgid "Parrot"
+msgstr "Papoušek"
+
+msgid "Pig"
+msgstr "Prase"
+
+msgid "Piglin"
+msgstr "Piglin"
+
+msgid "Piglin Brute"
+msgstr "Brutální piglin"
+
+msgid "Zombie Piglin"
+msgstr "Zombie piglin"
+
+msgid "Zombified Piglin"
+msgstr "Zombifikovaný piglin"
+
+msgid "Pillager"
+msgstr "Pillager"
+
+msgid "Polar Bear"
+msgstr "Lední medvěd"
+
+msgid "Rabbit"
+msgstr "Králík"
+
+msgid "Killer Bunny"
+msgstr "Zabijácký králík"
+
+msgid "Salmon"
+msgstr "Losos"
+
+msgid "Sheep"
+msgstr "Ovce"
+
+msgid "Shulker"
+msgstr "Shulker"
+
+msgid "Silverfish"
+msgstr "Rybenka"
+
+msgid "Skeleton"
+msgstr "Kostlivec"
+
+msgid "Stray"
+msgstr "Tulák"
+
+msgid "Wither Skeleton"
+msgstr "Wither Kostlivec"
+
+msgid "Slime - big"
+msgstr "Velký slimák"
+
+msgid "Slime - small"
+msgstr "Malý slimák"
+
+msgid "Slime - tiny"
+msgstr "Maličký slimák"
+
+msgid "Magma Cube - big"
+msgstr "Velká magma kostka"
+
+msgid "Magma Cube - small"
+msgstr "Malá magma kostka"
+
+msgid "Magma Cube - tiny"
+msgstr "Maličká magma kostka"
+
+msgid "Magma Cube"
+msgstr "Magma kostka"
+
+msgid "Slime"
+msgstr "Slimák"
+
+msgid "Snow Golem"
+msgstr "Sněžný golem"
+
+msgid "Spider"
+msgstr "Pavouk"
+
+msgid "Cave Spider"
+msgstr "Jeskynní pavouk"
+
+msgid "Squid"
+msgstr "Oliheň"
+
+msgid "Glow Squid"
+msgstr "Zářivá oliheň"
+
+msgid "Strider"
+msgstr "Chodec"
+
+msgid "Baby Strider"
+msgstr "Malý chodec"
+
+msgid "Tropical Fish"
+msgstr "Tropická ryba"
+
+msgid "Vex"
+msgstr "Vex"
+
+msgid "Villager"
+msgstr "Vesničan"
+
+msgid "Armorer"
+msgstr "Zbrojíř"
+
+msgid "Butcher"
+msgstr "Řezník"
+
+msgid "Cartographer"
+msgstr "Kartograf"
+
+msgid "Cleric"
+msgstr "Kněz"
+
+msgid "Farmer"
+msgstr "Farmář"
+
+msgid "Fisherman"
+msgstr "Rybář"
+
+msgid "Fletcher"
+msgstr "Šípař"
+
+msgid "Leatherworker"
+msgstr "Koželuh"
+
+msgid "Librarian"
+msgstr "Knihovník"
+
+msgid "Mason"
+msgstr "Zedník"
+
+msgid "Shepherd"
+msgstr "Pastýř"
+
+msgid "Toolsmith"
+msgstr "Nástrojář"
+
+msgid "Weaponsmith"
+msgstr "Zbrojař"
+
+msgid "Nitwit"
+msgstr "Pobuda"
+
+msgid "Novice"
+msgstr "Začátečník"
+
+msgid "Apprentice"
+msgstr "Učeň"
+
+msgid "Journeyman"
+msgstr "Tovaryš"
+
+msgid "Expert"
+msgstr "Profík"
+
+msgid "Master"
+msgstr "Mistr"
+
+msgid "Evoker"
+msgstr "Evoker"
+
+msgid "Illusioner"
+msgstr "Iluzionista"
+
+msgid "Vindicator"
+msgstr "Vindicator"
+
+msgid "Zombie Villager"
+msgstr "Zombie vesničan"
+
+msgid "Wandering Trader"
+msgstr "Potulný obchodník"
+
+msgid "Trader Llama"
+msgstr "Obchodnická lama"
+
+msgid "Witch"
+msgstr "Čarodějnice"
+
+msgid "Wither"
+msgstr "Wither"
+
+msgid "Wolf"
+msgstr "Vlk"
+
+msgid "Zombie"
+msgstr "Zombie"
+
+msgid "Baby Zombie"
+msgstr "Malý zombie"
+
+msgid "Husk"
+msgstr "Husk"
+
+msgid "Baby Husk"
+msgstr "Malý husk"
+

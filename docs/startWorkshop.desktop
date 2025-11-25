@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Exec=/opt/minetest/startWorkshop.sh
+Path=/opt/minetest
+Name=Starte Workshop
+GenericName=startWorkshop
+Comment=Started den Minetest-Server im Workshop-Modus
+Encoding=UTF-8
+Terminal=true
+Type=Application
+Categories=Application;Network;
+

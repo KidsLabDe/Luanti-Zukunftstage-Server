@@ -1,0 +1,10 @@
+numpy
+scipy
+pyproj
+ezdxf
+imageio
+scimage
+tqdm
+cjio
+raster_geometry
+scikit-image

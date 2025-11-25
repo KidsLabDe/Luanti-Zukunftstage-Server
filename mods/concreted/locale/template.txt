@@ -1,0 +1,59 @@
+# textdomain: concreted
+# Colors:
+Black=
+Blue=
+Brown=
+Cyan=
+Dark Green=
+Dark Grey=
+Green=
+Grey=
+Magenta=
+Orange=
+Pink=
+Red=
+Violet=
+White=
+Yellow=
+
+# Minetest variants:
+@1 Concrete=
+@1 Mese Post Light=
+@1 Slab=
+@1 Stair=
+@1 Wall=
+Inner @1=
+Outer @1=
+
+# Angled Stairs variants:
+@1 Angled Slab=
+@1 Angled Stair=
+
+# Angled Walls variants:
+@1 Angled Wall=
+@1 Corner=
+@1 Glass=
+@1 Low Angled Wall=
+@1 Obsidian Glass=
+@1 Sloped Wall=
+@1 With Glass=
+
+# Extensions variants:
+@1 Glass Angled Slab=
+@1 Glass Angled Stair=
+@1 Glass Angled Wall=
+@1 Glass Corner=
+@1 Glass Low Angled Wall=
+@1 With @2 Glass=
+
+# Overrided nodes:
+@1 Arc=
+@1 Microblock=
+@1 Panel=
+@1 Slope=
+
+# Pillar variant:
+@1 Pillar=
+
+# Stoneworks variants:
+@1 Arches=

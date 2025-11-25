@@ -1,0 +1,6 @@
+[submodule "minetest-Tutorial"]
+	path = minetest-Tutorial
+	url = https://github.com/KidsLabDe/minetest-Tutorial.git
+[submodule "worlds"]
+	path = worlds
+	url = git@github.com:KidsLabDe/Zukunftsnachte-24.git
