@@ -250,29 +250,32 @@ local function generate(vm, emin, emax, minp, maxp)
     vm:set_data(vdata)
     for _, s in pairs(schematics_to_place) do
         if s.id == "credit_sign" then
-            minetest.set_node(s.pos, {name="default:sign_wall_steel", param2=1})
+            -- Place Mineclonia Sign
+            -- Use wall sign with param2 for direction (0-3)
+            minetest.set_node(s.pos, {name="mcl_signs:wall_sign", param2=1})
+
             local meta = minetest.get_meta(s.pos)
-            meta:set_string("infotext", "This world has been created with world2minetest by Florian Rädiker. See github.com/FlorianRaediker/world2minetest for the source code (AGPLv3).")
-        else
-            local info = DECORATION_SCHEMATICS[s.id]
-            if info.shift_y then
-                s.pos.y = s.pos.y + info.shift_y
-            end
-            minetest.place_schematic_on_vmanip(
-                vm, -- vmanip
-                s.pos, -- pos
-                info.schematic, -- schematic
-                info.rotation, -- rotation
-                info.replacement, -- replacement
-                info.force_placement, -- force_placement
-                info.flags -- flags
-            )
-        end
-    end
-    vm:update_liquids()
-    vm:calc_lighting()
-    vm:write_to_map()
-end
+            meta:set_string("text", "This world has been created with world2minetest by Florian Rädiker. See github.com/FlorianRaediker/world2minetest for the source code (AGPLv3).")
+            else
+                local info = DECORATION_SCHEMATICS[s.id]
+                if info.shift_y then
+                    s.pos.y = s.pos.y + info.shift_y
+                    end
+                        minetest.place_schematic_on_vmanip(
+                            vm, -- vmanip
+                            s.pos, -- pos
+                            info.schematic, -- schematic
+                            info.rotation, -- rotation
+                            info.replacement, -- replacement
+                            info.force_placement, -- force_placement
+                            info.flags -- flags
+                        )
+                        end
+                        end
+                        vm:update_liquids()
+                        vm:calc_lighting()
+                        vm:write_to_map()
+                        end
 
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
