@@ -1,5 +1,7 @@
 # textdomain: findbiome
-Wait until all mods have loaded!=
+# mod title
+# mod strings
+Wait until all mods have loaded!=Aguarde até que todos os mods sejam carregados!
 Find and teleport to biome=Encontra e teleporta para um bioma
 <biome>=<bioma>
 No player.=Nenhum jogador.

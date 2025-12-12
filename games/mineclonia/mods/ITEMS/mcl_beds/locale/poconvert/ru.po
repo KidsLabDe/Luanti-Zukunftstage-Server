@@ -157,3 +157,15 @@ msgstr "Жёлтая кровать"
 msgid "Respawn Anchor"
 msgstr "Якорь возрождения"
 
+msgid "The respawn anchor is a block that allows the player to set their spawn point in the Nether. It will only work if fueled using glowstone blocks."
+msgstr "Якорь возрождения — это блок, позволяющий игроку установить точку своего возрождения в Незере. Он работает только если заряжен блоками светокамня."
+
+msgid "Use a glowstone block to add a charge."
+msgstr "Используйте на нём блок светокамня, чтобы добавить заряд."
+
+msgid "Respawn anchors can be charged up to four times. Rightclick on a charged anchor to set a new spawn point."
+msgstr "Якорь возрождения может быть заряжен до 4 раз. Правый клик на заряженном якоре установит новую точку возрождения."
+
+msgid "A respawn anchor only works in the Nether. Attempting to use a charged anchor to set a new spawn point outside the Nether will cause it to explode."
+msgstr "Якорь возрождения работает только в Незере. Попытка использовать заряженный якорь для установки новой точки возрождения вне Незера приведёт к его взрыву."
+

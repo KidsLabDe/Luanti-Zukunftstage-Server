@@ -470,6 +470,10 @@ function mob_class:on_deactivate (removal)
 			self:remove_particlespawners (name)
 		end
 	end
+
+	if self.wears_armor then
+		mcl_armor.head_entity_unequip (self.object)
+	end
 end
 
 function mob_class:jockey_death ()
@@ -537,8 +541,10 @@ end
 --- Movement mechanics for flying/swimming/landed mobs.
 --------------------------------------------------------------------------------
 
+local ZERO_VECTOR = vector.zero ()
+
 function mob_class:do_go_pos (dtime, moveresult)
-	local target = self.movement_target or vector.zero ()
+	local target = self.movement_target or ZERO_VECTOR
 	local vel = self.movement_velocity
 	local pos = self.object:get_pos ()
 	local dist = vector.distance (pos, target)
@@ -1098,7 +1104,7 @@ function mob_class:init_ai ()
 	self:halt_in_tracks ()
 
 	if self.swims then
-		self:gwp_configure_aquatic_mob ()
+		self:gwp_configure_aquatic_mob (false)
 		self:configure_aquatic_mob ()
 	end
 	if self.amphibious then
@@ -1521,6 +1527,8 @@ local function aquatic_pacing_target (self, pos, width, height, groups)
 	return #nodes >= 1 and nodes[math.random (#nodes)]
 end
 
+mob_class.aquatic_pacing_target = aquatic_pacing_target
+
 function mob_class:can_reset_pitch ()
 	return true
 end
@@ -1642,7 +1650,7 @@ function mob_class:check_schooling (self_pos, list)
 		return false
 	elseif self:check_timer ("form_school", (200 + math.random (20)) / 40) then
 		local nearby = core.get_objects_inside_radius (self_pos, 8)
-		local cluster = self._school_size or self.spawn_in_group or 4
+		local cluster = self._school_size or 4
 		local leader = find_school_leader (nearby, self.name, cluster) or self
 		leader._school = leader._school or {}
 
@@ -1754,6 +1762,8 @@ local function amphibious_pacing_target (self, pos, width, height, groups)
 		= mob_class.pacing_target (self, pos, width, height, SOLID_PACING_GROUPS)
 	return target
 end
+
+mob_class.amphibious_pacing_target = amphibious_pacing_target
 
 function mob_class:configure_amphibious_mob ()
 	self.pacing_target = amphibious_pacing_target

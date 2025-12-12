@@ -9,5 +9,4 @@ worlds/mods/world2minetest/map.dat
 players.sqlite
 auth.sqlite
 env_meta.txt
-*.json
 logs/*

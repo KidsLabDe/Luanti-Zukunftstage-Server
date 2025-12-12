@@ -75,12 +75,20 @@ function table.count(t, does_it_count)
 	return r
 end
 
--- Returns a random element out of t
-function table.random_element(t)
-	local keyset = {}
-	for k, _ in pairs(t) do
-		table.insert(keyset, k)
+-- returns the keyset of a table, optionally filtered by a function
+function table.keyset(t, f)
+	local ks = {}
+	for k, v in pairs(t) do
+		if not f or f(k, v) then
+			table.insert(ks, k)
+		end
 	end
+	return ks
+end
+
+-- Returns a random element out of t
+function table.random_element(t, f)
+	local keyset = table.keyset(t, f)
 	local rk = keyset[math.random(#keyset)]
 	return t[rk], rk
 end

@@ -14,10 +14,10 @@ msgstr ""
 "X-Generator: mtt_convert 0.1.1\n"
 
 msgid "Fire Charge"
-msgstr ""
+msgstr "Carga de Fogo"
 
 msgid "Dispenser projectile"
-msgstr ""
+msgstr "Ejetor de projéteis"
 
 msgid "Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly."
 msgstr ""

@@ -31,6 +31,9 @@ msgstr "Fragmento de ametista"
 msgid "An amethyst shard is a crystalline mineral."
 msgstr "Um fragmento de ametista é um mineral cristalino."
 
+msgid "Amethyst Material"
+msgstr "Material de Ametista"
+
 msgid "Calcite"
 msgstr "Calcite"
 

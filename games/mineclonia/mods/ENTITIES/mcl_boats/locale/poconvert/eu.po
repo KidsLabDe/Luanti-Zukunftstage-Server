@@ -14,13 +14,13 @@ msgstr ""
 "X-Generator: mtt_convert 0.1.1\n"
 
 msgid "Sneak to dismount"
-msgstr "Isilka-tekla jaisteko"
+msgstr "Makurtze-tekla jaisteko"
 
 msgid "Boats are used to travel on the surface of water."
 msgstr "Txalupak uraren gainazalean bidaiatzeko erabiltzen dira."
 
 msgid "Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item."
-msgstr "Egin eskuin-klik uretan itsasontzia jartzeko. Egin eskuin-klik ontzian sartzeko. Erabili [Ezkerra] eta [Eskuina] zuzentzeko, [Aurrera] azeleratzeko eta [Atzera] abiadura murrizteko edo atzera egiteko. [Isilka-tekla] jaisteko, eman ukabilkada txalupa hartzeko."
+msgstr "Egin eskuin-klik uretan itsasontzia jartzeko. Egin eskuin-klik ontzian sartzeko. Erabili [Ezkerra] eta [Eskuina] zuzentzeko, [Aurrera] azeleratzeko eta [Atzera] abiadura murrizteko edo atzera egiteko. [Makurtze-tekla] jaisteko, eman ukabilkada txalupa hartzeko."
 
 msgid "Boat"
 msgstr "Txalupa"
@@ -32,7 +32,7 @@ msgid "Chest Boats are used to travel on the surface of water. And transport goo
 msgstr "Kutxadun txalupak uraren gainean bidaiatzeko eta salgaiak garraiatzeko erabiltzen dira"
 
 msgid "Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item. Use [Sneak] + [Rightclick] to open the boat's chest"
-msgstr "Egin eskuin-klik uretan itsasontzia jartzeko. Egin eskuin-klik ontzian sartzeko. Erabili [Ezkerra] eta [Eskuina] zuzentzeko, [Aurrera] azeleratzeko eta [Atzera] abiadura murrizteko edo atzera egiteko. [Isilka-tekla] jaisteko, eman ukabilkada txalupa hartzeko. Erabili [Isilka-tekla] + [Eskuin-klik] txalupako kutxa irekitzeko"
+msgstr "Egin eskuin-klik uretan itsasontzia jartzeko. Egin eskuin-klik ontzian sartzeko. Erabili [Ezkerra] eta [Eskuina] zuzentzeko, [Aurrera] azeleratzeko eta [Atzera] abiadura murrizteko edo atzera egiteko. [Makurtze-tekla] jaisteko, eman ukabilkada txalupa hartzeko. Erabili [Makurtze-tekla] + [Eskuin-klik] txalupako kutxa irekitzeko"
 
 msgid "Chest Boat"
 msgstr "Kutxadun Txalupa"

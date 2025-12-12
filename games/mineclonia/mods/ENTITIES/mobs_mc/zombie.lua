@@ -61,7 +61,6 @@ table.insert (drops_zombie, {
 local zombie = table.merge (posing_humanoid, {
 	description = S("Zombie"),
 	type = "monster",
-	spawn_class = "hostile",
 	_spawn_category = "monster",
 	hp_min = 20,
 	hp_max = 20,
@@ -74,6 +73,9 @@ local zombie = table.merge (posing_humanoid, {
 	head_pitch_multiplier=-1,
 	breath_max = -1,
 	wears_armor = "no_pickup",
+	_head_armor_bone = "head",
+	_head_armor_position = vector.new (0, 4.25, 0),
+	_head_armor_visual_scale = 1.2,
 	armor_drop_probability = {
 		head = 0.085,
 		torso = 0.085,
@@ -119,6 +121,7 @@ local zombie = table.merge (posing_humanoid, {
 		"mobs_mc:baby_husk",
 		"mobs_mc:zombified_piglin",
 		"mobs_mc:villager_zombie",
+		"mobs_mc:drowned",
 	},
 	drops = drops_zombie,
 	animation = {
@@ -187,6 +190,16 @@ local zombie = table.merge (posing_humanoid, {
 			y = 130,
 			z = 115,
 		},
+		trident_position = {
+			x = 0,
+			y = 5.0,
+			z = 0,
+		},
+		trident_rotation = {
+			x = 90,
+			y = 0,
+			z = 0,
+		},
 	},
 	ignite_targets_while_burning = true,
 	can_open_doors = false,
@@ -205,6 +218,8 @@ local zombie = table.merge (posing_humanoid, {
 	_zombie_punch_animation_timeout = 0,
 	_humanoid_superclass = mob_class,
 	_reinforcement_type = "mobs_mc:zombie",
+	_convert_to = "mobs_mc:drowned",
+	_time_submerged = 0,
 })
 
 mobs_mc.zombie = zombie
@@ -305,6 +320,16 @@ function zombie:on_spawn ()
 		self.can_wield_items = true
 	end
 	self:generate_default_equipment (mob_factor, true, true)
+	if mcl_util.is_halloween ()
+		and self.armor_list.head == ""
+		and math.random () < 0.25 then
+		if math.random () < 0.1 then
+			self.armor_list.head = "mcl_farming:pumpkin_face_light"
+		else
+			self.armor_list.head = "mcl_farming:pumpkin_face"
+		end
+		self:set_armor_texture ()
+	end
 
 	-- Randomize initial attributes.
 	self:add_physics_factor ("knockback_resistance",
@@ -410,6 +435,10 @@ function zombie:do_custom (dtime)
 	posing_humanoid.do_custom (self, dtime)
 	local t = self._zombie_punch_animation_timeout - dtime
 	self._zombie_punch_animation_timeout = math.max (0.0, t)
+
+	if self._convert_to then
+		self:step_conversion (dtime)
+	end
 end
 
 function zombie:set_animation (anim, custom_frame)
@@ -555,6 +584,22 @@ end
 -- Zombie AI.
 ------------------------------------------------------------------------
 
+function zombie:step_conversion (dtime)
+	if self._immersion_depth > self.head_eye_height then
+		self._time_submerged = self._time_submerged + dtime
+		if self._time_submerged > 30 then
+			self.shaking = true
+			if self._time_submerged > 45 then
+				self:replace_with (self._convert_to, true)
+				return false
+			end
+		end
+	else
+		self._time_submerged = 0
+		self.shaking = false
+	end
+end
+
 function zombie:gwp_initialize (targets, range, tolerance, penalties)
 	-- Limit the pathfinding distance of zombies to 24, as greater
 	-- values are not sustainable by this Lua pathfinder.
@@ -568,26 +613,6 @@ function zombie:can_spawn_reinforcements (mcl_reason)
 	local source = self.attack or mcl_reason.source
 	local entity = source and source:get_luaentity ()
 	return (source and source:is_player ()) or entity and entity.is_mob
-end
-
-local function is_dark (nodepos, x, y, z)
-	local nodepos = vector.offset (nodepos, x, y, z)
-	local light = core.get_node_light (nodepos)
-	return light and light <= 4.0
-end
-
-local function is_clear (nodepos, x, y, z)
-	local nodepos = vector.offset (nodepos, x, y, z)
-	local node = core.get_node (nodepos)
-	local def = core.registered_nodes[node.name]
-	return def and not def.walkable and def.liquidtype == "none"
-end
-
-local function is_solid (nodepos, x, y, z)
-	local nodepos = vector.offset (nodepos, x, y, z)
-	local node = core.get_node (nodepos)
-	local def = core.registered_nodes[node.name]
-	return def and def.walkable and def.groups.solid
 end
 
 local function is_free_of_living_players (pos, radius)
@@ -629,11 +654,9 @@ function zombie:receive_damage (mcl_reason, damage)
 			local dz = math.random (7, 40) * math.random (-1, 1)
 			local pos = vector.offset (node_pos, dx, dy, dz)
 
-			if is_dark (pos, 0, 0, 0) and is_solid (pos, 0, -1, 0)
-				and is_clear (pos, 0, 0, 0) and is_clear (pos, 0, 1, 0)
-				and is_free_of_living_players (pos, 7.0) then
-				local floor = vector.offset (pos, 0, -0.5, 0)
-				local object = core.add_entity (floor, self._reinforcement_type)
+			if is_free_of_living_players (pos, 7.0) then
+				local object = mcl_mobs.spawn_abnormally (pos, self._reinforcement_type,
+									  nil, "reinforcement")
 				if object then
 					local entity = object:get_luaentity ()
 					self:add_physics_factor ("_spawn_reinforcements_chance",
@@ -759,6 +782,7 @@ local baby_zombie = table.merge (zombie, {
 		punch_start = 109, punch_end = 119
 	},
 	head_eye_height = 0.93,
+	_convert_to = "mobs_mc:baby_drowned",
 })
 
 mcl_mobs.register_mob ("mobs_mc:baby_zombie", baby_zombie)
@@ -782,30 +806,13 @@ local husk = table.merge (zombie, {
 		level = 1,
 		respect_local_difficulty = true,
 	},
-	_time_submerged = 0,
 	_reinforcement_type = "mobs_mc:husk",
+	_convert_to = "mobs_mc:zombie",
 })
 
 ------------------------------------------------------------------------
 -- Husk conversion.
 ------------------------------------------------------------------------
-
-function husk:do_custom (dtime)
-	if self._immersion_depth > self.head_eye_height then
-		self._time_submerged = self._time_submerged + dtime
-		if self._time_submerged > 30 then
-			self.shaking = true
-			if self._time_submerged > 45 then
-				self:replace_with ("mobs_mc:zombie", true)
-				return false
-			end
-		end
-	else
-		self._time_submerged = 0
-		self.shaking = false
-	end
-	zombie.do_custom (self, dtime)
-end
 
 mcl_mobs.register_mob ("mobs_mc:husk", husk)
 
@@ -829,76 +836,14 @@ local baby_husk = table.merge (baby_zombie, {
 		respect_local_difficulty = true,
 	},
 	_reinforcement_type = "mobs_mc:husk",
+	_convert_to = "mobs_mc:baby_zombie",
 })
-
-function baby_husk:do_custom (dtime)
-	if self._immersion_depth > self.head_eye_height then
-		self._time_submerged = self._time_submerged + dtime
-		if self._time_submerged > 30 then
-			self.shaking = true
-			if self._time_submerged > 45 then
-				self:replace_with ("mobs_mc:baby_zombie", true)
-				return false
-			end
-		end
-	else
-		self._time_submerged = 0
-		self.shaking = false
-	end
-	zombie.do_custom (self, dtime)
-end
 
 mcl_mobs.register_mob ("mobs_mc:baby_husk", baby_husk)
 
 ------------------------------------------------------------------------
 -- Zombie and variant spawning.
 ------------------------------------------------------------------------
-
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:zombie",
-	type_of_spawning = "ground",
-	dimension = "overworld",
-	aoc = 9,
-	biomes_except = {
-		"MushroomIslandShore",
-		"MushroomIsland"
-	},
-	chance = 1000,
-})
-
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:baby_zombie",
-	type_of_spawning = "ground",
-	dimension = "overworld",
-	aoc = 9,
-	biomes_except = {
-		"MushroomIslandShore",
-		"MushroomIsland"
-	},
-	chance = 50,
-})
-
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:husk",
-	type_of_spawning = "ground",
-	dimension = "overworld",
-	aoc = 9,
-	biomes = {
-		"Desert",
-	},
-	chance = 2400,
-})
-
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:baby_husk",
-	type_of_spawning = "ground",
-	dimension = "overworld",
-	aoc = 9,
-	biomes = {
-		"Desert",
-	},
-	chance = 20,
-})
 
 -- Spawn eggs
 mcl_mobs.register_egg ("mobs_mc:husk", S("Husk"), "#777361", "#ded88f", 0)
@@ -916,7 +861,8 @@ for _, biome in pairs (mobs_mc.monster_biomes) do
 	end
 end
 
-local zombie_spawner = table.merge (mobs_mc.monster_spawner, {
+local monster_spawner = mobs_mc.monster_spawner
+local zombie_spawner = table.merge (monster_spawner, {
 	name = "mobs_mc:zombie",
 	weight = 95,
 	pack_max = 4,
@@ -932,6 +878,11 @@ function zombie_spawner:spawn (spawn_pos, idx, sdata, pack_size)
 	end
 end
 
+function zombie_spawner:describe_criteria (tbl, omit_group_details)
+	monster_spawner.describe_criteria (self, tbl, omit_group_details)
+	table.insert (tbl, S ("5% of Zombies will spawn as their baby variants."))
+end
+
 local zombie_spawner_desert = table.merge (zombie_spawner, {
 	weight = 19,
 	biomes = {
@@ -939,7 +890,7 @@ local zombie_spawner_desert = table.merge (zombie_spawner, {
 	},
 })
 
-local husk_spawner = table.merge (mobs_mc.monster_spawner, {
+local husk_spawner = table.merge (monster_spawner, {
 	name = "mobs_mc:husk",
 	weight = 80,
 	pack_max = 4,
@@ -949,13 +900,13 @@ local husk_spawner = table.merge (mobs_mc.monster_spawner, {
 	},
 })
 
-local monster_spawner = mobs_mc.monster_spawner
-
-function husk_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache)
+function husk_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache,
+					   spawn_flag)
 	return mcl_weather.is_outdoor (spawn_pos)
 		and monster_spawner.test_spawn_position (self, spawn_pos,
 							 node_pos, sdata,
-							 node_cache)
+							 node_cache,
+							 spawn_flag)
 end
 
 function husk_spawner:spawn (spawn_pos, idx, sdata, pack_size)
@@ -964,6 +915,12 @@ function husk_spawner:spawn (spawn_pos, idx, sdata, pack_size)
 	else
 		return core.add_entity (spawn_pos, "mobs_mc:husk")
 	end
+end
+
+function husk_spawner:describe_criteria (tbl, omit_group_details)
+	monster_spawner.describe_criteria (self, tbl, omit_group_details)
+	table.insert (tbl, S ("5% of Husks will spawn as their baby variants."))
+	table.insert (tbl, S ("Husks will only spawn on nodes that are exposed to sky."))
 end
 
 mcl_mobs.register_spawner (zombie_spawner)

@@ -14,10 +14,10 @@ msgstr ""
 "X-Generator: mtt_convert 0.1.1\n"
 
 msgid "Observer"
-msgstr ""
+msgstr "Observador"
 
 msgid "Emits redstone pulse when block in front changes"
-msgstr ""
+msgstr "Emite um pulso de redstone quando o bloco à frente muda"
 
 msgid "An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes."
 msgstr ""

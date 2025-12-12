@@ -14,10 +14,10 @@ msgstr ""
 "X-Generator: mtt_convert 0.1.1\n"
 
 msgid "Transmits redstone power, powers mechanisms"
-msgstr ""
+msgstr "Transmite energia de redstone, energiza mecanismos"
 
 msgid "Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail."
-msgstr ""
+msgstr "Redstone é um mineral condutor versátil que transmite energia de redstone. Pode ser colocado no chão como um rastro."
 
 msgid "A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components."
 msgstr ""
@@ -32,5 +32,8 @@ msgid "Read the help entries on the other redstone components to learn how redst
 msgstr ""
 
 msgid "Redstone Dust"
+msgstr ""
+
+msgid "Redstone Material"
 msgstr ""
 

@@ -13,7 +13,6 @@ local mob_class = mcl_mobs.mob_class
 local parrot = {
 	description = S("Parrot"),
 	type = "animal",
-	spawn_class = "passive",
 	_spawn_category = "creature",
 	passive = true,
 	pathfinding = 1,
@@ -137,29 +136,23 @@ local shoulders = {
 	right = vector.new(3.75,10.5,0),
 }
 
-local function table_get_rand(tbl)
-	local keys = {}
-	for k in pairs(tbl) do
-		table.insert(keys, k)
-	end
-	return tbl[keys[math.random(#keys)]]
+local function is_valid_mob_sound (_, v)
+	return v.is_mob and v.sounds and type (v.sounds) == "table"
 end
 
 local function get_random_mob_sound()
-	local t = table.copy(core.registered_entities)
-	table.shuffle(t)
-	for _,e in pairs(t) do
-		if e.is_mob and e.sounds and #e.sounds > 0 then
-			return table_get_rand(e.sounds)
-		end
-	end
-	return core.registered_entities["mobs_mc:parrot"].sounds.random
+	local random_mob_sound
+		= table.random_element (core.registered_entities, is_valid_mob_sound)
+	return random_mob_sound and random_mob_sound.sounds.random
 end
 
 local function imitate_mob_sound(self,mob)
 	local snd = mob.sounds.random
 	if not snd or mob.name == "mobs_mc:parrot" or math.random(20) == 1 then
 		snd = get_random_mob_sound()
+		if not snd then
+			return
+		end
 	end
 	return core.sound_play(snd, {
 		pos = self.object:get_pos(),
@@ -347,23 +340,6 @@ mcl_mobs.register_mob ("mobs_mc:parrot", parrot)
 -- Parrot spawning.
 ------------------------------------------------------------------------
 
-mcl_mobs.spawn_setup({
-	name = "mobs_mc:parrot",
-	type_of_spawning = "ground",
-	dimension = "overworld",
-	aoc = 3,
-	min_height = mobs_mc.water_level+7,
-	max_height = mcl_vars.mg_overworld_max,
-	biomes = {
-		"Jungle",
-		"JungleEdgeM",
-		"JungleM",
-		"JungleEdge",
-		"BambooJungle",
-	},
-	chance = 400,
-})
-
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:parrot", S("Parrot"), "#0da70a", "#ff0000", 0)
 
@@ -380,6 +356,10 @@ local parrot_spawner = table.merge (mobs_mc.animal_spawner, {
 		"#is_jungle",
 	},
 })
+
+function parrot_spawner:describe_supporting_nodes ()
+	return S ("on grass, leaves, or logs")
+end
 
 function parrot_spawner:test_supporting_node (node)
 	return  core.get_item_group (node.name, "grass_block") > 0

@@ -1,5 +1,5 @@
 # textdomain: mcl_farming
-Beetroot Seeds=
+Beetroot Seeds=Sementes de Beterraba
 Grows into a beetroot plant. Chickens like beetroot seeds.=
 Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds.=
 Premature Beetroot Plant (Stage 1)=
@@ -45,7 +45,7 @@ Premature Melon Stem (Stage @1)=
 Mature Melon Stem=
 A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.=
 Melon Slice=
-This is a food item which can be eaten.=
+This is a food item which can be eaten.=Este é um alimento que pode ser consumido.
 Premature Potato Plant=
 Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=
 Premature Potato Plant (Stage @1)=
@@ -90,7 +90,7 @@ Premature Wheat Plant=
 Premature Wheat Plant (Stage @1)=
 Mature Wheat Plant=
 Wheat=
-Wheat is used in crafting. Some animals like wheat.=
+Wheat is used in crafting. Some animals like wheat.=O trigo é usado na produção. Alguns animais gostam de trigo.
 Use the “Place” key on an animal to try to feed it wheat.=
 Cookie=
 Bread=

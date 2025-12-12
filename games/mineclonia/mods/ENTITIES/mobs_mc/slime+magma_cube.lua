@@ -2,17 +2,13 @@
 
 local S = core.get_translator("mobs_mc")
 
-local slime_chunk_spawn_max = mcl_worlds.layer_to_y(40)
+local slime_chunk_spawn_max = -24 -- Y=40 in Minecraft.
 
 local only_peaceful_mobs
 	= core.settings:get_bool ("only_peaceful_mobs", false)
 
-local mapgen_seed = core.get_mapgen_setting("seed")
-
 local function in_slime_chunk(pos)
-	local encoded_pos = (math.floor(pos.x / 16) + 2048) * 4096 + (math.floor(pos.z / 16) + 2048)
-	encoded_pos = PcgRandom(encoded_pos):next() + mapgen_seed
-	return PcgRandom(encoded_pos):next(1, 10) == 1   -- 1/10th chance that mapblock column is a slime chunk
+	return mcl_biome_dispatch.is_slime_chunk (pos.x, pos.z)
 end
 
 -- If the light level is equal to or less than a random integer (from 0 to 7)
@@ -64,18 +60,6 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 			end
 		end
 	end
-end
-
-local swamp_light_max = 7
-
-local function slime_check_light(pos, _, artificial_light, sky_light)
-	local maxlight = swamp_light_max
-
-	if pos.y <= slime_chunk_spawn_max and in_slime_chunk(pos) then
-		maxlight = core.LIGHT_MAX + 1
-	end
-
-	return math.max(artificial_light, sky_light) <= maxlight
 end
 
 -- Slime movement.
@@ -216,7 +200,6 @@ end
 local slime_big = {
 	description = S("Slime - big"),
 	type = "monster",
-	spawn_class = "hostile",
 	_spawn_category = "monster",
 	hp_min = 16,
 	hp_max = 16,
@@ -267,7 +250,6 @@ local slime_big = {
 	spawn_small_alternative = "mobs_mc:slime_small",
 	on_die = spawn_children_on_die("mobs_mc:slime_small", 1.0, 1.5),
 	use_texture_alpha = true,
-	check_light = slime_check_light,
 	specific_attack = {
 		"mobs_mc:iron_golem",
 	},
@@ -324,87 +306,10 @@ slime_tiny.sound_params.gain = slime_small.sound_params.gain / 3
 
 mcl_mobs.register_mob("mobs_mc:slime_tiny", slime_tiny)
 
-local water_level = mobs_mc.water_level
-
-local cave_biomes = {
-	"FlowerForest_underground",
-	"JungleEdge_underground",
-	"BambooJungle_underground",
-	"StoneBeach_underground",
-	"MesaBryce_underground",
-	"Mesa_underground",
-	"RoofedForest_underground",
-	"Jungle_underground",
-	"Swampland_underground",
-	"MushroomIsland_underground",
-	"BirchForest_underground",
-	"Plains_underground",
-	"MesaPlateauF_underground",
-	"ExtremeHills_underground",
-	"MegaSpruceTaiga_underground",
-	"BirchForestM_underground",
-	"SavannaM_underground",
-	"MesaPlateauFM_underground",
-	"Desert_underground",
-	"Savanna_underground",
-	"Forest_underground",
-	"SunflowerPlains_underground",
-	"ColdTaiga_underground",
-	"IcePlains_underground",
-	"IcePlainsSpikes_underground",
-	"MegaTaiga_underground",
-	"Taiga_underground",
-	"ExtremeHills+_underground",
-	"JungleM_underground",
-	"ExtremeHillsM_underground",
-	"JungleEdgeM_underground",
-	"MangroveSwamp_underground"
-}
-
-local cave_min = mcl_vars.mg_overworld_min
-local cave_max = water_level - 23
-
-local swampy_biomes = {"Swampland", "MangroveSwamp"}
-local swamp_min = water_level
-local swamp_max = water_level + 27
-
-for slime_name,slime_chance in pairs({
-	["mobs_mc:slime_tiny"] = 1000,
-	["mobs_mc:slime_small"] = 1000,
-	["mobs_mc:slime_big"] = 1000
-}) do
-	mcl_mobs.spawn_setup({
-		name = slime_name,
-		type_of_spawning = "ground",
-		dimension = "overworld",
-		biomes = cave_biomes,
-		min_light = 0,
-		max_light = core.LIGHT_MAX+1,
-		min_height = cave_min,
-		max_height = cave_max,
-		chance = slime_chance,
-		check_position = in_slime_chunk,
-	})
-
-	mcl_mobs.spawn_setup({
-		name = slime_name,
-		type_of_spawning = "ground",
-		dimension = "overworld",
-		biomes = swampy_biomes,
-		min_light = 0,
-		max_light = swamp_light_max,
-		min_height = swamp_min,
-		max_height = swamp_max,
-		chance = slime_chance,
-		check_position = swamp_spawn,
-	})
-end
-
 -- Magma cube
 local magma_cube_big = {
 	description = S("Magma Cube - big"),
 	type = "monster",
-	spawn_class = "hostile",
 	_spawn_category = "monster",
 	hp_min = 16,
 	hp_max = 16,
@@ -522,22 +427,6 @@ magma_cube_tiny.sound_params.gain = magma_cube_small.sound_params.gain / 3
 
 mcl_mobs.register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 
-for magma_name,magma_chance in pairs({
-	["mobs_mc:magma_cube_tiny"] = 100,
-	["mobs_mc:magma_cube_small"] = 100,
-	["mobs_mc:magma_cube_big"] = 100
-}) do
-	mcl_mobs.spawn_setup({
-		name = magma_name,
-		type_of_spawning = "ground",
-		dimension = "nether",
-		min_light = 0,
-		max_light = core.LIGHT_MAX+1,
-		chance = magma_chance,
-		biomes = {"Nether", "BasaltDelta"},
-	})
-end
-
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
 
@@ -557,30 +446,41 @@ local slime_spawner = table.merge (default_spawner, {
 	pack_min = 4,
 	biomes = mobs_mc.monster_biomes,
 })
+local swamp_or_mangrove_swamp_p
 
-function slime_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache)
+core.register_on_mods_loaded (function ()
+	swamp_or_mangrove_swamp_p = mcl_biome_dispatch.make_biome_test ({
+		"Swamp",
+		"MangroveSwamp",
+	})
+end)
+
+function slime_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache,
+					    spawn_flag)
 	if mcl_vars.difficulty == 0 or only_peaceful_mobs then
 		return false
 	end
 
 	local name = mcl_biome_dispatch.get_biome_name (node_pos)
-	if name == "Swampland" or name == "Swamp"
-		or name == "MangroveSwamp" then
-		if swamp_spawn (spawn_pos) then
-			if default_spawner.test_spawn_position (self, spawn_pos,
-								node_pos, sdata,
-								node_cache) then
-				return true
-			end
+	if (swamp_or_mangrove_swamp_p (name) and swamp_spawn (spawn_pos))
+		or spawn_flag == "spawner" then
+		if default_spawner.test_spawn_position (self, spawn_pos,
+							node_pos, sdata,
+							node_cache,
+							spawn_flag) then
+			return true
 		end
 	end
 
 	if spawn_pos.y <= slime_chunk_spawn_max + 0.5
-		and math.random (1, 10) == 1
-		and in_slime_chunk (spawn_pos) then
-		return default_spawner.test_spawn_position (self, spawn_pos,
-							    node_pos, sdata,
-							    node_cache)
+		and math.random (1, 10) <= 6
+		and in_slime_chunk (node_pos) then
+		if default_spawner.test_spawn_position (self, spawn_pos,
+							node_pos, sdata,
+							node_cache,
+							spawn_flag) then
+			return true
+		end
 	end
 	return false
 end
@@ -601,6 +501,13 @@ function slime_spawner:spawn (spawn_pos, _)
 	return core.add_entity (spawn_pos, slime_type)
 end
 
+function slime_spawner:describe_criteria (tbl, omit_group_details)
+	default_spawner.describe_criteria (self, tbl, omit_group_details)
+	table.insert (tbl, "Slimes spawn in one of three size variants, which is decided at random, influenced by the regional difficulty at the positions where they generate.")
+	table.insert (tbl, "In Swamp and Mangrove Swamp biomes, Slimes spawn on the surface at light levels between 0 to 7 with a probability that increases with proximity to the new moon.")
+	table.insert (tbl, "In other biomes, slimes spawn in 1/10 of all 16x384x16 chunks at Y levels of -24 and below, in any light level.")
+end
+
 mcl_mobs.register_spawner (slime_spawner)
 
 local default_spawner = mcl_mobs.default_spawner
@@ -616,11 +523,12 @@ local magma_cube_spawner = {
 	},
 }
 
-function magma_cube_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache)
+function magma_cube_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache,
+						 spawn_flag)
 	return mcl_vars.difficulty > 0
 		and default_spawner.test_spawn_position (self, spawn_pos,
 							 node_pos, sdata,
-							 node_cache)
+							 node_cache, spawn_flag)
 end
 
 function magma_cube_spawner:spawn (spawn_pos, _)
@@ -637,6 +545,11 @@ function magma_cube_spawner:spawn (spawn_pos, _)
 	end
 
 	return core.add_entity (spawn_pos, slime_type)
+end
+
+function magma_cube_spawner:describe_criteria (tbl, omit_group_details)
+	default_spawner.describe_criteria (self, tbl, omit_group_details)
+	table.insert (tbl, "Magma Cubes spawn in any light level in one of three size variants, which is decided at random, influenced by the regional difficulty at the positions where they generate.")
 end
 
 local magma_cube_spawner_basalt_delta = table.merge (magma_cube_spawner, {

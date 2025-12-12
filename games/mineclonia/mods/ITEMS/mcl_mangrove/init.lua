@@ -22,7 +22,7 @@ mcl_trees.register_wood("mangrove",{
 		color = "#6a7039",
 		_on_bone_meal = function(_, _, _, pos)
 			local upos = vector.offset(pos, 0,-1,0)
-			return core.get_node(upos).name == "air" and core.set_node(upos, {name="mcl_mangrove:hanging_propagule_1"})
+			return core.get_node(upos).name == "air" and core.set_node(upos, {name="mcl_mangrove:propagule_hanging_1"})
 		end,
 	},
 	wood = { tiles = {"mcl_mangrove_planks.png"}},
@@ -198,33 +198,86 @@ core.register_node("mcl_mangrove:propagule", {
 	end)
 })
 
-core.register_node("mcl_mangrove:hanging_propagule_1", {
-	description = S("Hanging Propagule"),
-	_tt_help = S("Grows on Mangrove leaves"),
-	_doc_items_longdesc = "",
-	_doc_items_usagehelp = "",
-	groups = {
-			plant = 1, not_in_creative_inventory=1, non_mycelium_plant = 1,
-			deco_block = 1, dig_immediate = 3, dig_by_water = 0, dig_by_piston = 1,
-			destroy_by_lava_flow = 1, compostability = 30
+local sel_heights = {
+	0.25, 0.125, -0.0625, -0.3125, -0.5
+}
+
+local function get_hanging_propagules_textures(index)
+	local texture = "mcl_mangrove_propagule_hanging.png"
+	local tiles = {"blank.png", "blank.png", "blank.png", "blank.png", "blank.png"}
+
+	if index < 5 then
+		for i = 1, index do tiles[i] = texture end
+		if index == 4 then
+			tiles[3] = "blank.png"
+		end
+	else
+		tiles[1] = texture
+		tiles[2] = texture
+		tiles[5] = texture
+	end
+
+	return tiles
+end
+
+local hp_longdesc = S("Suspended mague propagules grow on the underside of mangrove leaves.\n") ..
+S("They grow in four stages. Using bone meal on a suspended propagule advances it to the next growth stage.\n") ..
+S("When the propagule reaches the final stage, it drops as an item when broken.")
+
+local function grow_hanging_propagule(pos, node)
+	local stage = node.name:gsub("mcl_mangrove:propagule_hanging_", "")
+	core.swap_node(pos, {name = "mcl_mangrove:propagule_hanging_" .. tonumber(stage) + 1})
+end
+
+for i = 1, 5 do
+	core.register_node("mcl_mangrove:propagule_hanging_" .. i, {
+		_doc_items_create_entry = i == 5,
+		_doc_items_entry_name = i == 5 and S("Hanging Mangrove Propagule") or nil,
+		_doc_items_longdesc = i == 5 and hp_longdesc or nil,
+		_mcl_baseitem = "mcl_mangrove:propagule",
+		description = S("Hanging Propagule (Stage @1)", i),
+		paramtype = "light",
+		on_rotate = false,
+		walkable = false,
+		drop = i == 5 and "mcl_mangrove:propagule" or "",
+		use_texture_alpha = "clip",
+		drawtype = "mesh",
+		mesh = "mcl_mangrove_hanging_propagule_".. i .. ".obj",
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		sunlight_propagates = true,
+		selection_box = {
+			type = "fixed", fixed = {-0.125, 0.5, -0.125, 0.125, sel_heights[i], 0.125}
 		},
-	paramtype = "light",
-	on_rotate = false,
-	walkable = false,
-	drop = "mcl_mangrove:propagule",
-	use_texture_alpha = "clip",
-	drawtype = 'mesh',
-	mesh = 'propagule_hanging.obj',
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.125, -0.5, -0.125, 0.125, 0.5, 0.125}, -- Base
+		tiles = get_hanging_propagules_textures(i),
+		groups = {
+			plant = 1, not_in_creative_inventory = 1, non_mycelium_plant = 1,
+			dig_immediate = 3, dig_by_water = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,
+			attached_node = 4, hanging_propagule = 1,
 		},
+		_on_bone_meal = i < 5 and function(_, _, _, pos, node)
+			grow_hanging_propagule(pos, node)
+			return true
+		end or nil
+	})
+
+	if i < 5 then
+		doc.add_entry_alias("nodes", "mcl_mangrove:propagule_hanging_4", "nodes", "mcl_mangrove:propagule_hanging_" .. i)
+	end
+end
+
+core.register_alias("mcl_mangrove:hanging_propagule_1", "mcl_mangrove:propagule_hanging_5")
+
+core.register_abm({
+	label = "Grow hanging mangrove propagule",
+	nodenames = {
+		"mcl_mangrove:propagule_hanging_1",
+		"mcl_mangrove:propagule_hanging_2",
+		"mcl_mangrove:propagule_hanging_3",
+		"mcl_mangrove:propagule_hanging_4"
 	},
-	tiles = {"mcl_mangrove_propagule_hanging.png"},
-	inventory_image = "mcl_mangrove_propagule.png",
-	wield_image = "mcl_mangrove_propagule.png",
-	_mcl_baseitem = "mcl_mangrove:propagule",
+	chance = 20,
+	interval = 10,
+	action = grow_hanging_propagule,
 })
 
 

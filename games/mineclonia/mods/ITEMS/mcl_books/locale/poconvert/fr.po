@@ -13,6 +13,12 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: mtt_convert 0.1.1\n"
 
+msgid "Chiseled Bookshelf"
+msgstr "Bibliothèque sculptée"
+
+msgid "Chiseled bookshelf holds up to six books."
+msgstr "La bibliothèque sculptée peut contenir jusqu'à six livres."
+
 msgid "Book"
 msgstr "Livre"
 
@@ -53,11 +59,12 @@ msgid "Hold it in the hand, then rightclick to read the current notes and edit t
 msgstr "Tenez-le dans la main, puis faites un clic droit pour lire les notes actuelles et modifiez-les ensuite. Vous pouvez modifier le texte aussi souvent que vous le souhaitez. Vous pouvez également signer le livre ce qui le transforme en livre écrit que vous pouvez empiler, mais il ne peut plus être édité."
 
 msgid "A book can hold up to @1 characters. The title length is limited to @2 characters."
-msgstr ""
+msgstr "Un livre peut contenir jusqu'à @1 caractères. La taille du titre est limitée à @2 caractères."
 
 msgid "Text is @1 characters too long for one book.\n"
 "It will be capped at @2 characters."
-msgstr ""
+msgstr "Le texte contient @1 caractère(s) de trop pour un seul livre.\n"
+"Il sera limité à @2 caractères."
 
 msgid "Enter book title:"
 msgstr "Entrez le titre du livre :"

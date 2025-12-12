@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: mtt_convert 0.1.1\n"
 
 msgid "Sneak-click to remove"
-msgstr "Isilka-tekla kentzeko"
+msgstr "Makurtze-tekla kentzeko"
 
 msgid "Minecart"
 msgstr "Bagoneta"
@@ -32,13 +32,13 @@ msgid "You can place the minecart on rails. Right-click it to enter it. Punch it
 msgstr "Bagoneta errailetan jar dezakezu. Egin eskuin-klik sartzeko. Eman ukabilakada mugi dadin."
 
 msgid "To obtain the minecart, punch it while holding down the sneak key."
-msgstr "Bagoneta lortzeko, eman ukabilkada isilka-tekla sakatuta duzun bitartean."
+msgstr "Bagoneta lortzeko, eman ukabilkada makurtze-tekla sakatuta duzun bitartean."
 
 msgid "If it moves over a powered activator rail, you'll get ejected."
 msgstr "Aktibatutako errail-aktibatzaile baten gainean mugitzen bada, bagonetatik kanporatuko zaitu."
 
 msgid "Sneak to dismount"
-msgstr "Isilka-tekla jaisteko"
+msgstr "Makurtze-tekla jaisteko"
 
 msgid "Minecart with Chest"
 msgstr "Bagoneta kutxaduna"
@@ -53,7 +53,7 @@ msgid "Place it on rails. If you give it some coal, the furnace will start burni
 msgstr "Errailen gainean jarri. Ikatz pixka bat ematen badiozu, labea erretzen hasiko da denbora luzez, eta bagoneta bere kabuz mugitu ahal izango da. Eman ezazu ukabilkada mugi dadin."
 
 msgid "To obtain the minecart and furnace, punch them while holding down the sneak key."
-msgstr "Bagoneta eta labea lortzeko, eman ukabilkada isilka-tekla sakatuta duzun bitartean."
+msgstr "Bagoneta eta labea lortzeko, eman ukabilkada makurtze-tekla sakatuta duzun bitartean."
 
 msgid "Minecart with Command Block"
 msgstr "Bagoneta Komando-blokeduna"
@@ -74,7 +74,7 @@ msgid "Place it on rails. Punch it to move it. The TNT is ignited with a flint a
 msgstr "Errailen gainean jarri. Eman ukabilkada mugitzeko. TNTa suharria eta altzairu batekin edo bagoneta aktibatutako errail-aktibatzaile baten gainean dagoenean pizten da."
 
 msgid "To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited."
-msgstr "Bagoneta eta dinamita lortzeko, eman ukabilkada isilka-tekla sakatuta duzun bitartean. Ezin duzu hau egin TNTa piztuta badago."
+msgstr "Bagoneta eta dinamita lortzeko, eman ukabilkada makurtze-tekla sakatuta duzun bitartean. Ezin duzu hau egin TNTa piztuta badago."
 
 msgid "Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed."
 msgstr "Lurrean jarri, trenbidea eraikitzeko. Errailak automatikoki konektatuko dira elkarrekin, eta bihurgune, T formako lotura, bidegurutze eta malda bihurtuko dira, beharrezkoa den heinean."

@@ -14,7 +14,6 @@ local posing_humanoid = mcl_mobs.posing_humanoid
 local skeleton = table.merge (posing_humanoid, {
 	description = S("Skeleton"),
 	type = "monster",
-	spawn_class = "hostile",
 	_spawn_category = "monster",
 	hp_min = 20,
 	hp_max = 20,
@@ -30,6 +29,10 @@ local skeleton = table.merge (posing_humanoid, {
 	visual = "mesh",
 	mesh = "mobs_mc_skeleton.b3d",
 	wears_armor = "no_pickup",
+	_head_armor_bone = "head",
+	_head_armor_position = vector.new (0, 1.625, 0),
+	_head_armor_visual_scale = 1 / 2.5,
+	_head_armor_rotation = vector.new (0, 180, 0),
 	armor_drop_probability = {
 		head = 0.085,
 		torso = 0.085,
@@ -228,6 +231,16 @@ function skeleton:on_spawn ()
 		self.can_wield_items = true
 	end
 	self:skelly_generate_default_equipment (mob_factor)
+	if mcl_util.is_halloween ()
+		and self.armor_list.head == ""
+		and math.random () < 0.25 then
+		if math.random () < 0.1 then
+			self.armor_list.head = "mcl_farming:pumpkin_face_light"
+		else
+			self.armor_list.head = "mcl_farming:pumpkin_face"
+		end
+		self:set_armor_texture ()
+	end
 	return true
 end
 
@@ -239,7 +252,7 @@ end
 
 function skeleton:on_die (pos, mcl_reason)
 	if mcl_reason
-		and mcl_reason.type == "arrow"
+		and (mcl_reason.type == "arrow" or mcl_reason.type == "trident")
 		and mcl_reason.source then
 		local source = mcl_reason.source
 		if source:is_player ()
@@ -380,43 +393,6 @@ mcl_mobs.register_mob ("mobs_mc:stray", stray)
 -- Skeleton & Stray spawning.
 ------------------------------------------------------------------------
 
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:skeleton",
-	type_of_spawning = "ground",
-	dimension = "overworld",
-	aoc = 2,
-	biomes_except = {
-		"MushroomIslandShore",
-		"MushroomIsland"
-	},
-	chance = 800,
-})
-
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:skeleton",
-	type_of_spawning = "ground",
-	dimension = "nether",
-	aoc = 2,
-	biomes = {
-		"SoulsandValley",
-	},
-	chance = 800,
-})
-
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:stray",
-	type_of_spawning = "ground",
-	dimension = "overworld",
-	aoc = 2,
-	biomes = {
-		"ColdTaiga",
-		"IcePlainsSpikes",
-		"IcePlains",
-		"ExtremeHills+_snowtop",
-	},
-	chance = 1200,
-})
-
 mcl_mobs.register_egg ("mobs_mc:skeleton", S("Skeleton"), "#c1c1c1", "#494949", 0)
 mcl_mobs.register_egg ("mobs_mc:stray", S("Stray"), "#5f7476", "#dae8e7", 0)
 
@@ -493,11 +469,18 @@ local stray_spawner = table.merge (mobs_mc.monster_spawner, {
 
 local monster_spawner = mobs_mc.monster_spawner
 
-function stray_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache)
+function stray_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache,
+					    spawn_flag)
 	return mcl_weather.is_outdoor (node_pos)
 		and monster_spawner.test_spawn_position (self, spawn_pos,
 							 node_pos, sdata,
-							 node_cache)
+							 node_cache,
+							 spawn_flag)
+end
+
+function stray_spawner:describe_additional_spawning_criteria ()
+	return monster_spawner.describe_additional_spawning_criteria (self)
+		.. "  " .. S ("Moreover, the block where the mob is to spawn must be exposed to sky.")
 end
 
 mcl_mobs.register_spawner (skeleton_spawner)

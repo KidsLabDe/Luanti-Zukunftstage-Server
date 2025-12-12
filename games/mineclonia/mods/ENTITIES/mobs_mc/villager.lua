@@ -27,7 +27,6 @@ local WIELD_POSITION = vector.copy ({
 
 local villager_base = {
 	type = "npc",
-	spawn_class = "passive",
 	_spawn_category = "misc",
 	passive = true,
 	hp_min = 20,
@@ -1159,6 +1158,22 @@ local function get_profession (job_site_name)
 	return nil
 end
 
+function mobs_mc.register_villager (profession, poi, trades, gifts)
+	table.insert (villager_professions, profession)
+	-- It appears that the search cache needn't be reinitialized
+	-- after alterations to jobsite_groups, as
+	-- mcl_util.make_node_search_cache saves a reference to the
+	-- list and only resolves it after mods are loaded.
+	table.insert (jobsite_groups, profession.group)
+	table.insert (mobs_mc.jobsites, profession.group)
+
+	professions_by_name[profession.name] = profession
+	mobs_mc.villager_trades[profession.name] = trades
+	mobs_mc.villager_gift_tables[profession.name] = gifts
+
+	mcl_villages.register_poi (profession.poi, poi)
+end
+
 ------------------------------------------------------------------------
 -- Villager visuals.
 ------------------------------------------------------------------------
@@ -1904,6 +1919,7 @@ local villager_trades = {
 		},
 	},
 }
+mobs_mc.villager_trades = villager_trades
 
 -- Assign the default price multiplier of 0.05 to all trades where
 -- such a multiplier is not already specified.
@@ -2222,11 +2238,15 @@ local function villager_type_from_biome (name)
 end
 
 function villager:on_spawn ()
-	if pr:next (1, 100) == 1 then
-		self:set_profession ("nitwit")
-	end
-
 	if not rawget (self, "_villager_type") then
+		-- Villagers converted from Zombie Villagers or
+		-- otherwise spawned with a profession shouldn't
+		-- exhibit a 1/100 probability of generating as
+		-- nitwits.
+		if pr:next (1, 100) == 1 then
+			self:set_profession ("nitwit")
+		end
+
 		local self_pos = self.object:get_pos ()
 		local biomename = mcl_biome_dispatch.get_biome_name (self_pos)
 		local villager_type = villager_type_from_biome (biomename)
@@ -2339,6 +2359,8 @@ local zombie_types = {
 	"mobs_mc:zombie",
 	"mobs_mc:baby_zombie",
 	"mobs_mc:villager_zombie",
+	"mobs_mc:drowned",
+	"mobs_mc:baby_drowned",
 }
 
 function villager:export_villager_data ()
@@ -2758,8 +2780,10 @@ end
 
 -- See https://minecraft.wiki/w/Villager#Panicking
 local alarm_distances = {
+	["mobs_mc:baby_drowned"] = 8.0,
 	["mobs_mc:baby_husk"] = 8.0,
 	["mobs_mc:baby_zombie"] = 8.0,
+	["mobs_mc:drowned"] = 8.0,
 	["mobs_mc:husk"] = 8.0,
 	["mobs_mc:illusioner"] = 12.0,
 	["mobs_mc:pillager"] = 15.0,
@@ -4844,6 +4868,7 @@ local villager_gift_tables = {
 		},
 	},
 }
+mobs_mc.villager_gift_tables = villager_gift_tables
 
 function villager:throw_gifts (self_pos, recipient, pos)
 	local items
@@ -6715,6 +6740,10 @@ function villager:post_load_staticdata ()
 		-- not appropriate now.
 		self.animation = nil
 	end
+end
+
+function villager:actionable_on_rightclick (player)
+	return true
 end
 
 mcl_mobs.register_mob ("mobs_mc:villager", villager)

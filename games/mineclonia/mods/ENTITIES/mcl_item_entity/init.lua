@@ -301,6 +301,17 @@ function core.node_dig(pos, node, digger)
 	return rc
 end
 
+
+local old_cipu = core.item_pickup
+function core.item_pickup(itemstack,picker,pointed_thing,time_from_last_punch,...)
+	local inv = picker:get_inventory()
+	if not inv:is_empty("offhand") then
+		itemstack = inv:add_item("offhand", itemstack)
+	end
+
+	return old_cipu(itemstack, picker, pointed_thing, time_from_last_punch, ...)
+end
+
 --modify builtin:item
 
 local time_to_live = tonumber(core.settings:get("item_entity_ttl")) or 300
@@ -385,28 +396,23 @@ core.register_entity(":__builtin:item", {
 	end,
 
 	pickup = function(self, player)
-		-- Don't try to collect again
 		if self._removed then return end
 		if not player or not player:get_pos() then return end
-
-		local inv = player:get_inventory()
-		local checkpos = vector.offset(player:get_pos(), 0, item_drop_settings.player_collect_height, 0)
-
-		-- Check magnet timer
+		if self.itemstring == "" then return end
 		if self._magnet_timer < 0 then return end
 		if self._magnet_timer >= item_drop_settings.magnet_time then return end
 
-		-- Ignore if itemstring is not set yet
-		if self.itemstring == "" then return end
-
-		-- Add what we can to the inventory
+		local checkpos = vector.offset(player:get_pos(), 0, item_drop_settings.player_collect_height, 0)
 		local itemstack = ItemStack(self.itemstring)
-
 		local count = itemstack:get_count()
-		if not inv:is_empty("offhand") then
-		  itemstack = inv:add_item("offhand", itemstack)
+		local def = itemstack:get_definition()
+
+
+		local leftovers = def.on_pickup(itemstack, player, { type = "object", ref = self.object })
+
+		if leftovers == nil then
+			return
 		end
-		local leftovers = inv:add_item("main", itemstack)
 
 		self:check_pickup_achievements(player)
 
@@ -433,7 +439,7 @@ core.register_entity(":__builtin:item", {
 			self.object:move_to(checkpos)
 		else
 			-- Update entity itemstring
-			self.itemstring = leftovers:to_string()
+			self:set_item(leftovers:to_string())
 		end
 	end,
 

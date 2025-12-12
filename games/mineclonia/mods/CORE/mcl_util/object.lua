@@ -1,9 +1,3 @@
-function mcl_util.get_luaentity_by_id(id)
-	for _, e in pairs(core.luaentities) do
-		if e._id == id then return e end
-	end
-end
-
 function mcl_util.get_hp(obj)
 	local luaentity = obj:get_luaentity()
 
@@ -43,6 +37,10 @@ function mcl_util.get_object_name(object)
 
 		return luaentity.nametag and luaentity.nametag ~= "" and luaentity.nametag or luaentity.description or luaentity.name
 	end
+end
+
+function mcl_util.is_creative(object)
+	return object and object:is_player() and core.is_creative_enabled(object:get_player_name())
 end
 
 function mcl_util.replace_mob(obj, mob_type, propagate_equipment)
@@ -277,4 +275,47 @@ function mcl_util.deal_damage(target, damage, mcl_reason)
 		end
 	end
 	return damage
+end
+
+-- Convert a Euler rotation X, Y, Z, as accepted by obj:set_rotation,
+-- into an equivalent in Irrlicht's intrinsic ZYX format, which is
+-- required by bone rotations.  Values are three numbers representing
+-- the Irrlicht equivalent of the stated rotation.
+
+local NINETY_DEG = math.pi / 2
+local mathcos = math.cos
+local mathsin = math.sin
+local mathatan2 = math.atan2
+local mathasin = math.asin
+
+function mcl_util.rotation_to_irrlicht (x, y, z)
+	-- https://www.geometrictools.com/Documentation/EulerAngles.pdf
+	local cx, sx = mathcos (x), mathsin (x)
+	local cy, sy = mathcos (y), mathsin (y)
+	local cz, sz = mathcos (z), mathsin (z)
+
+	-- ZXY intrinsic to ZYX extrinsic.
+	-- luacheck: push ignore 211
+	local m00, m01, m02 = cy*cz - sx*sy*sz, -cx*sz, cz*sy + cy*sx*sz
+	local m10, m11, m12 = cz*sx*sy + cy*sz, cx*cz, -cy*cz*sx + sx*sz
+	local m20, m21, m22 = -cx*sy, sx, cx*cy
+	-- luacheck: pop
+	local tx, ty, tz
+
+	if m20 < 1 then
+		if m20 > -1 then
+			ty = mathasin (m20)
+			tz = mathatan2 (m10, m00)
+			tx = mathatan2 (m21, m22)
+		else
+			ty = -NINETY_DEG
+			tz = -mathatan2 (-m12, m11)
+			tx = 0
+		end
+	else
+		ty = NINETY_DEG
+		tz = mathatan2 (-m12, m11)
+		tx = 0
+	end
+	return tx, ty, tz
 end

@@ -308,7 +308,6 @@ types:
   - group:floating_node (only when 3)
   - group:bamboo
   - mcl_mangrove:propagule
-  - mcl_mangrove:hanging_propagule_1
   - mcl_mushrooms:mushroom_red
   - mcl_mushrooms:mushroom_brown
   - mcl_crimson:{warped,crimson}_{fungus,roots}
@@ -2145,7 +2144,7 @@ which are best avoided:
     E.g. when truncating coordinates to the nearest MapBlock/chunk,
     rather than:
 
-      local chunk_x = x % 16
+      local chunk_x = x - x % 16
 
     you are advised to write:
 

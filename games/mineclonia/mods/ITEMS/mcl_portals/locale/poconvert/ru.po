@@ -25,6 +25,12 @@ msgstr "Портал Края телепортирует существ и об�
 msgid "Hop into the portal to teleport. Entering an End portal in the Overworld teleports you to a fixed position in the End dimension and creates a 5×5 obsidian platform at your destination. End portals in the End will lead back to your spawn point in the Overworld."
 msgstr "Прыгайте в портал, чтобы телепортироваться. Портал Края в Верхнем мире телепортирует вас в определённое место в измерении Края и создаёт обсидиановую платформу 5×5 в пункте вашего назначения. Портал Края в измерении Края телепортирует вас в вашу точку возрождения в Верхнем мире."
 
+msgid "Leaving the End"
+msgstr "Выход из Края"
+
+msgid "Entering the End"
+msgstr "Вход в Край"
+
 msgid "End Portal Frame"
 msgstr "Рамка портала Края"
 
@@ -57,6 +63,12 @@ msgstr "Врата Края телепортируют мобов и объек�
 
 msgid "Throw an ender pearl into the portal to teleport. Entering an Gateway portal near the Overworld teleports you to the outer End. At this destination another gateway portal will be constructed, which you can use to get back."
 msgstr "Киньте жемчуг Края в портал чтобы телепортироваться. Войдя во портал врат рядом с Верхним миром, вы телепортируетесь во внешний Край. На месте прибытия появится еще одни врата, которые перенесут вас обратно."
+
+msgid "Entering the Nether"
+msgstr "Вход в Незер"
+
+msgid "Leaving the Nether"
+msgstr "Выход из Незера"
 
 msgid "Obsidian is also used as the frame of Nether portals."
 msgstr "Обсидиан также используется в качестве рамки Адского портала."

@@ -17,7 +17,6 @@ local strider = {
 	type = "animal",
 	_spawn_category = "creature",
 	passive = true,
-	spawn_class = "passive",
 	runaway = true,
 	hp_min = 20,
 	hp_max = 20,
@@ -127,6 +126,10 @@ function strider:on_spawn ()
 			end
 		end
 	end
+end
+
+function strider:actionable_on_rightclick (player)
+	return self.saddle == "yes"
 end
 
 ------------------------------------------------------------------------
@@ -460,24 +463,7 @@ strider.gwp_penalties = table.merge (mob_class.gwp_penalties, {
 -- Strider spawning.
 ------------------------------------------------------------------------
 
-local spawn_nodes = {
-	"mcl_nether:nether_lava_source",
-	"mcl_nether:nether_lava_flowing",
-}
-
-function strider.can_spawn (pos)
-	local l = core.find_node_near (pos, 2, spawn_nodes)
-	return l ~= nil
-end
-
 mcl_mobs.register_mob ("mobs_mc:strider", strider)
-
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:strider",
-	type_of_spawning = "lava",
-	dimension = "nether",
-	chance = 200,
-})
 
 mcl_mobs.register_egg ("mobs_mc:strider", S("Strider"), "#000000", "#FF0000", 0)
 
@@ -494,6 +480,7 @@ local strider_spawner = {
 	pack_min = 1,
 	pack_max = 2,
 	biomes = {
+		"CrimsonForest",
 		"WarpedForest",
 		"NetherWastes",
 		"BasaltDeltas",
@@ -501,11 +488,13 @@ local strider_spawner = {
 	},
 }
 
-function strider_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache)
+function strider_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache,
+					      spawn_flag)
 	local above = self:get_node (node_cache, 1, node_pos)
 	return above.name == "air"
 		and default_spawner.test_spawn_position (self, spawn_pos, node_pos,
-							 sdata, node_cache)
+							 sdata, node_cache,
+							 spawn_flag)
 end
 
 mcl_mobs.register_spawner (strider_spawner)

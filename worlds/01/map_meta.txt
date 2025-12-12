@@ -120,8 +120,9 @@ mgv7_np_terrain_persist = {
 	offset = 0.600000024
 }
 mgv7_large_cave_num_min = 0
-mg_flags = caves, dungeons, light, decorations, biomes, ores
+mg_flags = caves, nodungeons, light, decorations, biomes, ores
 mg_name = singlenode
+mcl_singlenode_mapgen = false
 mgv7_small_cave_num_max = 0
 mgv7_large_cave_num_max = 2
 mgv7_floatland_ymin = 1024

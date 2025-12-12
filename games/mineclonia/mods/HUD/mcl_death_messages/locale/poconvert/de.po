@@ -187,3 +187,15 @@ msgstr "@1 wurde von einem süßen Beerenstrauch zu Tode gestochen"
 msgid "@1 was poked to death by a sweet berry bush whilst trying to escape @2"
 msgstr "@1 wurde beim Versuch, @2 zu entkommen, von einem süßen Beerenstrauch zu Tode gestochen"
 
+msgid "@1 froze to death"
+msgstr ""
+
+msgid "@1 was frozen to death by @2"
+msgstr ""
+
+msgid "@1 was impaled by @2"
+msgstr ""
+
+msgid "@1 was impaled by @2 with @3"
+msgstr ""
+

@@ -14,8 +14,8 @@ msgstr ""
 "X-Generator: mtt_convert 0.1.1\n"
 
 msgid "Elytra not equipped."
-msgstr ""
+msgstr "Élitros não equipado."
 
 msgid "Elytra not deployed. Jump while falling down to deploy."
-msgstr ""
+msgstr "Os élitros não estão ativos. Pule enquanto cai para ativar."
 

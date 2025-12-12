@@ -3,6 +3,8 @@ mcl_player.registered_on_visual_change = {}
 
 local animation_blend = 0.2
 
+local prev_yaw, current_roll
+
 local player_props_elytra = {
 	collisionbox = { -0.35, 0, -0.35, 0.35, 0.8, 0.35 },
 	eye_height = 0.4,
@@ -338,18 +340,25 @@ mcl_player.register_globalstep(function(player)
 	player_vel_yaw = limit_vel_yaw(player_vel_yaw, yaw)
 	mcl_player.players[player].vel_yaw = player_vel_yaw
 
-	if parent or mcl_player.players[player].attached then
-		local hyaw = player_vel_yaw - yaw
-		if parent then
-			mcl_util.set_properties(player, player_props_riding)
-			local parent_yaw = math.deg(parent:get_yaw())
-			set_bone_pos(player,"Body_Control", nil, vector.zero())
-			hyaw = -limit_vel_yaw(yaw, parent_yaw) + parent_yaw
+	if not elytra and (parent or mcl_player.players[player].attached) then
+		if mcl_tridents.obj_attached_to_riptide_trident_p (player) then
+			mcl_player.player_set_animation (player, "spin_attack")
+			set_bone_pos (player, "Body_Control", nil, vector.new (90, 0, 0))
+			set_bone_pos (player, "Head_Control", nil, vector.zero ())
+			mcl_util.set_properties (player, player_props_swimming)
 		else
-			set_bone_pos(player,"Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
-		end
+			local hyaw = player_vel_yaw - yaw
+			if parent then
+				mcl_util.set_properties(player, player_props_riding)
+				local parent_yaw = math.deg(parent:get_yaw())
+				set_bone_pos(player,"Body_Control", nil, vector.zero())
+				hyaw = -limit_vel_yaw(yaw, parent_yaw) + parent_yaw
+			else
+				set_bone_pos(player,"Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
+			end
 
-		set_bone_pos(player, "Head_Control", nil, vector.new(pitch, hyaw, 0))
+			set_bone_pos(player, "Head_Control", nil, vector.new(pitch, hyaw, 0))
+		end
 	else
 		local walking = control.up or control.down or control.left or control.right
 		local animation_speed_mod = model and model.animation_speed or 30
@@ -374,8 +383,16 @@ mcl_player.register_globalstep(function(player)
 		if player:get_hp() == 0 then --dead
 			mcl_player.player_set_animation(player, "die")
 		elseif elytra then --using elytra
-			set_bone_pos(player,"Head_Control", nil, vector.new(pitch - math.deg(dir_to_pitch(player_velocity)) + 50, player_vel_yaw - yaw, 0))
-			set_bone_pos(player, "Body_Control", nil, vector.new(math.deg(dir_to_pitch(player_velocity)) + 110, -player_vel_yaw + yaw, 0))
+			prev_yaw = prev_yaw or yaw
+			local yaw_diff = yaw - prev_yaw
+			local clamped_roll = math.max(-45, math.min(45, yaw_diff * 45))
+			current_roll = current_roll or 0
+			current_roll = current_roll + (clamped_roll - current_roll) * animation_blend
+			local roll = current_roll
+			prev_yaw = yaw
+			mcl_player.player_set_animation(player, "fly")
+			set_bone_pos(player,"Head_Control", nil, vector.new(-math.rad(pitch) + 50, math.rad(yaw), 0))
+			set_bone_pos(player, "Body_Control", nil, vector.new(-math.rad(pitch) + 85, math.rad(yaw) - math.pi, roll))
 			-- sets eye height, and nametag color accordingly
 			mcl_util.set_properties(player, player_props_elytra)
 		elseif walking and (math.abs(velocity.x) > 0.35 or math.abs(velocity.z) > 0.35) then --walking

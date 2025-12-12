@@ -1,6 +1,6 @@
 # textdomain: mcl_death_messages
-@1 went up in flames=
-@1 walked into fire whilst fighting @2=
+@1 went up in flames=@1 foi incendiado
+@1 walked into fire whilst fighting @2=@1 entrou no fogo enquanto lutava contra @2
 @1 was struck by lightning=
 @1 was struck by lightning whilst fighting @2=
 @1 burned to death=
@@ -57,3 +57,7 @@
 @1 went off with a bang due to a firework fired by @2 from @3=
 @1 was poked to death by a sweet berry bush=
 @1 was poked to death by a sweet berry bush whilst trying to escape @2=
+@1 froze to death=
+@1 was frozen to death by @2=
+@1 was impaled by @2=
+@1 was impaled by @2 with @3=

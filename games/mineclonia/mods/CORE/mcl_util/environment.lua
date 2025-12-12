@@ -448,6 +448,17 @@ function mcl_util.call_on_rightclick(itemstack, player, pointed_thing)
 			end
 		end
 	end
+	-- Prevent itemstack on_rightclick invoked when interact with certain mobs
+	if pointed_thing and pointed_thing.type == "object" then
+		local ent = pointed_thing.ref:get_luaentity()
+		if ent then
+			local def = core.registered_entities[ent.name]
+			if not def._unplaceable_by_default
+			and (ent.actionable_on_rightclick and ent:actionable_on_rightclick (player)) then
+				return itemstack
+			end
+		end
+	end
 end
 
 -- This function is essentially a wrapper around core.raycast to get the currently pointed at "pointed_thing"
@@ -1007,3 +1018,53 @@ function mcl_util.is_daytime()
 	local time = core.get_timeofday()
 	return time <= 0.76 and time >= 0.24
 end
+
+local is_halloween_week, is_halloween, is_christmas
+
+local function update_calendar_events ()
+	local date = os.date ("*t")
+	if (date.month == 10 and date.day == 31) or mcl_util.force_halloween then
+		is_halloween = true
+	else
+		is_halloween = false
+	end
+	if (date.month == 10 and date.day >= 20)
+		or (date.month == 11 and date.day <= 3)
+		or mcl_util.force_halloween_week then
+		is_halloween_week = true
+	else
+		is_halloween_week = false
+	end
+	if (date.month == 12 and date.day >= 24 and date.day <= 26)
+		or mcl_util.force_christmas then
+		is_christmas = true
+	else
+		is_christmas = false
+	end
+end
+
+function mcl_util.is_halloween_week ()
+	return is_halloween_week
+end
+
+function mcl_util.is_halloween ()
+	return is_halloween
+end
+
+function mcl_util.is_christmas ()
+	return is_christmas
+end
+
+local current_day_night_ratio = 1.0
+
+-- This enables frequently invoked callers (such as the surface
+-- freezing ABMs) to avoid invoking Luanti C++ API functions.
+function mcl_util.get_current_day_night_ratio ()
+	return current_day_night_ratio
+end
+
+core.register_globalstep (function ()
+	update_calendar_events ()
+	local tod = core.get_timeofday ()
+	current_day_night_ratio = core.time_to_day_night_ratio (tod)
+end)

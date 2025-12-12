@@ -29,6 +29,7 @@ local POSE_SWIMMING = 5
 local POSE_SIT_MOUNTED = 6
 local POSE_MOUNTED = 7
 local POSE_DEATH = 8
+local POSE_SPIN_ATTACK = 9
 
 mcl_serverplayer.POSE_STANDING = POSE_STANDING
 mcl_serverplayer.POSE_CROUCHING = POSE_CROUCHING
@@ -37,6 +38,7 @@ mcl_serverplayer.POSE_FALL_FLYING = POSE_FALL_FLYING
 mcl_serverplayer.POSE_SIT_MOUNTED = POSE_SIT_MOUNTED
 mcl_serverplayer.POSE_MOUNTED = POSE_MOUNTED
 mcl_serverplayer.POSE_DEATH = POSE_DEATH
+mcl_serverplayer.POSE_SPIN_ATTACK = POSE_SPIN_ATTACK
 
 local PLAYER_EVENT_JUMP = 1
 
@@ -80,6 +82,15 @@ function mcl_serverplayer.post_load_model (player, model)
 			mine = model.animations.fly,
 			walk_bow = model.animations.fly,
 			walk_mine = model.animations.fly,
+			collisionbox = mcl_player.player_props_elytra.collisionbox,
+			eye_height = mcl_player.player_props_elytra.eye_height,
+		},
+		[POSE_SPIN_ATTACK] = {
+			stand = model.animations.spin_attack,
+			walk = model.animations.spin_attack,
+			mine = model.animations.spin_attack,
+			walk_bow = model.animations.spin_attack,
+			walk_mine = model.animations.spin_attack,
 			collisionbox = mcl_player.player_props_elytra.collisionbox,
 			eye_height = mcl_player.player_props_elytra.eye_height,
 		},
@@ -239,8 +250,19 @@ function mcl_serverplayer.init_player (client_state, player)
 			moon_texture = client_state.proto >= 3
 				and mcl_moon.get_moon_texture ()
 				or nil,
+			preciptation_spawners = client_state.proto >= 5
+				and mcl_serverplayer.default_precipitation_spawners
+				or nil,
 		})
 		mcl_serverplayer.send_effect_ctrl (player, initial)
+	end
+	if client_state.proto >= 4 then
+		local riptide_eligible
+			= mcl_tridents.weather_admits_of_riptide_p (player)
+		client_state.riptide_eligible = riptide_eligible
+		mcl_serverplayer.send_trident_ctrl (player, {
+			riptide_eligible = riptide_eligible,
+		})
 	end
 end
 
@@ -300,7 +322,9 @@ function mcl_serverplayer.refresh_pose (player)
 end
 
 function mcl_serverplayer.handle_playerpose (player, state, poseid)
-	if poseid < POSE_STANDING or poseid > POSE_DEATH then
+	if poseid < POSE_STANDING
+		or poseid > POSE_SPIN_ATTACK
+		or (poseid > POSE_DEATH and state.proto <= 3) then
 		error ("Unknown pose " .. poseid)
 	end
 
@@ -379,7 +403,6 @@ local FOURTY_DEG = math.rad (40)
 local TWENTY_DEG = math.rad (20)
 local SEVENTY_FIVE_DEG = math.rad (75)
 local FIFTY_DEG = math.rad (50)
-local ONE_HUNDRED_AND_TEN_DEG = math.rad (110)
 
 local RIGHT_ARM_BLOCKING_OVERRIDE = {
 	rotation = {
@@ -501,6 +524,10 @@ function mcl_serverplayer.animate_localplayer (state, player)
 			rotation = { vec = rot, absolute = true, },
 		})
 		state.move_yaw = move_yaw
+	elseif pose == POSE_SPIN_ATTACK then
+		player:set_bone_override ("Head_Control", {})
+		player:set_bone_override ("Body_Control", BODY_DEFAULT_OVERRIDE)
+		-- TODO: spin.
 	elseif pose == POSE_FALL_FLYING then
 		local move_pitch = state.move_pitch
 		local move_yaw = norm_radians (state.move_yaw)
@@ -510,11 +537,9 @@ function mcl_serverplayer.animate_localplayer (state, player)
 		player:set_bone_override ("Head_Control", {
 			rotation = { vec = rot, absolute = true, },
 		})
-		local xrot = move_pitch + ONE_HUNDRED_AND_TEN_DEG
-		local yrot = -move_yaw + norm_radians (look_dir)
-		rot.x = xrot
-		rot.y = yrot
-		rot.z = math.pi
+		local xrot = -move_pitch + math.pi / 2
+		rot.x, rot.y, rot.z
+			= mcl_util.rotation_to_irrlicht (xrot, math.pi + yrot, 0)
 		player:set_bone_override ("Body_Control", {
 			rotation = { vec = rot, absolute = true, },
 		})
@@ -590,6 +615,18 @@ function mcl_serverplayer.globalstep (player, dtime)
 	mcl_serverplayer.validate_mounting (state, player, dtime)
 	if mcl_serverplayer.is_csm_at_least (player, 2) then
 		mcl_serverplayer.update_skybox (state, player, dtime)
+	end
+	if mcl_serverplayer.is_csm_at_least (player, 4) then
+		local riptide = mcl_tridents.weather_admits_of_riptide_p (player)
+		if riptide ~= state.riptide_eligible then
+			mcl_serverplayer.send_trident_ctrl (player, {
+				riptide_eligible = riptide,
+			})
+			state.riptide_eligible = riptide
+		end
+	end
+	if mcl_serverplayer.is_csm_at_least (player, 6) then
+		mcl_serverplayer.update_biome_data (state, player, dtime)
 	end
 end
 

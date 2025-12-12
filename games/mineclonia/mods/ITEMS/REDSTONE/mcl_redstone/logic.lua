@@ -222,10 +222,13 @@ local function propagate_wire(clear_nodes, fill_nodes, updates)
 		local power = entry.power
 		local power2 = power - 1
 
+		local nname = core.get_node(pos:subtract(vector.new(0, 1, 0))).name
+		local on_slab = mcl_redstone._slab_tab[nname] ~= nil
+
 		updates_[core.hash_node_position(pos)] = pos
 
 		for dir in iterate_wire_neighbours(wireflag_tab[core.get_node(pos).name]) do
-			if not dir.obstruct or not opaque_tab[get_node(pos:add(dir.obstruct)).name] then
+			if not (on_slab and dir.wire.y < 0) and (not dir.obstruct or not opaque_tab[get_node(pos:add(dir.obstruct)).name]) then
 				local pos2 = pos:add(dir.wire)
 				local node2 = get_node(pos2)
 				if wireflag_tab[node2.name] and get_power(node2) < power2 then

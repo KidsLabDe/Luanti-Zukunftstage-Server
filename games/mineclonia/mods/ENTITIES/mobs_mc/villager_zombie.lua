@@ -25,9 +25,7 @@ end
 local zombie_villager = table.merge (zombie, {
 	description = S("Zombie Villager"),
 	type = "monster",
-	spawn_class = "hostile",
 	_spawn_category = "monster",
-	spawn_in_group = 1,
 	hp_min = 20,
 	hp_max = 20,
 	xp_min = 5,
@@ -107,6 +105,10 @@ local zombie_villager = table.merge (zombie, {
 			})
 		end,
 	},
+	_head_armor_bone = "head.control",
+	_head_armor_position = vector.new (0, 1.5, 0),
+	_head_armor_visual_scale = 1 / 2.5,
+	_head_armor_rotation = vector.new (0, 180, 0),
 	wielditem_info = {
 		bone = "arm.right",
 		position = {
@@ -159,9 +161,20 @@ local zombie_villager = table.merge (zombie, {
 			y = 130,
 			z = 115,
 		},
+		trident_position = {
+			x = 0.0,
+			y = 5.0 / 2.75,
+			z = 0.0,
+		},
+		trident_rotation = {
+			x = 90,
+			y = 0,
+			z = 0,
+		},
 	},
 	_reinforcement_type = "mobs_mc:villager_zombie",
 	_unplaceable_by_default = true,
+	_convert_to = false,
 })
 
 ------------------------------------------------------------------------
@@ -559,18 +572,6 @@ mcl_mobs.register_mob ("mobs_mc:villager_zombie", zombie_villager)
 ------------------------------------------------------------------------
 -- Zombie Villager spawning.
 ------------------------------------------------------------------------
-
-mcl_mobs.spawn_setup ({
-	name = "mobs_mc:villager_zombie",
-	type_of_spawning = "ground",
-	dimension = "overworld",
-	aoc = 9,
-	biomes_except = {
-		"MushroomIslandShore",
-		"MushroomIsland",
-	},
-	chance = 50,
-})
 
 -- spawn eggs
 mcl_mobs.register_egg ("mobs_mc:villager_zombie", S("Zombie Villager"), "#563d33", "#799c66", 0)

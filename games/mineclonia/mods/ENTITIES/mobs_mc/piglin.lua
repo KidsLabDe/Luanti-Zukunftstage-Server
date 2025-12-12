@@ -21,7 +21,6 @@ local piglin_base = {
 	type = "monster",
 	passive = false,
 	mesh = "mobs_mc_piglin.b3d",
-	spawn_class = "hostile",
 	_spawn_category = "monster",
 	persist_in_peaceful = true,
 	collisionbox = {-0.3, 0, -0.3, 0.3, 1.95, 0.3},
@@ -56,6 +55,8 @@ local piglin_base = {
 			})
 		end,
 	},
+	_head_armor_bone = "Head",
+	_head_armor_position = vector.new (0, 4, 0),
 	can_wield_items = true,
 	wielditem_drop_probability = 0.085,
 	wielditem_info = {
@@ -98,9 +99,27 @@ local piglin_base = {
 		dance_start = 500, dance_end = 520, dance_speed = 25,
 	},
 	makes_footstep_sound = true,
-	frame_speed_multiplier = 0.6,
 	_inventory_size = 8,
 }
+
+------------------------------------------------------------------------
+-- Abstract Piglin visuals.
+------------------------------------------------------------------------
+
+function piglin_base:set_animation_speed (custom_speed)
+	local anim = self._current_animation
+	if anim then
+		local name = anim .. "_speed"
+		local normal_speed = self.animation[name]
+			or self.animation.speed_normal
+			or 25
+		local v = math.max (self:get_velocity (), 1.0)
+		local speed = custom_speed or normal_speed
+		local scaled_speed = math.sqrt (v)
+			* speed * self.frame_speed_multiplier
+		self.object:set_animation_frame_speed (scaled_speed)
+	end
+end
 
 ------------------------------------------------------------------------
 -- Piglin conversion.
@@ -187,8 +206,6 @@ local piglin = table.merge (piglin_base, table.merge (posing_humanoid, {
 	armor = {fleshy = 90},
 	damage = 5,
 	reach = 3,
-	spawn_in_group = 4,
-	spawn_in_group_min = 2,
 	_child_mesh = "mobs_mc_baby_piglin.b3d",
 	textures = {
 		{
@@ -234,16 +251,6 @@ local piglin = table.merge (piglin_base, table.merge (posing_humanoid, {
 ------------------------------------------------------------------------
 -- Piglin visuals.
 ------------------------------------------------------------------------
-
-function piglin_base:wielditem_transform (info, stack)
-	local rot, pos, size
-		= mob_class.wielditem_transform (self, info, stack)
-	if self.child then
-		size.x = size.x * 0.5
-		size.y = size.y * 0.5
-	end
-	return rot, pos, size
-end
 
 function piglin:who_are_you_looking_at ()
 	if self._interacting_with then
@@ -512,7 +519,7 @@ function mobs_mc.enrage_piglins (player, need_line_of_sight)
 	end
 end
 
-local function player_ok(player)
+local function player_ok (player)
 	return player and player.is_player and player:is_player ()
 		and not player.is_fake_player
 end
@@ -945,6 +952,11 @@ local function piglin_seek_treasure (self, self_pos, dtime)
 		self._seeking_treasure
 			= self._seeking_treasure + dtime
 		if self._seeking_treasure >= 10
+		-- Abort if no path could be found to the treasure in
+		-- question, to guarantee slightly faster repathing if
+		-- the treasure is first detected while still airborne
+		-- after being dropped by a player.
+			or self:navigation_finished ()
 			or not is_valid (self._treasure) then
 			self._seeking_treasure = nil
 			return false
@@ -988,7 +1000,8 @@ end
 
 function piglin:enrage (source, broadcast)
 	local self_pos = self.object:get_pos ()
-	if (not source:is_player () or self:attack_player_allowed (source))
+	if source:is_valid ()
+		and (not source:is_player () or self:attack_player_allowed (source))
 		and self:default_rangecheck (self_pos, source) then
 		self._piglin_provoker = source
 		self._piglin_provoker_timeout = 30
@@ -1141,12 +1154,6 @@ function piglin:should_continue_to_attack (object)
 		return false
 	end
 	local self_pos = self.object:get_pos ()
-	local zombie = self._nearest_zombified
-	local zombie_pos = zombie and zombie:get_pos () or nil
-	if zombie_pos and vector.distance (zombie_pos, self_pos) < 6 then
-		return false
-	end
-
 	local provoker = self._piglin_provoker
 	if provoker and is_valid (provoker)
 		and self:default_rangecheck (self_pos, provoker) then
@@ -1363,11 +1370,15 @@ function piglin:should_cancel_retreat (target)
 	return false
 end
 
-local function piglin_check_avoid (self, self_pos, dtime)
+local function piglin_check_avoid (self, self_pos, _)
 	if self._nearest_zombified then
-		self._retreat_asap = RETREAT_ATTEMPTS
-		self._retreat_from = self._nearest_zombified
-		self._retreat_time = pr:next (5, 7)
+		local obj = self._nearest_zombified
+		local pos = obj:get_pos ()
+		if pos and vector.distance (pos, self_pos) < 6.0 then
+			self._retreat_asap = RETREAT_ATTEMPTS
+			self._retreat_from = obj
+			self._retreat_time = pr:next (5, 7)
+		end
 	elseif self.child and self._nearest_witherlike then
 		self._retreat_asap = RETREAT_ATTEMPTS
 		self._retreat_from = self._nearest_witherlike
@@ -1425,12 +1436,18 @@ function piglin:beat_a_retreat (hitter)
 	self._retreat_from = hitter
 	self._retreat_time = math.random (5, 20)
 	self._hunting_cooldown = pr:next (30, 120)
-	for _, piglin in pairs (self._furthest_visible_adults) do
+	for _, piglin in ipairs (self._furthest_visible_adults) do
 		if piglin ~= self.object then
 			local entity = piglin:get_luaentity ()
 			if entity then
 				entity._retreat_asap = RETREAT_ATTEMPTS
 				entity._retreat_time = math.random (5, 20)
+				if entity.attack and entity.attack:is_valid () then
+					entity._retreat_from = entity.attack
+				else
+					local self_pos = piglin:get_pos ()
+					piglin_check_avoid (entity, self_pos)
+				end
 				entity._hunting_cooldown = pr:next (30, 120)
 			end
 		end
@@ -1482,18 +1499,6 @@ piglin.ai_functions = {
 ------------------------------------------------------------------------
 -- Piglin spawning.
 ------------------------------------------------------------------------
-
-function piglin:check_light (_, _, artificial_light, _)
-	if artificial_light > 11 then
-		return false, "Too bright"
-	end
-	return true, ""
-end
-
-function piglin.can_spawn (pos)
-	local block = core.get_node (vector.offset (pos, 0, -1, 0))
-	return block.name ~= "mcl_nether:nether_wart_block"
-end
 
 mcl_mobs.register_mob ("mobs_mc:piglin", piglin)
 
@@ -1672,7 +1677,6 @@ local zombie = mobs_mc.zombie
 
 local zombified_piglin = table.merge (zombie, {
 	description = S("Zombified Piglin"),
-	spawn_class = "hostile",
 	_spawn_category = "monster",
 	prevents_sleep_when_hostile = true,
 	_neutral_to_players = true,
@@ -1756,12 +1760,15 @@ local zombified_piglin = table.merge (zombie, {
 	_armor_transforms = piglin._armor_transforms,
 	wielditem_info = piglin.wielditem_info,
 	_offhand_wielditem_info = piglin._offhand_wielditem_info,
+	_head_armor_bone = piglin._head_armor_bone,
+	_head_armor_position = piglin._head_armor_position,
 	_reinforcement_type = "mobs_mc:zombified_piglin",
 	_alert_interval = 0,
 	ignited_by_sunlight = false,
 	group_attack = {
 		"mobs_mc:zombified_piglin",
 	},
+	_convert_to = false,
 })
 
 ------------------------------------------------------------------------
@@ -1893,36 +1900,6 @@ mcl_mobs.register_mob ("mobs_mc:zombified_piglin", zombified_piglin)
 -- Piglin & Zombie Pigman spawning.
 ------------------------------------------------------------------------
 
-mcl_mobs.spawn_setup({
-	name = "mobs_mc:piglin",
-	type_of_spawning = "ground",
-	dimension = "nether",
-	min_light = 0,
-	max_light = core.LIGHT_MAX+1,
-	min_height = mcl_vars.mg_lava_nether_max,
-	aoc = 3,
-	biomes = {
-		"Nether",
-		"CrimsonForest"
-	},
-	chance = 300,
-})
-
-mcl_mobs.spawn_setup({
-	name = "mobs_mc:zombified_piglin",
-	type_of_spawning = "lava",
-	dimension = "nether",
-	min_light = 0,
-	max_light = core.LIGHT_MAX+1,
-	min_height = mcl_vars.mg_lava_nether_max,
-	aoc = 4,
-	biomes = {
-		"Nether",
-		"CrimsonForest"
-	},
-	chance = 1000,
-})
-
 mcl_mobs.register_egg("mobs_mc:piglin", S("Piglin"), "#7b4a17","#d5c381", 0)
 mcl_mobs.register_egg("mobs_mc:piglin_brute", S("Piglin Brute"), "#562b0c","#ddc89d", 0)
 mcl_mobs.register_egg("mobs_mc:zombified_piglin", S("Zombie Piglin"), "#ea9393", "#4c7129", 0)
@@ -1930,6 +1907,8 @@ mcl_mobs.register_egg("mobs_mc:zombified_piglin", S("Zombie Piglin"), "#ea9393",
 ------------------------------------------------------------------------
 -- Modern Piglin & Zombie Pigman spawning.
 ------------------------------------------------------------------------
+
+local monster_spawner = mobs_mc.monster_spawner
 
 local piglin_spawner = table.merge (mobs_mc.monster_spawner, {
 	name = "mobs_mc:piglin",
@@ -1943,7 +1922,25 @@ local piglin_spawner = table.merge (mobs_mc.monster_spawner, {
 	max_artificial_light = 7,
 })
 
-local piglin_spawner_crimson_forest = table.merge (mobs_mc.monster_spawner, {
+function piglin_spawner:test_spawn_position (spawn_pos, node_pos, sdata, node_cache,
+					     spawn_flag)
+	if monster_spawner.test_spawn_position (self, spawn_pos,
+						node_pos, sdata,
+						node_cache,
+						spawn_flag) then
+		local node = self:get_node (node_cache, -1, node_pos)
+		return node.name ~= "mcl_nether:nether_wart_block"
+	end
+	return false
+end
+
+function piglin_spawner:describe_criteria (tbl, omit_group_details)
+	monster_spawner.describe_criteria (self, tbl, omit_group_details)
+	table.insert (tbl, "Piglins will not spawn on Nether Wart blocks.")
+	table.insert (tbl, "10% of Piglins spawn as their baby variants.")
+end
+
+local piglin_spawner_crimson_forest = table.merge (piglin_spawner, {
 	name = "mobs_mc:piglin",
 	spawn_category = "monster",
 	pack_min = 3,

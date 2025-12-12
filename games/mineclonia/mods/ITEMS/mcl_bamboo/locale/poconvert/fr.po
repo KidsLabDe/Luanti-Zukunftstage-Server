@@ -40,6 +40,9 @@ msgstr "Barrière en bambou"
 msgid "Bamboo Fence Gate"
 msgstr "Portillon en bambou"
 
+msgid "Bamboo Hanging Sign"
+msgstr "Pancarte suspendue en bambou"
+
 msgid "Bamboo Planks"
 msgstr "Planches de bambou"
 
