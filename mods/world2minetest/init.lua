@@ -33,7 +33,7 @@ local hedge_leaves = minetest.get_content_id("mcl_trees:leaves_oak")
 local tall_grass = minetest.get_content_id("mcl_flowers:tallgrass")
 local wooden_fence = minetest.get_content_id("mcl_fences:oak_fence")
 local wooden_gate = minetest.get_content_id("mcl_fences:oak_fence_gate")
-local bench_stair = minetest.get_content_id("mcl_stairs:stair_oak")
+local bench = minetest.get_content_id("mcl_stairs:stair_oak")
 local cobble_wall = minetest.get_content_id("mcl_walls:cobble")
 local sandstone_wall = minetest.get_content_id("mcl_walls:sandstone")
 
@@ -93,7 +93,7 @@ local decoration_barrier_hedge = hedge_leaves
 local decoration_amenity_post_box = post_box_block
 local decoration_amenity_recycling = recycling_block
 local decoration_amenity_vending_machine = vending_machine_block
-local decoration_amenity_bench = bench_stair
+local decoration_amenity_bench = bench
 local decoration_amenity_telephone = telephone_block
 
 local SURFACE_IDS = {
