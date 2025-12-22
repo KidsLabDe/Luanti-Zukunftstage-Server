@@ -1,5 +1,7 @@
 local S = core.get_translator(core.get_current_modname())
 
+local kidslab_no_mobs = core.settings:get_bool("kidslab_no_mobs", true)
+
 mcl_mobspawners = {}
 
 local default_mob = "mobs_mc:pig"
@@ -115,7 +117,7 @@ local floor = math.floor
 -- Spawn mobs around pos
 -- NOTE: The node is timer-based, rather than ABM-based.
 local function spawn_mobs(pos)
-
+	if (kidslab_no_mobs) then return end
 	-- get meta
 	local meta = core.get_meta(pos)
 

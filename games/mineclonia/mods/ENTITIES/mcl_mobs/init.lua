@@ -1,5 +1,7 @@
 mcl_mobs = {}
 
+local kidslab_no_mobs = core.settings:get_bool("kidslab_no_mobs", true)
+
 ------------------------------------------------------------------------
 -- Temporary performance hacks.
 ------------------------------------------------------------------------
@@ -668,6 +670,8 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 		_doc_items_usagehelp = S("Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns."),
 
 		on_place = function(itemstack, placer, pointed_thing)
+
+			if (kidslab_no_mobs) then return end
 
 			local pos = pointed_thing.above
 

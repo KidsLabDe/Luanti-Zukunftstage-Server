@@ -3,33 +3,38 @@ local mod_mcl_core = core.get_modpath("mcl_core")
 local mod_mclx_core = core.get_modpath("mclx_core")
 local has_awards = core.get_modpath("awards")
 
+local kidslab_no_lava = core.settings:get_bool("kidslab_no_lava", true)
+
 if mod_mcl_core then
 	-- Lava bucket
-	mcl_buckets.register_liquid({
-		id = "lava",
-		source_place = function(pos)
-			local dim = mcl_worlds.pos_to_dimension(pos)
-			if dim == "nether" then
-				return "mcl_nether:nether_lava_source"
-			else
-				return "mcl_core:lava_source"
-			end
-		end,
-		source_take = {"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
-		on_take = function(user)
-			if has_awards and user and user:is_player() then
-				awards.unlock(user:get_player_name(), "mcl:hotStuff")
-			end
-		end,
-		bucketname = "mcl_buckets:bucket_lava",
-		inventory_image = "bucket_lava.png",
-		name = S("Lava Bucket"),
-		longdesc = S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
-		usagehelp = S("Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!"),
-		tt_help = S("Places a lava source"),
-		_mcl_burntime = 1000,
-		_mcl_fuel_replacements = {{"mcl_buckets:bucket_lava", "mcl_buckets:bucket_empty"}}
-	})
+
+	if not kidslab_no_lava then
+		mcl_buckets.register_liquid({
+			id = "lava",
+			source_place = function(pos)
+				local dim = mcl_worlds.pos_to_dimension(pos)
+				if dim == "nether" then
+					return "mcl_nether:nether_lava_source"
+				else
+					return "mcl_core:lava_source"
+				end
+			end,
+			source_take = {"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
+			on_take = function(user)
+				if has_awards and user and user:is_player() then
+					awards.unlock(user:get_player_name(), "mcl:hotStuff")
+				end
+			end,
+			bucketname = "mcl_buckets:bucket_lava",
+			inventory_image = "bucket_lava.png",
+			name = S("Lava Bucket"),
+			longdesc = S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
+			usagehelp = S("Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!"),
+			tt_help = S("Places a lava source"),
+			_mcl_burntime = 1000,
+			_mcl_fuel_replacements = {{"mcl_buckets:bucket_lava", "mcl_buckets:bucket_empty"}}
+		})
+	end
 
 	-- Water bucket
 	mcl_buckets.register_liquid({

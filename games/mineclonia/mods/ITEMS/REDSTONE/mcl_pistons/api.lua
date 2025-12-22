@@ -1,6 +1,7 @@
 local GRAVITY = tonumber(core.settings:get("movement_gravity"))
 
 local inv_nodes_movable = core.settings:get_bool("mcl_inv_nodes_movable", true)
+local kidslab_no_pistons = core.settings:get_bool("kidslab_no_pistons", true)
 
 mcl_pistons.registered_on_move = {}
 
@@ -55,6 +56,7 @@ function mcl_pistons.push(pos, movedir, maximum, player_name, piston_pos)
 		local def = core.registered_nodes[nn.name]
 		if core.get_item_group(nn.name, "unmovable_by_piston") == 1
 			or (not inv_nodes_movable and core.get_item_group(nn.name, "container") ~= 0)
+			or (kidslab_no_pistons)
 			or not def
 			or vector.equals(piston_pos, np) then
 			return
