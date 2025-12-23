@@ -131,7 +131,6 @@ load_mod_boards = false
 load_mod_equippable_accessories = false
 load_mod_homedecor_misc = true
 load_mod_homedecor_foyer = true
-load_mod_unified_inventory = true
 load_mod_formspec_ast = false
 load_mod_unified_inventory_themes = false
 load_mod_travelnet = true
