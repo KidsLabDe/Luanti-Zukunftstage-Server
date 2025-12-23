@@ -10,6 +10,7 @@ players.sqlite
 auth.sqlite
 env_meta.txt
 logs/*
+!logs/.gitkeep
 
 # Minetest worlds
 worlds/01/map.db/
