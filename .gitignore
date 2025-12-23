@@ -10,3 +10,6 @@ players.sqlite
 auth.sqlite
 env_meta.txt
 logs/*
+
+# Minetest worlds
+worlds/01/map.db/
