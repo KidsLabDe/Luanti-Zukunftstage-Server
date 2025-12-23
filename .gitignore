@@ -14,3 +14,6 @@ logs/*
 
 # Minetest worlds
 worlds/01/map.db/
+
+# Ignore generated worlds
+worlds/02-koeln/
