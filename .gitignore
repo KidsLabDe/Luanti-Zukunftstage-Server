@@ -17,3 +17,7 @@ worlds/01/map.db/
 
 # Ignore generated worlds
 worlds/02-koeln/map.de/
+
+# Ignore large generated JSON files in world directories
+worlds/*/osm.json
+worlds/*/features_osm.json
