@@ -20,7 +20,7 @@ echo "Bitte geben Sie die zweite Koordinate ein (z.B. 11.0,51.0):"
 read koordinate2
 
 # Python-Skript mit Variablen aufrufen
-python3 w2mt.py -p "$name" -a "$koordinate1,$koordinate2" -g "antigrief" -b "leveldb"
+python3 w2mt.py -p "$name" -a "$koordinate1,$koordinate2" -g "mineclonia" -b "leveldb"
 
 echo "Das Python-Skript wurde erfolgreich ausgeführt."
 

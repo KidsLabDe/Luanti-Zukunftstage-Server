@@ -16,4 +16,4 @@ logs/*
 worlds/01/map.db/
 
 # Ignore generated worlds
-worlds/02-koeln/
+worlds/02-koeln/map.de/
