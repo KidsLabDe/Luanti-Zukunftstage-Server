@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export MINETEST_GAME_PATH=/opt/zfn-server-docker
+export MINETEST_GAME_PATH=../
 
 # Variablen deklarieren
 name=""
