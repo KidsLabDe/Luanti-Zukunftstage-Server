@@ -43,6 +43,8 @@ def node_ids_to_node_positions(node_ids):
     x_coords = []
     y_coords = []
     for node_id in node_ids:
+        if node_id not in node_id_to_blockpos:
+            continue
         x, y = node_id_to_blockpos[node_id]
         x_coords.append(x)
         y_coords.append(y)
