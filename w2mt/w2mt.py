@@ -37,7 +37,6 @@ world_name = {}
 server_announce = false
 load_mod_worldedit = true
 load_mod_steampunk_blimp = false
-load_mod_we_undo = true
 load_mod_schemedit = false
 load_mod_playerlist = false
 load_mod_tt = false
@@ -62,7 +61,7 @@ load_mod_moretrains_steam = false
 load_mod_mobs_birds = false
 load_mod_morelights_extras = false
 load_mod_worldedit_hud_helper = false
-load_mod_beautiflowers = true
+load_mod_beautiflowers = false
 load_mod_angledwalls = false
 load_mod_morelights_modern = false
 load_mod_advtrains = false
@@ -70,11 +69,10 @@ load_mod_rocks = false
 load_mod_advtrains_signals_ks = false
 load_mod_worldedit_commands = true
 load_mod_facade = false
-load_mod_abriglass = false
 load_mod_molehills = false
 load_mod_mobs_bat = false
 load_mod_advtrains_train_track = false
-load_mod_worldeditadditions_core = true
+load_mod_worldeditadditions_core = false
 load_mod_ambience = false
 load_mod_3d_armor_ui = false
 load_mod_bushes = false
@@ -103,18 +101,15 @@ load_mod_advtrains_luaautomation = false
 load_mod_serialize_lib = false
 load_mod_mobs = false
 load_mod_tpad = false
-load_mod_signs_lib = false
 load_mod_vbots = false
 load_mod_unifieddyes = true
-load_mod_steles = mods/display_modpack/steles
+load_mod_steles = false
 load_mod_spawnpoint = false
-load_mod_skinsdb = true
-load_mod_signs = mods/display_modpack/signs
-load_mod_ontime_clocks = mods/display_modpack/ontime_clocks
+load_mod_skinsdb = false
+load_mod_signs = false
+load_mod_ontime_clocks = false
 load_mod_poi = false
 load_mod_matrix_chat = false
-load_mod_lavalamp = false
-load_mod_itemframes = false
 load_mod_homedecor_windows_and_treatments = true
 load_mod_homedecor_trash_cans = true
 load_mod_homedecor_roofing = true
@@ -132,24 +127,23 @@ load_mod_homedecor_electrical = true
 load_mod_homedecor_doors_and_gates = true
 load_mod_homedecor_furniture_medieval = true
 load_mod_homedecor_common = true
-load_mod_signs_road = mods/display_modpack/signs_road
+load_mod_signs_road = false
 load_mod_homedecor_cobweb = true
 load_mod_homedecor_climate_control = true
 load_mod_homedecor_books = true
 load_mod_homedecor_bedroom = true
 load_mod_homedecor_bathroom = true
 load_mod_homedecor_3d_extras = true
-load_mod_fake_fire = false
 load_mod_building_blocks = true
-load_mod_font_metro = mods/display_modpack/font_metro
+load_mod_font_metro = false
 load_mod_maptools = false
-load_mod_font_api = mods/display_modpack/font_api
+load_mod_font_api = false
 load_mod_dmobs-master = false
-load_mod_display_api = mods/display_modpack/display_api
-load_mod_areas = false
+load_mod_display_api = false
+load_mod_areas = true
 load_mod_lwscratch = false
 load_mod_opening_hours = false
-load_mod_signs_api = mods/display_modpack/signs_api
+load_mod_signs_api = false
 load_mod_homedecor_tables = true
 load_mod_bulletin_boards = false
 load_mod_homedecor_seating = true
@@ -158,48 +152,23 @@ load_mod_basic_materials = true
 load_mod_homedecor_clocks = true
 load_mod_homedecor_exterior = true
 load_mod_minetestnutzungsbedingungen = false
-load_mod_homedecor_wardrobe = true
+load_mod_homedecor_wardrobe = false
 load_mod_plasmascreen = false
 load_mod_protector = false
-load_mod_boards = mods/display_modpack/boards
+load_mod_boards = false
 load_mod_equippable_accessories = false
 load_mod_homedecor_misc = true
 load_mod_homedecor_foyer = true
 load_mod_unified_inventory = true
-load_mod_edutest_chatcommands = true
-load_mod_edutest = true
 load_mod_formspec_ast = false
 load_mod_unified_inventory_themes = false
 load_mod_travelnet = true
 load_mod_mapserver_mod = false
 load_mod_world2minetest = true
-load_mod_autoinvcat = false
 load_mod_pixelart = false
-load_mod_colordcement = true
+load_mod_colordcement = false
 load_mod_unifieddyes = true
-load_mod_colored_concrete = true
-load_mod_modern = false
-load_mod_decor_api = false
-load_mod_craft_ingredients = false
-load_mod_homedecor_plasmascreen = false
-load_mod_homedecor_inbox = false
-load_mod_letters = false
-load_mod_digilines = false
-load_mod_concreted = false
-load_mod_moreores = false
-load_mod_digiterms = false
-load_mod_world2minetest = true
-load_mod_worldedit_shortcommands = false
-load_mod_steles = mods/display_modpack/steles
-load_mod_signs_road = mods/display_modpack/signs_road
-load_mod_signs = mods/display_modpack/signs
-load_mod_ontime_clocks = mods/display_modpack/ontime_clocks
-load_mod_font_api = mods/display_modpack/font_api
-load_mod_signs_api = mods/display_modpack/signs_api
-load_mod_font_metro = mods/display_modpack/font_metro
-load_mod_display_api = mods/display_modpack/display_api
-load_mod_boards = mods/display_modpack/boards
-
+load_mod_colored_concrete = false
 """
 
 
@@ -257,9 +226,9 @@ def prepare_query_file():
 				sys.exit(f"While trying to open the query file '{query_path}' this exception was thrown: {exc}")
 
 		import re
-		match = re.search("\s*\[\s*bbox:\s*(\d*\.?\d*\s*,\s*\d*\.?\d*\s*,\s*\d*\.?\d*\s*,\s*\d*\.?\d*)\s*\]\s*", query_string)
+		match = re.search(r"\s*\[\s*bbox:\s*(\d*\.?\d*\s*,\s*\d*\.?\d*\s*,\s*\d*\.?\d*\s*,\s*\d*\.?\d*)\s*\]\s*", query_string)
 		args.area = match.group(1)
-	
+
 	if args.area:
 		# Extract and potentially correct the corners of the area as coordinates:
 		stripped = args.area.strip().replace(" ", "").replace("'", "").replace("\"", "")
@@ -319,29 +288,34 @@ def extract_features_from_osm_json():
 		log("... error!")
 	else:
 		log("... done")
-
 def generate_map_from_features(minX, minY, maxX, maxY):
-	map_output_dir = os.path.join(project_path, "world2minetest")
-	if not os.path.isdir(map_output_dir):
-		os.makedirs(map_output_dir)
-	if os.path.isdir(map_output_dir):
-		log(f"Project w2mt mod dir '{map_output_dir}‘ created")
-	else:
-		log(f"Unable to create project w2mt mod dir '{map_output_dir}‘! Check rights!")
-		sys.exit("Unable to create missing project w2mt mod dir.")
-	map_output_path = os.path.join(map_output_dir, "map.dat")
-	cmd = f'python3 generate_map.py --features {feature_path} --output {map_output_path}'
-	if not args.unrestricted:
-		cmd += f' --minx {minX} --maxx {maxX} --miny {minY} --maxy {maxY}'
-	if args.minimap:
-		cmd += ' --minimap'
-	cmd += f' >> {log_file}'
-	log(f"Generating map using this command: '{cmd}' ...")
-	error = os.system(cmd)
-	if error:
-		log("... error!")
-	else:
-		log("... done")
+    map_output_dir = os.path.join(project_path, "world2minetest")
+    if not os.path.isdir(map_output_dir):
+        os.makedirs(map_output_dir)
+    if os.path.isdir(map_output_dir):
+        log(f"Project w2mt mod dir '{map_output_dir}' created")
+    else:
+        log(f"Unable to create project w2mt mod dir '{map_output_dir}'! Check rights!")
+        sys.exit("Unable to create missing project w2mt mod dir.")
+
+    map_output_path = os.path.join(map_output_dir, "map.dat")
+    heightmap_path = os.path.join(project_path, "heightmap.dat")  # new compressed heightmap file
+
+    # construct command with correct spacing
+    cmd = f'python3 generate_map.py --features {feature_path} --output {map_output_path}'# --resolution 50 --heightmap {heightmap_path}'
+
+    if not args.unrestricted:
+        cmd += f' --minx {minX} --maxx {maxX} --miny {minY} --maxy {maxY}'
+    if args.minimap:
+        cmd += ' --minimap'
+
+    cmd += f' >> {log_file}'
+    log(f"Generating map using this command: '{cmd}' ...")
+    error = os.system(cmd)
+    if error:
+        log("... error!")
+    else:
+        log("... done")
 
 
 def create_mod():
@@ -411,7 +385,7 @@ def start_world():
 
 
 
-		
+
 
 ######### SCRIPT EXECUTION STARTS HERE: ##############
 
