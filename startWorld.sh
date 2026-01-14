@@ -10,6 +10,9 @@
 
 set -e
 
+# Docker Image - von GitHub Container Registry
+IMAGE="ghcr.io/kidslabde/luanti-zukunftstage-server:latest"
+
 WORLD_FOLDER="${1}"
 PORT="${2:-30000}"
 
@@ -77,7 +80,7 @@ docker run -d \
     -v "$(pwd)/logs:/config/.minetest/logs" \
     -p "${PORT}:${PORT}/udp" \
     --restart unless-stopped \
-    zukunftstage-server:latest
+    "$IMAGE"
 
 echo ""
 echo "Server gestartet!"

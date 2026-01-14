@@ -10,7 +10,7 @@
 
 set -e
 
-IMAGE_NAME="zukunftstage-server"
+IMAGE_NAME="ghcr.io/kidslabde/luanti-zukunftstage-server"
 IMAGE_TAG="${1:-latest}"
 
 echo "Baue Docker Image: ${IMAGE_NAME}:${IMAGE_TAG}"
