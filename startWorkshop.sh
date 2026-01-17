@@ -10,4 +10,6 @@ rm mods/world2minetest/map.dat
 cp worlds/$WORLDNAME*/world2minetest/map.dat mods/world2minetest/
 #docker-compose -f workshop-old.yaml sto
 #rm debug.txt
+echo "Pulling latest container image..."
+docker compose -f workshop.yaml pull
 docker compose -f workshop.yaml up

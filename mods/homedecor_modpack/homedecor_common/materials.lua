@@ -211,3 +211,17 @@ elseif minetest.get_modpath("hades_core") then
         homedecor.materials["silver_ingot"] = "hades_extraores:silver_ingot"
     end
 end
+
+-- Register dye aliases for Mineclonia compatibility
+-- This allows mods using dye:black etc. to work with mcl_dye:black etc.
+if minetest.get_modpath("mcl_dye") or minetest.get_modpath("mcl_dyes") then
+    local dye_mod = minetest.get_modpath("mcl_dyes") and "mcl_dyes" or "mcl_dye"
+    local colors = {
+        "black", "white", "grey", "dark_grey", "red", "green", "blue",
+        "yellow", "orange", "pink", "violet", "brown", "dark_green",
+        "cyan", "magenta", "light_grey", "light_blue"
+    }
+    for _, color in ipairs(colors) do
+        minetest.register_alias_force("dye:" .. color, dye_mod .. ":" .. color)
+    end
+end
