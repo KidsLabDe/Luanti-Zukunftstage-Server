@@ -216,3 +216,28 @@ for color, recipes in pairs(color_mix_recipes) do
 		})
 	end
 end
+
+-- Register aliases for Minetest Game dye:* naming convention
+-- This allows mods like homedecor, multidecor, unifieddyes to work with Mineclonia
+local mtg_to_mcl_dye = {
+	["white"] = "white",
+	["grey"] = "silver",         -- MTG grey = light grey = mcl silver
+	["dark_grey"] = "grey",      -- MTG dark_grey = mcl grey
+	["light_grey"] = "silver",   -- MTG light_grey = mcl silver
+	["black"] = "black",
+	["red"] = "red",
+	["green"] = "lime",          -- MTG green (bright) = mcl lime
+	["dark_green"] = "green",    -- MTG dark_green = mcl green
+	["blue"] = "blue",
+	["cyan"] = "cyan",
+	["yellow"] = "yellow",
+	["orange"] = "orange",
+	["brown"] = "brown",
+	["pink"] = "pink",
+	["magenta"] = "magenta",
+	["violet"] = "purple",       -- MTG violet = mcl purple
+}
+
+for mtg_color, mcl_color in pairs(mtg_to_mcl_dye) do
+	core.register_alias_force("dye:" .. mtg_color, "mcl_dyes:" .. mcl_color)
+end
