@@ -64,19 +64,19 @@ if minetest.get_modpath("mcl_core") then
         torch = "mcl_torches:torch",
         diamond = "mcl_core:diamond",
         clay_lump = "default:clay_lump",
-        water_bucket = "mcl_buckets:bucket:bucket_water",
+        water_bucket = "mcl_buckets:bucket_water",
         empty_bucket = "mcl_buckets:bucket_empty",
-        dye_dark_grey = "mcl_dyes:dark_grey",
+        dye_dark_grey = "mcl_dyes:grey",      -- mcl grey = dark grey
         dye_black = "mcl_dyes:black",
         dye_white = "mcl_dyes:white",
-        dye_green = "mcl_dyes:green",
+        dye_green = "mcl_dyes:lime",          -- mcl lime = bright green
         dye_red = "mcl_dyes:red",
         dye_yellow = "mcl_dyes:yellow",
         dye_brown = "mcl_dyes:brown",
         dye_blue = "mcl_dyes:blue",
-        dye_violet = "mcl_dyes:violet",
-        dye_grey = "mcl_dyes:grey",
-        dye_dark_green = "mcl_dyes:dark_green",
+        dye_violet = "mcl_dyes:purple",       -- mcl purple = violet
+        dye_grey = "mcl_dyes:silver",         -- mcl silver = light grey
+        dye_dark_green = "mcl_dyes:green",    -- mcl green = dark green
         dye_orange = "mcl_dyes:orange",
         dye_pink = "mcl_dyes:pink",
         silicon = "mcl_core:iron_ingot",
@@ -212,16 +212,5 @@ elseif minetest.get_modpath("hades_core") then
     end
 end
 
--- Register dye aliases for Mineclonia compatibility
--- This allows mods using dye:black etc. to work with mcl_dye:black etc.
-if minetest.get_modpath("mcl_dye") or minetest.get_modpath("mcl_dyes") then
-    local dye_mod = minetest.get_modpath("mcl_dyes") and "mcl_dyes" or "mcl_dye"
-    local colors = {
-        "black", "white", "grey", "dark_grey", "red", "green", "blue",
-        "yellow", "orange", "pink", "violet", "brown", "dark_green",
-        "cyan", "magenta", "light_grey", "light_blue"
-    }
-    for _, color in ipairs(colors) do
-        minetest.register_alias_force("dye:" .. color, dye_mod .. ":" .. color)
-    end
-end
+-- Dye aliases are now registered in games/mineclonia/mods/ITEMS/mcl_dyes/init.lua
+-- to ensure correct load order before mcl_craftguide

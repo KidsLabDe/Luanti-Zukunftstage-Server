@@ -9,33 +9,7 @@ for k, v in pairs(mcl_dyes.colors) do
 	mcl_dye.mcl2dyes_translate["mcl_dye:"..v.mcl2] = "mcl_dyes:"..k
 end
 
--- Register aliases for mods using Minetest Game's dye:* naming convention
--- This allows mods like homedecor, multidecor, etc. to work with Mineclonia
-local dye_color_map = {
-	black = "black",
-	white = "white",
-	grey = "grey",
-	dark_grey = "dark_grey",
-	light_grey = "light_grey",
-	red = "red",
-	green = "green",
-	dark_green = "dark_green",
-	blue = "blue",
-	yellow = "yellow",
-	orange = "orange",
-	pink = "pink",
-	violet = "violet",
-	brown = "brown",
-	cyan = "cyan",
-	magenta = "magenta",
-}
-
-for mtg_color, mcl_color in pairs(dye_color_map) do
-	-- Register alias so dye:black resolves to mcl_dyes:black
-	minetest.register_alias_force("dye:" .. mtg_color, "mcl_dyes:" .. mcl_color)
-	-- Also add to translation table for recipe rewriting
-	mcl_dye.mcl2dyes_translate["dye:" .. mtg_color] = "mcl_dyes:" .. mcl_color
-end
+-- Dye aliases moved to mcl_dyes/init.lua for correct load order
 
 -- Override of core.register_craft rewrites crafing recipes that use mcl2 item names to use the mcla eqivalents.
 -- It's necessary to prevent turning old lapis, bone meal, ink sacs and cocoanuts into dye as

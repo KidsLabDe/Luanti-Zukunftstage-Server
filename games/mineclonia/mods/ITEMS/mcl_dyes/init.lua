@@ -241,3 +241,9 @@ local mtg_to_mcl_dye = {
 for mtg_color, mcl_color in pairs(mtg_to_mcl_dye) do
 	core.register_alias_force("dye:" .. mtg_color, "mcl_dyes:" .. mcl_color)
 end
+
+-- Also register aliases for incorrect mcl_dyes:* names that some mods might use
+core.register_alias_force("mcl_dyes:light_grey", "mcl_dyes:silver")
+core.register_alias_force("mcl_dyes:dark_grey", "mcl_dyes:grey")
+core.register_alias_force("mcl_dyes:dark_green", "mcl_dyes:green")
+core.register_alias_force("mcl_dyes:violet", "mcl_dyes:purple")
