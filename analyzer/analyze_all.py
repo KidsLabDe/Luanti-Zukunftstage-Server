@@ -9,7 +9,6 @@ def main():
     parser.add_argument("logfile", help="Path to the Luanti log file")
     args = parser.parse_args()
 
-    # Regex captures: Player, Action, Block Type, X, Y, Z
     pattern = re.compile(r"ACTION\[Server\]: (\w+) (digs|places node) (.*) at \(([-0-9]+),([-0-9]+),([-0-9]+)\)")
     
     data = []
@@ -26,44 +25,45 @@ def main():
                     'player': p_name, 
                     'action': action, 
                     'block': block,
-                    'x': int(x), 
-                    'y': int(y), 
-                    'z': int(z)
+                    'x': int(x), 'y': int(y), 'z': int(z)
                 })
 
     if not data:
-        print("No coordinate data found in the log file.")
+        print("No coordinate data found.")
         return
 
     df = pd.DataFrame(data)
 
-    # --- 3D SCATTER MAP ---
-    # We set 'color' to 'player' so everyone gets their own color automatically
+    # --- 3D SCATTER MAP (1:1:1 Ratio) ---
     fig_3d = px.scatter_3d(
         df, x='x', y='z', z='y',
         color='player',
-        symbol='action',  # Different shapes for digging vs placing
+        symbol='action',
         hover_name='player',
-        hover_data={'action': True, 'block': True, 'x': True, 'y': True, 'z': True},
-        title="Server Activity Map: Player Comparison",
+        hover_data={'action': True, 'block': True},
+        title="3D Server Activity (1:1:1 Scale)",
         labels={'z': 'Height (Y)', 'y': 'Z-Plane'}
     )
-
-    # Adjusting marker size for better visibility
-    fig_3d.update_traces(marker=dict(size=4, line=dict(width=0)))
     
-    # Improve the 3D layout ratio
-    fig_3d.update_layout(scene=dict(aspectmode='data'))
+    # aspectmode='data' ensures 1 unit on X = 1 unit on Y = 1 unit on Z
+    fig_3d.update_layout(
+        scene=dict(aspectmode='data'),
+        margin=dict(l=0, r=0, b=0, t=40)
+    )
 
-    # --- 2D TOP-DOWN MAP ---
+    # --- 2D TOP-DOWN MAP (1:1 Ratio) ---
     fig_2d = px.scatter(
         df, x="x", y="z",
         color="player",
         hover_name="player",
-        hover_data=["action", "block"],
-        title="Top-Down View (All Players)",
-        marginal_x="histogram",
-        marginal_y="histogram"
+        hover_data=["block"],
+        title="Top-Down View (Fixed 1:1 Aspect Ratio)"
+    )
+
+    # scaleanchor ensures that X and Z axes scale equally
+    fig_2d.update_yaxes(
+        scaleanchor="x",
+        scaleratio=1,
     )
 
     fig_3d.show()
