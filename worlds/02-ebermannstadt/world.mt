@@ -9,6 +9,7 @@ gameid = mineclonia
 world_name = 02
 server_announce = false
 load_mod_worldedit = true
+load_mod_we_undo = true
 load_mod_steampunk_blimp = false
 load_mod_schemedit = false
 load_mod_playerlist = false
