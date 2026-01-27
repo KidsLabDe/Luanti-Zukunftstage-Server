@@ -4,107 +4,91 @@ import subprocess
 import argparse
 import os
 
-# Regulärer Ausdruck für den Login (berücksichtigt nun auch ::ffff: Präfixe und die Spielerliste)
-# Beispiel: 2026-01-27 11:42:55: ACTION[Server]: tester [::ffff:192.168.23.105] joins game.
+# Robustes IP-Muster
 join_pattern = re.compile(r"ACTION\[Server\]: (\w+) \[(?:.*:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\] joins game")
-
-# Reguläre Ausdrücke für die Aktionen
 tnt_pattern = re.compile(r"ACTION\[Server\]: (\w+) places node mcl_tnt:tnt")
 invis_pattern = re.compile(r"ACTION\[Server\]: (\w+) activates mcl_potions:invisibility_splash")
 
 player_ips = {}
+# Hier merken wir uns: { "192.168.23.105": True }
+already_uploaded = set()
 
 def play_remote(ip, filename):
-    """Überträgt die Sounddatei per SCP und spielt sie per SSH ab (mit Passwort-Auth)."""
     user = "kidslab"
     pw = "kidslab"
     
-    print(f"--> [ALARM] Sende {filename} an {ip}...")
+    # Pfad auf dem Zielrechner (wir löschen sie NICHT mehr sofort, damit sie da bleibt)
+    remote_path = f"/home/{user}/{filename}"
     
     try:
-        # SCP mit Passwort (Datei nach /tmp kopieren)
-        scp_cmd = ["sshpass", "-p", pw, "scp", "-o", "StrictHostKeyChecking=no", 
-                   filename, f"{user}@{ip}:/tmp/{filename}"]
-        subprocess.run(scp_cmd, check=True, capture_output=True)
+        # 1. Nur hochladen, wenn noch nicht geschehen
+        if ip not in already_uploaded:
+            print(f"--> [Upload] Übertrage {filename} einmalig an {ip}...")
+            subprocess.run([
+                "sshpass", "-p", pw, "scp", "-o", "StrictHostKeyChecking=no", 
+                filename, f"{user}@{ip}:{remote_path}"
+            ], check=True, capture_output=True)
+            already_uploaded.add(ip)
+
+        # 2. Nur noch den Abspielbefehl senden (extrem schnell)
+        # Wir setzen die Lautstärke und spielen ab
+        remote_cmd = f"amixer set Master 80% > /dev/null && mpg123 -q {remote_path} && amixer set Master 20% > /dev/null"
         
-        # SSH mit Passwort (Abspielen und Löschen)
-        # Wir nutzen mpg123 - falls nicht vorhanden, durch paplay ersetzen
-        ssh_cmd = ["sshpass", "-p", pw, "ssh", "-o", "StrictHostKeyChecking=no", 
-                   f"{user}@{ip}", f"mpg123 /tmp/{filename} && rm /tmp/{filename}"]
-        subprocess.run(ssh_cmd, start_new_session=True)
+        print(f"--> [ALARM] Trigger {filename} auf {ip}")
+        subprocess.run([
+            "sshpass", "-p", pw, "ssh", "-o", "StrictHostKeyChecking=no", 
+            f"{user}@{ip}", remote_cmd
+        ], start_new_session=True)
         
-    except subprocess.CalledProcessError as e:
-        print(f"Fehler bei der Verbindung zu {ip}: {e}")
     except Exception as e:
-        print(f"Unerwarteter Fehler: {e}")
+        print(f"Fehler bei {ip}: {e}")
 
 def main():
-    parser = argparse.ArgumentParser(description="Minetest Sound-Alarm System")
-    parser.add_argument("logfile", help="Pfad zur Luanti/Minetest Logdatei")
-    parser.add_argument("--test", action="store_true", help="Nur Aktionen vom Benutzer 'tester' verarbeiten")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("logfile", help="Pfad zur action.log")
+    parser.add_argument("--test", action="store_true")
     args = parser.parse_args()
 
-    if not os.path.exists(args.logfile):
-        print(f"Fehler: Datei {args.logfile} nicht gefunden.")
-        return
-
-    # --- SCHRITT 1: Bestehende Logdatei nach IPs scannen ---
-    print("Scanne Logdatei nach bekannten Spieler-IPs...")
+    # Initialer Scan...
     with open(args.logfile, "r", encoding='utf-8', errors='ignore') as f:
         for line in f:
+            match = join_pattern.search(line)
+            if match:
+                name, ip = match.groups()
+                player_ips[name.lower()] = ip
+        f.seek(0, os.SEEK_END)
+        last_pos = f.tell()
+
+    print(f"Monitoring läuft. Bekannte IPs: {list(player_ips.values())}")
+
+    with open(args.logfile, "r", encoding='utf-8', errors='ignore') as f:
+        f.seek(last_pos)
+        while True:
+            line = f.readline()
+            if not line:
+                time.sleep(0.1) # Kürzere Pause für schnellere Reaktion
+                continue
+
+            # Login Check
             join_match = join_pattern.search(line)
             if join_match:
                 name, ip = join_match.groups()
                 player_ips[name.lower()] = ip
-        
-        # Aktuelle Dateigröße merken, um nur neue Zeilen zu lesen
-        f.seek(0, os.SEEK_END)
-        last_pos = f.tell()
 
-    print(f"Initialisierung fertig. {len(player_ips)} IPs bekannt.")
-    if args.test:
-        print("!!! TESTMODUS AKTIV: Reagiere nur auf 'tester' !!!")
-
-    # --- SCHRITT 2: Live-Überwachung ---
-    print("Warte auf Aktionen...")
-    try:
-        with open(args.logfile, "r", encoding='utf-8', errors='ignore') as f:
-            f.seek(last_pos)
-            while True:
-                line = f.readline()
-                if not line:
-                    time.sleep(0.5)
+            # Aktions Check
+            t_match = tnt_pattern.search(line)
+            i_match = invis_pattern.search(line)
+            
+            match = t_match or i_match
+            if match:
+                p_name = match.group(1)
+                if args.test and p_name.lower() != "tester":
                     continue
 
-                # Neue Logins erfassen
-                join_match = join_pattern.search(line)
-                if join_match:
-                    name, ip = join_match.groups()
-                    player_ips[name.lower()] = ip
-                    print(f"[Login] {name} verbunden unter {ip}")
-
-                # TNT oder Unsichtbarkeit prüfen
-                tnt_match = tnt_pattern.search(line)
-                invis_match = invis_pattern.search(line)
-
-                match = tnt_match or invis_match
-                if match:
-                    p_name = match.group(1)
-                    
-                    # Filter für Testmodus
-                    if args.test and p_name.lower() != "tester":
-                        continue
-
-                    action_file = "tnt.mp3" if tnt_match else "invisible.mp3"
-                    target_ip = player_ips.get(p_name.lower())
-
-                    if target_ip:
-                        print(f"EVENT: {p_name} -> {action_file} auf Ziel-IP {target_ip}")
-                        play_remote(target_ip, action_file)
-                    else:
-                        print(f"Aktion von {p_name} erkannt, aber IP ist unbekannt.")
-    except KeyboardInterrupt:
-        print("\nÜberwachung beendet.")
+                target_ip = player_ips.get(p_name.lower())
+                if target_ip:
+                    # Wir spielen tnt.mp3 oder invisible.mp3
+                    play_remote(target_ip, "tnt.mp3" if t_match else "invisible.mp3")
 
 if __name__ == "__main__":
     main()
