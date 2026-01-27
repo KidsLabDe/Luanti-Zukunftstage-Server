@@ -10,28 +10,28 @@ tnt_pattern = re.compile(r"ACTION\[Server\]: (\w+) places node mcl_tnt:tnt")
 invis_pattern = re.compile(r"ACTION\[Server\]: (\w+) activates mcl_potions:invisibility_splash")
 
 player_ips = {}
-# Hier merken wir uns: { "192.168.23.105": True }
-already_uploaded = set()
+# Hier merken wir uns, welche IPs bereits alle Sounds erhalten haben
+initialized_ips = set()
 
 def play_remote(ip, filename):
     user = "kidslab"
     pw = "kidslab"
-    
-    # Pfad auf dem Zielrechner (wir löschen sie NICHT mehr sofort, damit sie da bleibt)
-    remote_path = f"/home/{user}/{filename}"
+    all_files = ["tnt.mp3", "invisible.mp3"]
     
     try:
-        # 1. Nur hochladen, wenn noch nicht geschehen
-        if ip not in already_uploaded:
-            print(f"--> [Upload] Übertrage {filename} einmalig an {ip}...")
+        # 1. INITIALER UPLOAD: Beide Dateien hochladen, falls IP neu ist
+        if ip not in initialized_ips:
+            print(f"--> [Upload] Übertrage Sound-Paket an {ip}...")
+            # Wir nutzen scp mit mehreren Dateien
             subprocess.run([
                 "sshpass", "-p", pw, "scp", "-o", "StrictHostKeyChecking=no", 
-                filename, f"{user}@{ip}:{remote_path}"
+                *all_files, f"{user}@{ip}:/home/{user}/"
             ], check=True, capture_output=True)
-            already_uploaded.add(ip)
+            initialized_ips.add(ip)
 
-        # 2. Nur noch den Abspielbefehl senden (extrem schnell)
-        # Wir setzen die Lautstärke und spielen ab
+        # 2. SCHNELLER TRIGGER
+        remote_path = f"/home/{user}/{filename}"
+        # Lautstärke hoch -> Sound abspielen -> Lautstärke wieder runter
         remote_cmd = f"amixer set Master 80% > /dev/null && mpg123 -q {remote_path} && amixer set Master 20% > /dev/null"
         
         print(f"--> [ALARM] Trigger {filename} auf {ip}")
@@ -49,7 +49,11 @@ def main():
     parser.add_argument("--test", action="store_true")
     args = parser.parse_args()
 
-    # Initialer Scan...
+    # Initialer Scan nach IPs
+    if not os.path.exists(args.logfile):
+        print(f"Logfile {args.logfile} nicht gefunden!")
+        return
+
     with open(args.logfile, "r", encoding='utf-8', errors='ignore') as f:
         for line in f:
             match = join_pattern.search(line)
@@ -59,14 +63,14 @@ def main():
         f.seek(0, os.SEEK_END)
         last_pos = f.tell()
 
-    print(f"Monitoring läuft. Bekannte IPs: {list(player_ips.values())}")
+    print(f"Monitoring aktiv. Bekannte IPs: {list(player_ips.values())}")
 
     with open(args.logfile, "r", encoding='utf-8', errors='ignore') as f:
         f.seek(last_pos)
         while True:
             line = f.readline()
             if not line:
-                time.sleep(0.1) # Kürzere Pause für schnellere Reaktion
+                time.sleep(0.1)
                 continue
 
             # Login Check
@@ -74,6 +78,7 @@ def main():
             if join_match:
                 name, ip = join_match.groups()
                 player_ips[name.lower()] = ip
+                print(f"Neuer Spieler registriert: {name} ({ip})")
 
             # Aktions Check
             t_match = tnt_pattern.search(line)
@@ -87,7 +92,7 @@ def main():
 
                 target_ip = player_ips.get(p_name.lower())
                 if target_ip:
-                    # Wir spielen tnt.mp3 oder invisible.mp3
+                    print(p_name, 'hat was gemacht!')
                     play_remote(target_ip, "tnt.mp3" if t_match else "invisible.mp3")
 
 if __name__ == "__main__":
