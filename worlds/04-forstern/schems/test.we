@@ -1,0 +1,1 @@
+5:local _={};_[1]="mcl_core:sandstonesmooth2";return {{z=0,x=0,name=_[1],param1=15,y=0},{z=1,x=0,name=_[1],param1=15,y=0},{z=0,x=0,name=_[1],param1=15,y=1},{z=1,x=0,name=_[1],param1=15,y=1},{z=0,x=1,name=_[1],param1=15,y=0},{z=0,x=1,name=_[1],param1=15,y=1},{z=0,x=2,name=_[1],param1=15,y=0},{z=0,x=2,name=_[1],param1=15,y=1}}
