@@ -190,13 +190,17 @@ def get_args():
 	return parser.parse_args()
 
 # log to console and/or file, depending on verbose flag:
-def log(message):
+def log(message, always_print=False):
 	now = datetime.datetime.now()
-	if args.verbose:
-		print(f"[w2mt]: {args.project}: {message}")
+	if args.verbose or always_print:
+		print(f"[w2mt] {message}")
 	# append to logfile:
 	with open(log_file, "a") as logfile:
 		logfile.write(f"{now} {args.project}: {message}\n")
+
+def log_status(message):
+	"""Log important status messages that should always be visible"""
+	log(message, always_print=True)
 
 # convert text to valid filename:
 def slugify(text):
@@ -269,27 +273,34 @@ def prepare_query_file():
 	x, y = transform_coords(north, east)
 	maxX, maxY = int(round(x)), int(round(y))
 	log(f"Area restriction corners: {minX}, {maxX} -> {minY}, {maxY} - size: {maxX - minX}, {maxY - minY}")
-	return minX, minY, maxX, maxY
+	return minX, minY, maxX, maxY, south, west, north, east
 
 def perform_query():
 	# do the query and store the result in osm.json file:
-	cmd = f'wget -q -O {osm_path} --post-file={query_path} "https://overpass-api.de/api/interpreter" >> {log_file}'
+	log_status("📡 Lade OpenStreetMap-Daten von Overpass API...")
+	log_status("   (Dies kann je nach Gebietsgröße einige Minuten dauern)")
+	cmd = f'wget -q -O {osm_path} --post-file={query_path} "https://overpass-api.de/api/interpreter" 2>&1 | tee -a {log_file}'
 	log(f"Performing query: '{cmd}' ...")
 	error = os.system(cmd)
 	if error:
-		log("... error!")
+		log_status("❌ Fehler beim Laden der OSM-Daten!")
 	else:
-		log("... done")
+		# Dateigröße anzeigen
+		if os.path.exists(osm_path):
+			size_mb = os.path.getsize(osm_path) / (1024 * 1024)
+			log_status(f"✅ OSM-Daten geladen ({size_mb:.2f} MB)")
 
 def extract_features_from_osm_json():
-	cmd = f'python3 parse_features_osm.py {osm_path} -o {feature_path} >> {log_file}'
+	log_status("🔍 Extrahiere Features aus OSM-Daten...")
+	log_status("   (Straßen, Gebäude, Gewässer, Grünflächen, ...)")
+	cmd = f'python3 parse_features_osm.py {osm_path} -o {feature_path} 2>&1 | tee -a {log_file}'
 	log(f"Extracting features using this command: '{cmd}' ...")
 	error = os.system(cmd)
 	if error:
-		log("... error!")
+		log_status("❌ Fehler beim Extrahieren der Features!")
 	else:
-		log("... done")
-def generate_map_from_features(minX, minY, maxX, maxY):
+		log_status("✅ Features extrahiert")
+def generate_map_from_features(minX, minY, maxX, maxY, south, west, north, east):
     map_output_dir = os.path.join(project_path, "world2minetest")
     if not os.path.isdir(map_output_dir):
         os.makedirs(map_output_dir)
@@ -302,6 +313,13 @@ def generate_map_from_features(minX, minY, maxX, maxY):
     map_output_path = os.path.join(map_output_dir, "map.dat")
     heightmap_path = os.path.join(project_path, "heightmap.dat")  # new compressed heightmap file
 
+    # Kartengröße berechnen und anzeigen
+    map_width = maxX - minX
+    map_height = maxY - minY
+    log_status(f"🗺️  Generiere Minetest-Karte...")
+    log_status(f"   Kartengröße: {map_width} x {map_height} Blöcke ({map_width * map_height:,} Blöcke gesamt)")
+    log_status(f"   GPS-Bereich: {south:.6f},{west:.6f} bis {north:.6f},{east:.6f}")
+
     # construct command with correct spacing
     cmd = f'python3 generate_map.py --features {feature_path} --output {map_output_path}'# --resolution 50 --heightmap {heightmap_path}'
 
@@ -310,13 +328,19 @@ def generate_map_from_features(minX, minY, maxX, maxY):
     if args.minimap:
         cmd += ' --minimap'
 
-    cmd += f' >> {log_file}'
+    # GPS-Koordinaten für geo_metadata.json übergeben
+    cmd += f' --gps-south {south} --gps-west {west} --gps-north {north} --gps-east {east}'
+
+    cmd += f' 2>&1 | tee -a {log_file}'
     log(f"Generating map using this command: '{cmd}' ...")
     error = os.system(cmd)
     if error:
-        log("... error!")
+        log_status("❌ Fehler beim Generieren der Karte!")
     else:
-        log("... done")
+        # Dateigröße anzeigen
+        if os.path.exists(map_output_path):
+            size_mb = os.path.getsize(map_output_path) / (1024 * 1024)
+            log_status(f"✅ Karte generiert: {map_output_path} ({size_mb:.2f} MB)")
 
 
 def create_mod():
@@ -426,18 +450,48 @@ osm_path = os.path.join(project_path, "osm.json")
 feature_file = "features_osm.json"
 feature_path = os.path.join(project_path, feature_file)
 
+import time
+start_time = time.time()
+
+log_status(f"")
+log_status(f"{'='*50}")
+log_status(f"🌍 Starte Welt-Generierung: {args.project}")
+log_status(f"{'='*50}")
+log_status(f"")
+
 check_project_dir()
-minX, minY, maxX, maxY = prepare_query_file()
+log_status(f"📁 Projektverzeichnis: {project_path}")
+
+minX, minY, maxX, maxY, south, west, north, east = prepare_query_file()
+log_status(f"✅ Query vorbereitet")
+
 if not args.reuse_query:
 	perform_query()
+else:
+	log_status("♻️  Verwende existierende Query-Datei")
+
 extract_features_from_osm_json()
-generate_map_from_features(minX, minY, maxX, maxY)
-if os.environ["MINETEST_GAME_PATH"]:
+generate_map_from_features(minX, minY, maxX, maxY, south, west, north, east)
+
+if os.environ.get("MINETEST_GAME_PATH"):
+	log_status("📦 Kopiere Mod-Dateien...")
 	create_mod()
 	copy_mod_in_project_dir()
 	define_world_for_project()
+	log_status("✅ Mod-Dateien kopiert")
 else:
 	log("Environment variable MINETEST_GAME_PATH not set. In order to manage w2mt mod and worlds you need to set it to the minetest home dir which should contain 'mods' and 'worlds' folders.")
+
+elapsed_time = time.time() - start_time
+minutes = int(elapsed_time // 60)
+seconds = int(elapsed_time % 60)
+
+log_status(f"")
+log_status(f"{'='*50}")
+log_status(f"🎉 Welt-Generierung abgeschlossen!")
+log_status(f"   Dauer: {minutes}:{seconds:02d} Minuten")
+log_status(f"   Welt: {project_path}")
+log_status(f"{'='*50}")
 
 if args.start:
 	start_world()

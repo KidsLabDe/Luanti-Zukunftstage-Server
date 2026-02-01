@@ -4,8 +4,8 @@
 
 ## World2minetest
 
-- [ ] Schienen werden nicht erzeugt
-- [ ] Ein Typ Straße wird nicht erzeugt
+- [x] Schienen werden nicht erzeugt ✅ (railway: rail, tram, subway, light_rail, narrow_gauge)
+- [x] Ein Typ Straße wird nicht erzeugt ✅ (primary, secondary, tertiary hinzugefügt)
 
 ## Hilfe & Anleitung
 
@@ -16,7 +16,7 @@
 ## Tools 
 
 - [ ] Grief checker von MatzE anschauen (im git)
-- [ ] GPS to Minetest Coord - kann man beim erstellen der Welt die koordinaten mit speichern und dann zu gps coordinaten in minetset springen?
+- [x] GPS to Minetest Coord ✅ (/gps und /pos Commands implementiert)
 - [ ] Ansible - alle rechner runterfahren & Lautstärke runterstellen
 
 ## Mods

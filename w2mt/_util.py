@@ -28,6 +28,14 @@ SURFACES = {
     "pedestrian": [14,[255,181,197, 255]],
     "residential": [15,[205,104,137, 255]],
     "path": [16, [139,90,0, 255]],
+    "primary": [17, [255,192,0, 255]],      # Hauptstraße - gelb/orange
+    "secondary": [18, [255,255,128, 255]],  # Nebenstraße - hellgelb
+    "tertiary": [19, [255,255,200, 255]],   # Verbindungsstraße - sehr hellgelb
+
+    "railway": [80, [80,80,80, 255]],       # Schienen - dunkelgrau
+    "rail": [81, [60,60,60, 255]],          # Gleise
+    "tram": [82, [100,100,100, 255]],       # Straßenbahn
+    "subway": [83, [50,50,50, 255]],        # U-Bahn
 
     "leisure": [20,[255,165,0, 255]],  # default
     "park": [21, [46,139,87, 255]],

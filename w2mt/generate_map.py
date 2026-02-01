@@ -3,12 +3,18 @@ import json
 import random
 import zlib
 import os
+import sys
+import time
 
 import numpy as np
 import skimage.draw
 from tqdm import trange
 
 from _util import to_bytes, from_bytes, SURFACES, DECORATIONS, SURFACE_COLORS
+
+def status(message, end="\n"):
+    """Print status message with flush for immediate display"""
+    print(f"   {message}", end=end, flush=True)
 
 
 HIGHWAY_WIDTHS = {
@@ -27,6 +33,14 @@ WATERWAY_WIDTHS = {
     "ditch": 1,
     "stream": 2,
     "river": 3,
+}
+
+RAILWAY_WIDTHS = {
+    "rail": 2,
+    "tram": 2,
+    "subway": 2,
+    "light_rail": 2,
+    "narrow_gauge": 1,
 }
 
 
@@ -68,6 +82,10 @@ parser.add_argument("--flat", action="store_true", help="If a --heightmap is spe
 parser.add_argument("--minimap", action="store_true", help="Create a minimap.png visualization of the world's surface in colors.")
 parser.add_argument("--verbose", "-v", action="store_true", help="More debug info")
 parser.add_argument("--output", "-o", type=ascii, help="output path for map.dat file which is part of the w2mt mod", default="world2minetest/map.dat")
+parser.add_argument("--gps-south", type=float, help="GPS south coordinate (latitude)", default=None)
+parser.add_argument("--gps-west", type=float, help="GPS west coordinate (longitude)", default=None)
+parser.add_argument("--gps-north", type=float, help="GPS north coordinate (latitude)", default=None)
+parser.add_argument("--gps-east", type=float, help="GPS east coordinate (longitude)", default=None)
 
 args = parser.parse_args()
 args.output = args.output.strip("'")
@@ -101,6 +119,7 @@ else:
 features = {
     "areas": [],
     "highways": [],
+    "railways": [],
     "waterways": [],
     "buildings": [],
     "decorations": {}
@@ -120,8 +139,8 @@ for file in args.features or []:
     max_y = max_y if max_y is not None else data["max_y"]
     print(f'minX: {min_x}, maxX: {max_x}, minY: {min_y}, maxY: {max_y}')
     for feature in features.keys():
-        if feature in ["highways", "waterways", "buildings"]:
-            print(f'Found feature: {feature}')
+        if feature in ["highways", "railways", "waterways", "buildings"]:
+            if args.verbose: print(f'Found feature: {feature}')
             if feature in data and data[feature]:
                 features[feature] = data[feature]
         elif feature in ["decorations"]:
@@ -211,9 +230,16 @@ def shift_coords(x_coords, y_coords):
     return restrict_x_y(x,y)
 
 
+total_areas = sum(len(level) for level in (areas_outer, areas_inner, areas_low, areas_medium, areas_high))
+status(f"🏞️  Verarbeite {total_areas:,} Flächen (Parks, Spielplätze, ...)...")
+area_count = 0
+update_interval = max(1, total_areas // 50)  # ~50 Updates
 for area_level in (areas_outer, areas_inner, areas_low, areas_medium, areas_high):
     for area in area_level:
-        print(f"AREA found: {area['osm_id']}")
+        area_count += 1
+        if area_count % update_interval == 0 or area_count == total_areas:
+            pct = (area_count * 100) // total_areas
+            status(f"   Flächen: {area_count:,}/{total_areas:,} ({pct}%)", end="\r")
         x, y = shift_coords(area["x"], area["y"])
         if len(x) < 3:
             if args.verbose: print("Too few coordinates, ignoring area:", x, y, area)
@@ -236,6 +262,7 @@ for area_level in (areas_outer, areas_inner, areas_low, areas_medium, areas_high
 
         # TODO remove all existing wholes in this area!!!
 
+status(f"✅ {total_areas:,} Flächen verarbeitet                    ")
 
 # unsued can be removed
 def get_building_height(building):
@@ -258,8 +285,16 @@ def get_building_height(building):
             return min(1, levels * 3)
    
 
+total_waterways = len(features["waterways"])
+if total_waterways > 0:
+    status(f"🌊 Verarbeite {total_waterways:,} Gewässer...")
+waterway_count = 0
+ww_update = max(1, total_waterways // 20)
 for waterway in features["waterways"]:
-    #print(f'Processing waterway id: {waterway["osm_id"]}')
+    waterway_count += 1
+    if waterway_count % ww_update == 0 or waterway_count == total_waterways:
+        pct = (waterway_count * 100) // total_waterways
+        status(f"   Gewässer: {waterway_count:,}/{total_waterways:,} ({pct}%)", end="\r")
     x_coords, y_coords = shift_coords(waterway["x"], waterway["y"])
     #print(f'x_coords: {x_coords}')
     surface = waterway["surface"]
@@ -328,8 +363,19 @@ for waterway in features["waterways"]:
         a[yy, xx, 1] = surface_id
         #print(f'SETTING SURFACE to {surface_id} on {yy} x {xx}')
 
+if total_waterways > 0:
+    status(f"✅ {total_waterways:,} Gewässer verarbeitet                    ")
 
+total_highways = len(features["highways"])
+if total_highways > 0:
+    status(f"🛣️  Verarbeite {total_highways:,} Straßen und Wege...")
+highway_count = 0
+hw_update = max(1, total_highways // 50)
 for highway in features["highways"]:
+    highway_count += 1
+    if highway_count % hw_update == 0 or highway_count == total_highways:
+        pct = (highway_count * 100) // total_highways
+        status(f"   Straßen: {highway_count:,}/{total_highways:,} ({pct}%)", end="\r")
     x_coords, y_coords = shift_coords(highway["x"], highway["y"])
     surface = highway["surface"]
     surface_id = SURFACES[surface][0]
@@ -401,8 +447,55 @@ for highway in features["highways"]:
             a[yy, xx, 2] = 0
             a[yy, xx, 3] = 0
 
+if total_highways > 0:
+    status(f"✅ {total_highways:,} Straßen verarbeitet                    ")
+
+# RAILWAYS
+total_railways = len(features["railways"])
+if total_railways > 0:
+    status(f"🚂 Verarbeite {total_railways:,} Schienen...")
+railway_count = 0
+rw_update = max(1, total_railways // 20)
+for railway in features["railways"]:
+    railway_count += 1
+    if railway_count % rw_update == 0 or railway_count == total_railways:
+        pct = (railway_count * 100) // total_railways
+        status(f"   Schienen: {railway_count:,}/{total_railways:,} ({pct}%)", end="\r")
+    x_coords, y_coords = shift_coords(railway["x"], railway["y"])
+    surface = railway["surface"]
+    surface_id = SURFACES[surface][0]
+    layer = railway.get("layer", 0)
+    width = RAILWAY_WIDTHS.get(railway["type"], 2)
+    height = -layer*3 if layer < 0 else 0
+    for i in range(0, len(x_coords)-1):
+        x1, y1 = x_coords[i], y_coords[i]
+        x2, y2 = x_coords[i+1], y_coords[i+1]
+        xx, yy = skimage.draw.line(x1, y1, x2, y2)
+        if width == 2:
+            positions = set()
+            for x, y in zip(xx, yy):
+                positions.update((
+                                (x, y+1),
+                    (x-1, y),   (x, y  )
+                ))
+            xx = []
+            yy = []
+            for x, y in positions:
+                if 0 <= x < size[0] and 0 <= y < size[1]:
+                    xx.append(x)
+                    yy.append(y)
+        if height != 0 and len(yy) > 0:
+            a[yy, xx, 0] = a[yy, xx, 0].mean() - height
+        a[yy, xx, 1] = surface_id
+        if layer >= 0:
+            a[yy, xx, 2] = 0
+            a[yy, xx, 3] = 0
+
+if total_railways > 0:
+    status(f"✅ {total_railways:,} Schienen verarbeitet                    ")
+
 if args.buildings:
-    print("Reading buildings file")
+    status("🏠 Lade Gebäude aus Datei...")
     count_points_in_area = 0
     count_points_out_of_area = 0
     buildings_file = args.buildings
@@ -449,11 +542,20 @@ if args.buildings:
     if count_points_out_of_area > 0:
         print(f"Warning: {count_points_out_of_area}/{count_points_in_area+count_points_out_of_area} building points were outside the area and skipped")
 else:
+    total_buildings = len(features["buildings"])
+    if total_buildings > 0:
+        status(f"🏠 Verarbeite {total_buildings:,} Gebäude...")
+    building_count = 0
+    bld_update = max(1, total_buildings // 50)
     for building in features["buildings"]:
+        building_count += 1
+        if building_count % bld_update == 0 or building_count == total_buildings:
+            pct = (building_count * 100) // total_buildings
+            status(f"   Gebäude: {building_count:,}/{total_buildings:,} ({pct}%)", end="\r")
         built_msg_format = "BUILDING drawn with coords {}, {} and height {}"
         x_coords, y_coords = shift_coords(building["x"], building["y"])
         if len(x_coords) < 2:
-            print("Too few coordinates, ignoring building:", x_coords, y_coords, building)
+            if args.verbose: print("Too few coordinates, ignoring building:", x_coords, y_coords, building)
             continue
         elif len(x_coords) == 2:
             xx, yy = skimage.draw.line(x_coords[0], y_coords[0], x_coords[1], y_coords[1])
@@ -464,12 +566,23 @@ else:
         a[yy, xx, 0] = ground_z
         a[yy, xx, 2] = 127 + ground_z + 1
         a[yy, xx, 3] = np.maximum(a[yy, xx, 3], ground_z + (building["height"] or 1))
+    if total_buildings > 0:
+        status(f"✅ {total_buildings:,} Gebäude verarbeitet                    ")
 
 
 
+total_decorations = sum(len(d) for d in features["decorations"].values())
+if total_decorations > 0:
+    status(f"🌳 Verarbeite {total_decorations:,} Dekorationen (Bäume, Zäune, ...)...")
+deco_count = 0
+deco_update = max(1, total_decorations // 50)
 for deco, decorations in features["decorations"].items():
     id_ = DECORATIONS[deco]
     for decoration in decorations:
+        deco_count += 1
+        if deco_count % deco_update == 0 or deco_count == total_decorations:
+            pct = (deco_count * 100) // total_decorations
+            status(f"   Dekorationen: {deco_count:,}/{total_decorations:,} ({pct}%)", end="\r")
         x, y = shift_coords(decoration["x"], decoration["y"])
         if not x: # test if x is either None or []
             if args.verbose: print("Out of bounds, ignoring decoration:", x, y, decoration)
@@ -486,6 +599,8 @@ for deco, decorations in features["decorations"].items():
             # place dirt below tree
             a[y, x, 1] = SURFACES["dirt"][0]
             #print(f'SETTING SURFACE to {SURFACES["dirt"][0]} on {yy} x {xx}')
+if total_decorations > 0:
+    status(f"✅ {total_decorations:,} Dekorationen verarbeitet                    ")
 
 
 offset_x = args.offsetx-min_x if args.offsetx is not None else round((max_x - min_x) / 2)
@@ -541,21 +656,22 @@ else:
 
 
 # Print some analysis about all surfaces generated:
-surfaceNr = {}
-for i in range(len(a)):
-    for j in range(len(a[i])):
-        if a[i][j][1] != 0:
-            surfaceNr[str(a[i][j][1])] = surfaceNr.get(str(a[i][j][1]), 0)+ 1
-inverseSurfaceMap = {v[0]: k for k, v in SURFACES.items()}
-print("Surface analysis in a:")
-for surf in inverseSurfaceMap:
-    nr = surfaceNr.get(str(surf), 0)
-    if nr > 0:
-        print('{} ({}): {:>12}'.format(inverseSurfaceMap.get(surf), surf, nr))
+if args.verbose:
+    surfaceNr = {}
+    for i in range(len(a)):
+        for j in range(len(a[i])):
+            if a[i][j][1] != 0:
+                surfaceNr[str(a[i][j][1])] = surfaceNr.get(str(a[i][j][1]), 0)+ 1
+    inverseSurfaceMap = {v[0]: k for k, v in SURFACES.items()}
+    print("Surface analysis in a:")
+    for surf in inverseSurfaceMap:
+        nr = surfaceNr.get(str(surf), 0)
+        if nr > 0:
+            print('{} ({}): {:>12}'.format(inverseSurfaceMap.get(surf), surf, nr))
+    print("DEBUG AREA:")
+    print(f"len(a): {len(a)}, len(a[0]): {len(a[0])})")
 
-print("DEBUG AREA:")
-print(f"len(a): {len(a)}, len(a[0]): {len(a[0])})")
-
+status("💾 Schreibe map.dat...")
 with open(str(args.output), "wb") as f:
     f.write(to_bytes(1, 1))  # version
     f.write(to_bytes(1, 1))  # minimum compatible version
@@ -575,9 +691,39 @@ with open(str(args.output), "wb") as f:
     f.write(to_bytes(len(changed_blocks), 4))
     f.write(changed_blocks)
 
-    
+status("✅ map.dat geschrieben")
+
+# Write geo_metadata.json if GPS coordinates are provided
+if args.gps_south is not None and args.gps_west is not None and args.gps_north is not None and args.gps_east is not None:
+    status("💾 Schreibe geo_metadata.json...")
+    geo_metadata = {
+        "gps": {
+            "south": args.gps_south,
+            "west": args.gps_west,
+            "north": args.gps_north,
+            "east": args.gps_east
+        },
+        "utm": {
+            "min_x": min_x,
+            "max_x": max_x,
+            "min_y": min_y,
+            "max_y": max_y
+        },
+        "minetest": {
+            "offset_x": offset_x,
+            "offset_z": offset_z,
+            "width": size[0],
+            "height": size[1]
+        }
+    }
+    geo_metadata_path = os.path.join(os.path.dirname(args.output), "geo_metadata.json")
+    with open(geo_metadata_path, "w") as f_geo:
+        json.dump(geo_metadata, f_geo, indent=2)
+    status("✅ geo_metadata.json geschrieben")
+
 import imageio
 
+status("🖼️  Erstelle Vorschaubilder...")
 for i in [0,1,2]:
     layer = a[::-1,:,i]
     name = ["map_height", "map_surface", "map_decorations"][i]
@@ -585,8 +731,10 @@ for i in [0,1,2]:
 
     img_path = os.path.join(os.path.dirname(args.output), f"{name}.png")
     imageio.imwrite(img_path, layer*int(255/m))
+status("✅ Vorschaubilder erstellt")
 
 if args.minimap:
+    status("🗺️  Erstelle Minimap...")
     for i in range(a.shape[0]):
       for j in range(a.shape[1]):
         a[i][j] = SURFACE_COLORS[a[i][j][1]]
@@ -594,4 +742,5 @@ if args.minimap:
     img_path = os.path.join(os.path.dirname(args.output), f"minimap.png")
     invertedArray = a[::-1,:,:]
     imageio.imwrite(img_path, invertedArray)
+    status("✅ Minimap erstellt")
 
