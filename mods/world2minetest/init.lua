@@ -427,3 +427,121 @@ minetest.register_chatcommand("w2mt:generateall", {
 		-- minetest.log("[w2mt] Generated map from " .. start .. " to " .. end_ .. " (total: " .. count .. ")")
 	end,
 })
+
+-- GPS coordinate support
+local geo_metadata = nil
+
+local function load_geo_metadata()
+	local path = minetest.get_worldpath() .. "/world2minetest/geo_metadata.json"
+	local file = io.open(path, "r")
+	if not file then
+		minetest.log("[w2mt] No geo_metadata.json found - GPS commands disabled")
+		return false
+	end
+	local content = file:read("*all")
+	file:close()
+	geo_metadata = minetest.parse_json(content)
+	if geo_metadata then
+		minetest.log("[w2mt] GPS metadata loaded")
+		return true
+	end
+	return false
+end
+
+load_geo_metadata()
+
+local function minetest_to_gps(x, z)
+	if not geo_metadata then
+		return nil, nil
+	end
+	local gps = geo_metadata.gps
+	local mt = geo_metadata.minetest
+
+	-- Convert Minetest coordinates to normalized 0-1 range
+	local x_normalized = (x + mt.offset_x) / mt.width
+	local z_normalized = (z + mt.offset_z) / mt.height
+
+	-- Convert to GPS coordinates
+	local longitude = gps.west + x_normalized * (gps.east - gps.west)
+	local latitude = gps.south + z_normalized * (gps.north - gps.south)
+
+	return latitude, longitude
+end
+
+local function gps_to_minetest(lat, lon)
+	if not geo_metadata then
+		return nil, nil
+	end
+	local gps = geo_metadata.gps
+	local mt = geo_metadata.minetest
+
+	-- Convert GPS to normalized 0-1 range
+	local x_normalized = (lon - gps.west) / (gps.east - gps.west)
+	local z_normalized = (lat - gps.south) / (gps.north - gps.south)
+
+	-- Convert to Minetest coordinates
+	local x = x_normalized * mt.width - mt.offset_x
+	local z = z_normalized * mt.height - mt.offset_z
+
+	return x, z
+end
+
+minetest.register_chatcommand("gps", {
+	description = "Zeigt GPS-Position oder teleportiert zu Koordinaten: /gps [lat,lon]",
+	func = function(name, param)
+		if not geo_metadata then
+			return false, "GPS nicht verfuegbar - keine geo_metadata.json gefunden"
+		end
+		local player = minetest.get_player_by_name(name)
+		if not player then
+			return false, "Spieler nicht gefunden"
+		end
+
+		-- Wenn Parameter angegeben: Teleportieren
+		if param and param ~= "" then
+			local lat, lon = param:match("([%-]?%d+%.?%d*)[,%s]+([%-]?%d+%.?%d*)")
+			if not lat or not lon then
+				return false, "Verwendung: /gps <lat>,<lon> (z.B. /gps 49.845, 9.605)"
+			end
+			lat = tonumber(lat)
+			lon = tonumber(lon)
+
+			-- Check if coordinates are within map bounds
+			local gps = geo_metadata.gps
+			if lat < gps.south or lat > gps.north or lon < gps.west or lon > gps.east then
+				return false, string.format("Koordinaten ausserhalb der Karte! Bereich: %.4f-%.4f, %.4f-%.4f",
+					gps.south, gps.north, gps.west, gps.east)
+			end
+
+			local x, z = gps_to_minetest(lat, lon)
+			if not x then
+				return false, "GPS-Umrechnung fehlgeschlagen"
+			end
+
+			local current_pos = player:get_pos()
+			player:set_pos({ x = x, y = current_pos.y + 5, z = z })
+			return true, string.format("Teleportiert zu GPS %.6f, %.6f", lat, lon)
+		end
+
+		-- Ohne Parameter: Position anzeigen
+		local pos = player:get_pos()
+		local lat, lon = minetest_to_gps(pos.x, pos.z)
+		if not lat then
+			return false, "GPS-Umrechnung fehlgeschlagen"
+		end
+		local maps_url = string.format("https://www.google.com/maps?q=%.6f,%.6f", lat, lon)
+		return true, string.format("GPS: %.6f, %.6f\n%s", lat, lon, maps_url)
+	end,
+})
+
+minetest.register_chatcommand("pos", {
+	description = "Zeigt deine aktuelle Minetest-Position",
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		if not player then
+			return false, "Spieler nicht gefunden"
+		end
+		local pos = player:get_pos()
+		return true, string.format("Position: x=%.1f, y=%.1f, z=%.1f", pos.x, pos.y, pos.z)
+	end,
+})
