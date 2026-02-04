@@ -1,0 +1,42 @@
+# Workshop Server MIT Grief-Analyzer
+#
+# Starten:
+#   WORLDNAME=06 docker compose -f workshop-with-analyzer.yaml up -d
+#
+# Webseite öffnen:
+#   http://localhost:8080
+#
+# Umgebungsvariablen:
+#   WORLDNAME: Name der Welt (z.B. "06" für worlds/06-...)
+#   ANALYZER_PORT: Port für Analyzer-Webseite (default: 8080)
+
+services:
+  minetest:
+    image: ghcr.io/linuxserver/luanti:latest
+    container_name: minetest_zfn
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - CLI_ARGS=--worldname ${WORLDNAME} --world worlds --logfile /config/.minetest/logs/${WORLDNAME}.log --port 30000
+    volumes:
+      - ./:/config/.minetest
+    ports:
+      - 30000:30000/udp
+    restart: unless-stopped
+
+  grief-analyzer:
+    build:
+      context: ./analyzer
+      dockerfile: Dockerfile
+    container_name: grief_analyzer
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - ./logs:/logs:ro
+    ports:
+      - "${ANALYZER_PORT:-8080}:8080"
+    command: ["/logs/${WORLDNAME}.log", "-p", "8080"]
+    restart: unless-stopped
+    depends_on:
+      - minetest

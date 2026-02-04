@@ -1,0 +1,27 @@
+# Grief-Detection Analyzer
+#
+# Standalone starten:
+#   docker compose -f analyzer/docker-compose.yaml up -d
+#
+# Mit Workshop-Server starten:
+#   WORLDNAME=06 docker compose -f workshop.yaml -f analyzer/docker-compose.yaml up -d
+#
+# Umgebungsvariablen:
+#   WORLDNAME: Name des Logfiles (ohne .log), z.B. "06" für logs/06.log
+#   ANALYZER_PORT: Port für Webserver (default: 8080)
+
+services:
+  grief-analyzer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grief_analyzer
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      # Logs-Verzeichnis vom Host mounten
+      - ../logs:/logs:ro
+    ports:
+      - "${ANALYZER_PORT:-8080}:8080"
+    command: ["/logs/${WORLDNAME:-workshop}.log", "-p", "8080"]
+    restart: unless-stopped

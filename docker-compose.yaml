@@ -1,17 +1,45 @@
----
-version: "2.1"
+# Zukunftstage Server mit Grief-Analyzer
+#
+# Starten über startWorld.sh (empfohlen):
+#   ./startWorld.sh 02-koeln 30102
+#
+# Oder direkt mit Umgebungsvariablen:
+#   WORLD_FOLDER=02-koeln WORLDNAME=02 PORT=30102 docker compose up -d
+#
+# Umgebungsvariablen:
+#   WORLD_FOLDER: Ordnername in worlds/ (z.B. "02-koeln")
+#   WORLDNAME: Welt-Name für Minetest (z.B. "02")
+#   PORT: UDP-Port für Minetest (default: 30000)
+#   ANALYZER_PORT: HTTP-Port für Grief-Analyzer (default: 8080)
+
 services:
   minetest:
-    image: ghcr.io/linuxserver/luanti:latest
-    container_name: minetest_zfn
+    image: ghcr.io/kidslabde/luanti-zukunftstage-server:latest
+    container_name: zfn_${WORLD_FOLDER:-workshop}
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Berlin
-      - CLI_ARGS=" --worldname zukunftsnacht --world worlds --port 30000"
+      - CLI_ARGS=--worldname ${WORLDNAME:-workshop} --port ${PORT:-30000} --logfile /config/.minetest/logs/${WORLDNAME:-workshop}.log
     volumes:
-      - ./:/config/.minetest
+      - ./worlds/${WORLD_FOLDER:-workshop}:/config/.minetest/worlds/${WORLDNAME:-workshop}
+      - ./logs:/config/.minetest/logs
     ports:
-      - 30000:30000/udp
+      - "${PORT:-30000}:${PORT:-30000}/udp"
     restart: unless-stopped
 
+  grief-analyzer:
+    build:
+      context: ./analyzer
+      dockerfile: Dockerfile
+    container_name: zfn_${WORLD_FOLDER:-workshop}_analyzer
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - ./logs:/logs:ro
+    ports:
+      - "${ANALYZER_PORT:-8080}:8080"
+    command: ["/logs/${WORLDNAME:-workshop}.log", "-p", "8080"]
+    restart: unless-stopped
+    depends_on:
+      - minetest
