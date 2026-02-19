@@ -1,88 +1,189 @@
 # Luanti Zukunftstage Server
 
-## Über das Projekt
+**Ein schlüsselfertiger Luanti-Server, der echte Städte aus OpenStreetMap-Daten in eine Minecraft-ähnliche Welt verwandelt -- für politische Bildungsworkshops mit Jugendlichen.**
 
-Dieses Repository enthält das Server-Setup für die **Digitalen Zukunftstage** und **Zukunftsnächte**, ein Projekt der [Bayerischen Landeszentrale für politische Bildungsarbeit (blz)](https://www.blz.bayern.de/digitale-zukunftstage.html) in Kooperation mit [KidsLab.de](https://zukunftsnacht.de/).
+<p align="center">
+  <img src="w2mt/docs/screenshot_water.png" width="45%" alt="Generierte Landschaft mit See" />
+  <img src="w2mt/docs/screenshot_trees_with_postboxes_and_buildings.png" width="45%" alt="Straßenzug mit Bäumen und Gebäuden" />
+</p>
+<p align="center">
+  <img src="w2mt/docs/screenshot_hochhaus.png" width="45%" alt="Hochhäuser aus OSM-Daten" />
+  <img src="w2mt/docs/screenshot_primary_road.png" width="45%" alt="Hauptstraße mit Bäumen" />
+</p>
 
-Das Kernkonzept besteht aus interaktiven Workshops, in denen Schülerinnen und Schüler (ab der 8. Klasse) die Zukunft ihrer eigenen Stadt gestalten. In einer spielerischen Umgebung, die auf Minetest (ähnlich wie Minecraft) basiert, errichten sie virtuelle Modelle ihrer Ideen – von Grünflächen über Jugendzentren bis hin zu nachhaltigen Verkehrskonzepten.
+---
 
-Diese digitalen Kreationen dienen als Grundlage für Diskussionen mit lokalen Entscheidungsträgern, fördern die politische Teilhabe und zeigen den Jugendlichen, dass ihre Stimme bei der Gemeindeentwicklung zählt.
+## Was sind die Zukunftstage / Zukunftsnächte?
 
-## Setup und Nutzung
+Die **Digitalen Zukunftstage** und **Zukunftsnächte** sind Workshops, bei denen Jugendliche ab der 8. Klasse die Zukunft ihrer eigenen Stadt gestalten. In einer Spielumgebung, die auf echten Geodaten ihrer Heimatstadt basiert, bauen sie ihre Visionen: Grünflächen, Jugendtreffs, nachhaltige Verkehrskonzepte, barrierefreie Bahnhöfe oder klimaneutrale Stadtteile.
 
-Hier wird beschrieben, wie eine neue Welt aus Geodaten generiert und der Server mit Docker gestartet wird.
+Das Besondere: Die Ergebnisse werden direkt mit lokalen Politiker\*innen diskutiert. Die Jugendlichen erleben, dass ihre Stimme zählt -- politische Bildung, die sich nicht wie Schule anfühlt.
+
+Das Projekt wurde von der [Bayerischen Landeszentrale für politische Bildungsarbeit (blz)](https://www.blz.bayern.de/digitale-zukunftstage.html) initiiert und wird von [KidsLab.de gGmbH](https://kidslab.de) durchgeführt. Es gibt verschiedene Formate:
+
+- **Zukunftsnächte** -- Schüler\*innen übernachten in der Schule und arbeiten intensiv an ihren Visionen
+- **Zukunftstage** -- Tagesformat, z.B. als Projekttag an der Schule
+- **Zukunftswerkstätten** -- Auch generationsübergreifend, z.B. [Jugendliche und Senior\*innen gemeinsam in Augsburg](https://kidslab.de/blog/demokratie-vor-ort-zukunftswerkstatt-in-minecraft-in-augsburg)
+
+Mehr Infos zum Gesamtprojekt: [kidslab.de/projekte/demokratie](https://kidslab.de/projekte/demokratie)
+
+## Ergebnisse
+
+Fertige Welten und Dokumentationen vergangener Workshops gibt es auf **[zukunftsnacht.de](https://zukunftsnacht.de)** -- von der grünen Oase am Schweinfurter Busbahnhof bis zum barrierefreien Bahnhof in Erding.
+
+## Warum Luanti?
+
+[Luanti](https://www.luanti.org/) (ehemals Minetest) ist eine freie, quelloffene Spiele-Engine, die Minecraft sehr ähnlich ist. Dieser Server nutzt das Spielpaket **Mineclonia**, das die Minecraft-Erfahrung so originalgetreu wie möglich nachbildet -- für die Schüler\*innen ist der Unterschied zu Minecraft kaum spürbar.
+
+Trotzdem bietet Luanti gegenüber Minecraft entscheidende Vorteile für den Einsatz an Schulen:
+
+| | Luanti + Mineclonia | Minecraft |
+|---|---|---|
+| **Kosten** | Komplett kostenlos -- keine Lizenzen, keine Accounts | Kostenpflichtig (Lizenzen pro Schüler\*in) |
+| **Datenschutz** | Läuft komplett lokal im Schulnetzwerk, keine Daten an externe Server, keine Microsoft-Accounts nötig | Cloud-basiert, Microsoft-Account erforderlich |
+| **Installation** | Einfacher Download, keine Registrierung, läuft auf jedem Rechner | Account-Erstellung, Launcher, höhere Systemanforderungen |
+| **Nach dem Workshop** | Schüler\*innen können Luanti zu Hause kostenlos weiternutzen | Lizenz nötig |
+| **Modifizierbar** | Open Source -- Server und Spiel können frei angepasst werden | Eingeschränkte Modding-Möglichkeiten |
+| **Multiplayer** | Eigener Server per Docker in Minuten aufgesetzt, kein Realm nötig | Realms oder eigener Java-Server nötig |
+
+## Wie funktioniert die Weltgenerierung aus OpenStreetMap?
+
+Das Herzstück dieses Projekts ist die **w2mt-Pipeline** (world2minetest): Sie verwandelt echte Geodaten aus [OpenStreetMap](https://www.openstreetmap.org/) in eine begehbare Luanti-Welt.
+
+### So funktioniert es
+
+1. **Koordinaten wählen** -- Man wählt einen Kartenausschnitt der gewünschten Stadt (zwei Eckpunkte als GPS-Koordinaten)
+2. **OSM-Daten herunterladen** -- Das Skript lädt automatisch alle Geodaten aus der Overpass-API (Straßen, Gebäude, Parks, Gewässer, Bäume...)
+3. **Daten verarbeiten** -- Die Geodaten werden in Luanti-Blöcke umgewandelt:
+   - Straßen werden zu grauen Betonblöcken
+   - Parks und Wiesen zu Grasblöcken
+   - Gewässer zu Wasserquellen
+   - Gebäude werden als 3D-Strukturen mit Wänden und Dächern erzeugt
+   - Bäume, Zäune, Bänke und andere Details werden als Dekorationen platziert
+4. **Welt laden** -- Das `world2minetest`-Mod lädt die generierte Karte beim Serverstart und die Schüler\*innen finden ihre eigene Stadt vor
+
+### Unterstützte Kartenelemente
+
+| Element | Darstellung in Luanti |
+|---|---|
+| Asphaltstraßen | Grauer Beton |
+| Fußwege / Pflaster | Steinziegel |
+| Radwege | Rosa Ton |
+| Parks & Wiesen | Grasblöcke |
+| Gewässer | Wasser |
+| Gebäude | Sandstein (Wände) + Ziegel (Dach) |
+| Bäume & Hecken | Eichenblätter |
+| Zäune | Holzzäune |
+| Bänke | Eichentreppen |
+| Spielplätze | Sand |
+| Parkplätze | Stein |
+| Eisenbahn / Straßenbahn | Schwarzer Beton |
+
+## Selbst nutzen -- Schritt für Schritt
 
 ### Voraussetzungen
 
--   **Docker** und **Docker Compose**: Zur Ausführung des Minetest-Servers in einem Container.
--   **Python 3** und `pip`: Wird für die Welt-Generierungsskripte benötigt.
--   **Git**: Zur Verwaltung des Repositories.
+- **Docker** und **Docker Compose**
+- **Python 3** und `pip` (nur für die Weltgenerierung)
+- **Git**
 
-### 1. Welt generieren (mit `w2mt`)
+### 1. Repository klonen
 
-Das `w2mt`-Skript (`world2minetest`) generiert eine Minetest-Welt basierend auf echten Geodaten von OpenStreetMap.
+```bash
+git clone https://github.com/kidslabde/Luanti-Zukunftstage-Server.git
+cd Luanti-Zukunftstage-Server
+```
 
-1.  **In das `w2mt`-Verzeichnis wechseln:**
-    ```bash
-    cd w2mt/
-    ```
+### 2. Welt generieren
 
-2.  **Python-Abhängigkeiten installieren:**
-    ```bash
-    pip3 install -r requirements.txt
-    ```
+Das Skript erstellt automatisch eine Python-Umgebung und installiert alle Abhängigkeiten:
 
-3.  **Generierungs-Skript ausführen:**
-    Das Skript `generate_world.sh` ist ein einfacher Wrapper, der die notwendigen Parameter abfragt.
-    ```bash
-    ./generate_world.sh
-    ```
-    Das Skript fragt dich nach:
-    -   Einem **Projektnamen** (z.B. `02-Muenchen`).
-    -   Zwei **Koordinaten**, die ein Rechteck auf der Weltkarte aufspannen. Diese können z.B. von OpenStreetMap entnommen werden (Klick auf "Export" -> Bereich manuell auswählen).
+```bash
+./generate_world.sh
+```
 
-    Das Skript ruft dann das Kernskript `w2mt.py` auf, das die Geodaten herunterlädt und die Welt-Map (`map.dat`) im Verzeichnis `worlds/<projektname>/world2minetest/` ablegt.
+Es fragt nach:
+- Einem **Projektnamen** (z.B. `02-Muenchen`)
+- Zwei **GPS-Koordinaten**, die den gewünschten Kartenausschnitt definieren
 
-### 2. Server starten (mit Docker)
+> **Tipp:** Auf [openstreetmap.org](https://www.openstreetmap.org/) den gewünschten Bereich suchen, auf "Export" klicken und die Koordinaten des Rechtecks ablesen.
 
-Das `startWorkshop.sh`-Skript vereinfacht das Starten einer spezifischen Welt.
+Alternativ direkt mit Parametern:
 
-1.  **Skript ausführbar machen (falls noch nicht geschehen):**
-    ```bash
-    chmod +x startWorkshop.sh
-    ```
+```bash
+cd w2mt
+python3 w2mt.py -p "02-Muenchen" -a "48.12,11.54,48.14,11.58" -g "mineclonia" -b "leveldb"
+```
 
-2.  **Skript ausführen:**
-    ```bash
-    ./startWorkshop.sh
-    ```
+### 3. Server starten
 
-3.  **Welt auswählen:**
-    Das Skript listet die verfügbaren Welt-Verzeichnisse auf und fragt, welche Welt gestartet werden soll (z.B. `01`, `02`).
+```bash
+./startWorld.sh
+```
 
-    Im Hintergrund tut das Skript Folgendes:
-    - Es kopiert die spezifische `map.dat` der ausgewählten Welt in das von Docker genutzte Mod-Verzeichnis.
-    - Es startet den Docker-Container über `docker compose -f workshop.yaml up`.
+Das Skript listet alle verfügbaren Welten auf und startet den ausgewählten Server als Docker-Container. Optional mit Port-Angabe:
 
-Der Minetest-Server ist nun unter Port `30000` (UDP) erreichbar.
+```bash
+./startWorld.sh 02-Muenchen 30102
+```
 
-## Zusammenfassung der Entwicklungshistorie
+Der Server ist dann unter `localhost:30102` (UDP) erreichbar.
 
-Die Analyse der Commits zeichnet ein klares Bild der Entwicklung dieses Servers:
+### 4. Verbinden
 
-#### Phase 1: Das Fundament (vor 4 Wochen)
--   Das Projekt wurde mit einer komplexen Docker-Architektur ins Leben gerufen, mit dem klaren Ziel, das Spiel **Mineclonia** mit dem Kartengenerator **world2minetest** zu kombinieren. Von Anfang an wurden viele Welten und eine große Mod-Sammlung eingeplant.
+- [Luanti herunterladen](https://www.luanti.org/downloads/) und installieren
+- Server-Adresse: IP des Servers, Port wie konfiguriert (Standard: `30000`)
+- Standardpasswort: `zukunft`
 
-#### Phase 2: Erste Inhalte & Konfiguration (vor 11-12 Tagen)
--   Die erste konkrete Welt ("Augsburg") wurde dem Projekt hinzugefügt.
--   Es wurden die notwendigen Konfigurationen vorgenommen, um `world2minetest` anzuweisen, Mineclonias eigenen Kartengenerator zu deaktivieren, damit sie sich nicht gegenseitig stören.
--   Die Projektstruktur wurde vereinfacht, indem die Weltdaten und das Mineclonia-Spiel direkt in das Haupt-Repository integriert wurden, anstatt sie als Submodule zu verwalten. Dies machte das Projekt in sich geschlossener.
--   Eine `CLAUDE.md`-Datei wurde hinzugefügt, um die Entwicklung mit KI-Unterstützung zu erleichtern.
+### 5. Server stoppen
 
-#### Phase 3: Visuelle Anpassung & Optimierung (letzte 24 Stunden)
--   Der `world2minetest`-Generator wurde tiefgreifend überarbeitet, um anstelle von Standard-Minetest-Blöcken spezifische, optisch passende Blöcke aus Mineclonia zu verwenden.
--   Die Augsburg-Welt wurde daraufhin neu generiert, um diese visuellen Verbesserungen anzuwenden.
--   Es wurden umfangreiche **Anti-Grief-Maßnahmen** implementiert, um das Spiel für den Einsatz in Workshops (z.B. mit Kindern und Jugendlichen) sicherer zu machen. Störende Elemente wie Lava, Monster und Explosionen können nun zentral deaktiviert werden.
--   Zuletzt wurden kleinere Fehler und Inkonsistenzen behoben.
+```bash
+./stopWorld.sh 02-Muenchen    # Einzelne Welt stoppen
+./stopWorld.sh all             # Alle Welten stoppen
+```
 
-**Fazit:** Ausgehend von einem funktionierenden Prototyp wurde der Server schrittweise zu einem robusten, maßgeschneiderten System für Mineclonia-Workshops weiterentwickelt. Die Prioritäten lagen dabei auf struktureller Vereinfachung, visueller Anpassung an Mineclonia und der Schaffung einer sicheren, kontrollierbaren Umgebung für die Teilnehmer.
+## Workshop-Konfiguration
+
+Der Server ist speziell für den Einsatz mit Jugendlichen konfiguriert:
+
+- **Kein Schaden, kein PvP** -- niemand kann verletzt werden
+- **Keine Monster, kein Hunger** -- keine Ablenkung vom Bauen
+- **Keine Explosionen, kein Feuer, keine Lava** -- Anti-Grief-Schutz
+- **Kreativmodus** -- alle Blöcke unbegrenzt verfügbar
+- **Fliegen & Schnellbewegung** -- einfache Navigation durch die Stadt
+- **Bis zu 50 gleichzeitige Spieler** -- getestet mit 40+ Teilnehmer\*innen
+
+Zusätzlich enthält der Server einen **Grief-Analyzer** -- ein Web-Tool für Mentor\*innen, das verdächtiges Verhalten erkennt und meldet.
+
+## Projektstruktur
+
+```
+├── w2mt/               # Python-Pipeline: OSM-Daten → Luanti-Welt
+├── mods/               # Server-Mods (WorldEdit, Travelnet, Dekorationen, ...)
+├── games/mineclonia/   # Mineclonia-Spielpaket
+├── worlds/             # Generierte Welten (XX-Stadtname/)
+├── analyzer/           # Grief-Analyzer Web-Tool
+├── main-config/        # Server-Konfiguration
+├── docs/               # Workshop-Dokumentation & Anleitungen
+├── startWorld.sh       # Server starten
+├── stopWorld.sh        # Server stoppen
+├── generate_world.sh   # Neue Welt generieren
+└── docker-compose.yaml # Docker-Konfiguration
+```
+
+## Kontakt & Unterstützung
+
+Dieses Projekt wird aktiv von **[KidsLab.de gGmbH](https://kidslab.de)** betrieben und weiterentwickelt. Wir haben **über 60 Veranstaltungen** durchgeführt und unterstützen gerne -- organisatorisch, technisch oder inhaltlich.
+
+**Gregor Walter**
+Geschäftsführer, KidsLab gGmbH
+[gregor@kidslab.de](mailto:gregor@kidslab.de)
+
+---
+
+## Lizenz & Credits
+
+- **w2mt** (world2minetest) basiert auf der Arbeit von [Florian Rädiker](https://github.com/florianhofhammer/world2minetest) (AGPLv3)
+- **Mineclonia** -- [mineclonia.net](https://mineclonia.net/) (AGPLv3)
+- **Luanti** -- [luanti.org](https://www.luanti.org/) (LGPL 2.1)
+- Projektpartner: [Bayerische Landeszentrale für politische Bildungsarbeit](https://www.blz.bayern.de/)
