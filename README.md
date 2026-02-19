@@ -158,17 +158,20 @@ Zusätzlich enthält der Server einen **Grief-Analyzer** -- ein Web-Tool für Me
 ## Projektstruktur
 
 ```
-├── w2mt/               # Python-Pipeline: OSM-Daten → Luanti-Welt
-├── mods/               # Server-Mods (WorldEdit, Travelnet, Dekorationen, ...)
-├── games/mineclonia/   # Mineclonia-Spielpaket
-├── worlds/             # Generierte Welten (XX-Stadtname/)
-├── analyzer/           # Grief-Analyzer Web-Tool
-├── main-config/        # Server-Konfiguration
-├── docs/               # Workshop-Dokumentation & Anleitungen
-├── startWorld.sh       # Server starten
-├── stopWorld.sh        # Server stoppen
-├── generate_world.sh   # Neue Welt generieren
-└── docker-compose.yaml # Docker-Konfiguration
+├── server/                # Alles was ins Docker-Image kommt
+│   ├── mods/              # Server-Mods (WorldEdit, Travelnet, world2minetest, ...)
+│   ├── games/mineclonia/  # Mineclonia-Spielpaket
+│   └── config/            # Server-Konfiguration (workshop.conf)
+├── client/                # Luanti-Client-Einstellungen (minetest.conf)
+├── worlds/                # Generierte Welten (XX-Stadtname/)
+├── w2mt/                  # Python-Pipeline: OSM-Daten → Luanti-Welt
+├── analyzer/              # Grief-Analyzer Web-Tool
+├── docs/                  # Workshop-Dokumentation & Anleitungen
+├── Dockerfile             # Docker-Image mit Mods, Games & Config
+├── docker-compose.yaml    # Docker-Konfiguration
+├── startWorld.sh          # Server starten
+├── stopWorld.sh           # Server stoppen
+└── generate_world.sh      # Neue Welt generieren
 ```
 
 ## Kontakt & Unterstützung

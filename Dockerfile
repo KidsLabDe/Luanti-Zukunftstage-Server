@@ -5,13 +5,13 @@
 FROM ghcr.io/linuxserver/luanti:latest
 
 # Mods kopieren
-COPY mods/ /config/.minetest/mods/
+COPY server/mods/ /config/.minetest/mods/
 
 # Games kopieren
-COPY games/ /config/.minetest/games/
+COPY server/games/ /config/.minetest/games/
 
 # Workshop-Konfiguration als Standard
-COPY main-config/workshop.conf /config/.minetest/main-config/minetest.conf
+COPY server/config/workshop.conf /config/.minetest/main-config/minetest.conf
 
 # Leeres worlds Verzeichnis erstellen (wird als Volume gemountet)
 RUN mkdir -p /config/.minetest/worlds

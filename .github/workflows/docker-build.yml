@@ -5,9 +5,9 @@ on:
     branches: [main]
     paths:
       - 'Dockerfile'
-      - 'mods/**'
-      - 'games/**'
-      - 'main-config/**'
+      - 'server/mods/**'
+      - 'server/games/**'
+      - 'server/config/**'
       - '.github/workflows/docker-build.yml'
   workflow_dispatch:
 

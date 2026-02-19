@@ -28,7 +28,7 @@ Nach dem Start ist der Server unter folgender IP / Port erreichbar:
 
 ### Main-Config
 
-in main-config/minetest.conf:
+in server/config/minetest.conf:
 
 ```
 default_password = blz
