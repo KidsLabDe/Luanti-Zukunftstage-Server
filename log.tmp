@@ -1,0 +1,32 @@
+[migrations] started
+[migrations] no migrations found
+───────────────────────────────────────
+
+      ██╗     ███████╗██╗ ██████╗
+      ██║     ██╔════╝██║██╔═══██╗
+      ██║     ███████╗██║██║   ██║
+      ██║     ╚════██║██║██║   ██║
+      ███████╗███████║██║╚██████╔╝
+      ╚══════╝╚══════╝╚═╝ ╚═════╝
+
+   Brought to you by linuxserver.io
+───────────────────────────────────────
+
+To support LSIO projects visit:
+https://www.linuxserver.io/donate/
+
+───────────────────────────────────────
+GID/UID
+───────────────────────────────────────
+
+User UID:    1000
+User GID:    1000
+───────────────────────────────────────
+Linuxserver.io version: 5.15.0-ls29
+Build-date: 2026-01-20T18:00:13+00:00
+───────────────────────────────────────
+    
+[custom-init] No custom files found, skipping...
+[UnifiedDyes] Loaded!
+Unified Inventory. Inventory size: 1849
+[ls.io-init] done.
