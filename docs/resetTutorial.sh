@@ -8,8 +8,7 @@ then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        cp main-config/tutorial.conf main-config/minetest.conf
-        docker-compose -f tutorial.yaml stop
+        cp server/config/tutorial.conf server/config/minetest.conf
         rm debug.txt
         rm -R worlds/Tutorial
         cp -R minetest-Tutorial/worlds/Tutorial  worlds/

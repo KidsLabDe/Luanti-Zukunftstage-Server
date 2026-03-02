@@ -40,7 +40,7 @@ Wichtige Teile / zum anpassen:
 
 Eine map.dat Datei, für die Erzeugung der Karten muss in diesen Ordner bewegt werden:
 
-`/opt/minetest/ZFN/mods/world2minetest`
+`/opt/minetest/ZFN/server/mods/world2minetest`
 
 **Achtung:** es kann jeweils nur **eine** map.dat Datei für die kompletten Minetest-Server im Verzeichnis ZFN hinterlegt werden.
 

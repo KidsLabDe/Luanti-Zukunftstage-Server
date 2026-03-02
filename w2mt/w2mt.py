@@ -443,7 +443,8 @@ if not args.minetest_dir:
 		args.minetest_dir = os.path.join(os.getcwd(), 'copy_content_to_minetest_dir')
 		log("Neither environment variable MINETEST_GAME_PATH is set nor argument -d is given. Hence we create a local temporary directory in replacement.")
 w2mt_mod_path = os.path.join(args.minetest_dir, "mods", "world2minetest")
-project_path = os.path.join(args.minetest_dir, "worlds", args.project)
+worlds_dir = os.environ.get("MINETEST_WORLDS_PATH", os.path.join(args.minetest_dir, "worlds"))
+project_path = os.path.join(worlds_dir, args.project)
 query_file = "query.osm";
 query_path = os.path.join(project_path, query_file)
 osm_path = os.path.join(project_path, "osm.json")

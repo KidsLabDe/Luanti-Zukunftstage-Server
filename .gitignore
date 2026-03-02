@@ -3,8 +3,7 @@ map.db/*
 .DS_Store
 w2mt/projects
 w2mt/world2minetest/map.dat
-mods/world2minetest/map.dat
-worlds/mods/world2minetest/map.dat
+server/mods/world2minetest/map.dat
 *.log
 players.sqlite
 auth.sqlite

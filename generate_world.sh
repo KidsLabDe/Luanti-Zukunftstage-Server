@@ -103,8 +103,9 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# MINETEST_GAME_PATH setzen (Hauptverzeichnis)
-export MINETEST_GAME_PATH="$SCRIPT_DIR"
+# MINETEST_GAME_PATH setzen (server/ Verzeichnis)
+export MINETEST_GAME_PATH="$SCRIPT_DIR/server"
+export MINETEST_WORLDS_PATH="$SCRIPT_DIR/worlds"
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}  Luanti/Minetest Welt-Generator${NC}"
@@ -200,7 +201,8 @@ echo ""
 
 # In w2mt-Verzeichnis wechseln und ausführen
 cd "$SCRIPT_DIR/w2mt"
-export MINETEST_GAME_PATH="$SCRIPT_DIR"
+export MINETEST_GAME_PATH="$SCRIPT_DIR/server"
+export MINETEST_WORLDS_PATH="$SCRIPT_DIR/worlds"
 
 # Python venv prüfen und aktivieren
 VENV_OK=false
