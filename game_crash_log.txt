@@ -1,0 +1,379 @@
+2026-03-11 13:35:32: ACTION[Server]: Anca places node homedecor:table_legs_wood at (499,1,918)
+2026-03-11 13:35:32: ACTION[Server]: Jana places node mcl_trees:sapling_cherry_blossom at (-1164,1,1306)
+2026-03-11 13:35:33: ACTION[Server]: Jana places node mcl_trees:sapling_cherry_blossom at (-1176,1,1312)
+2026-03-11 13:35:33: ACTION[Server]: player Adel (id=41, hp=20) punched LuaEntitySAO "mcl_paintings:painting" at (-1209,-1,1356) (id=1627, hp=1), damage=0
+2026-03-11 13:35:34: WARNING[Server]: Undeclared global variable "creative" accessed at ...inetest/mods/homedecor_modpack/homedecor_tables/misc.lua:97
+2026-03-11 13:35:34: ACTION[Main]: Server: Shutting down
+2026-03-11 13:35:34: [Main]: [mcl_craftguide] not saving empty progress for player 'Mentor'
+2026-03-11 13:35:37: ERROR[Main]: ServerError: AsyncErr: Lua: Runtime error from mod 'homedecor_tables' in callback item_OnPlace(): ...inetest/mods/homedecor_modpack/homedecor_tables/misc.lua:97: attempt to index global 'creative' (a nil value)
+2026-03-11 13:35:37: ERROR[Main]: stack traceback:
+2026-03-11 13:35:37: ERROR[Main]: 	...inetest/mods/homedecor_modpack/homedecor_tables/misc.lua:97: in function <...inetest/mods/homedecor_modpack/homedecor_tables/misc.lua:89>
+2026-03-11 13:35:37: [Main]: Using world specified by --worldname on the command line
+2026-03-11 13:35:37: WARNING[Main]: Mod we_undo at /config/.minetest/mods/we_undo:
+2026-03-11 13:35:37: WARNING[Main]: 	Mods not having a mod.conf file with the name is deprecated.
+2026-03-11 13:35:37: WARNING[Main]: 	depends.txt is deprecated, please use mod.conf instead.
+[UnifiedDyes] Loaded!
+2026-03-11 13:35:37: WARNING[Main]: Not registering alias, item with same name is already defined: mcl_dyes:dark_green -> mcl_dyes:green
+2026-03-11 13:35:37: WARNING[Main]: Not registering alias, item with same name is already defined: mcl_dyes:dark_grey -> mcl_dyes:grey
+2026-03-11 13:35:37: WARNING[Main]: Not registering alias, item with same name is already defined: mcl_dyes:violet -> mcl_dyes:purple
+2026-03-11 13:35:37: WARNING[Main]: Calling get_connected_players() at mod load time is deprecated (at /config/.minetest/games/mineclonia/mods/CORE/mcl_util/compat.lua:69)
+2026-03-11 13:35:37: WARNING[Main]: Mod world2minetest at /config/.minetest/mods/world2minetest:
+2026-03-11 13:35:37: WARNING[Main]: 	depends.txt is deprecated, please use mod.conf instead.
+2026-03-11 13:35:37: [Main]: [w2mt] Loading map.dat from /config/.minetest/worlds/16/world2minetest/map.dat
+2026-03-11 13:35:38: [Main]: [w2mt] GPS metadata loaded
+2026-03-11 13:35:38: WARNING[Main]: The `image` field in craftitem definitions is deprecated. Use `inventory_image` instead. Craftitem name: building_blocks:sticks (at /config/.minetest/mods/homedecor_modpack/building_blocks/others.lua:3)
+2026-03-11 13:35:38: WARNING[Main]: The `image` field in craftitem definitions is deprecated. Use `inventory_image` instead. Craftitem name: building_blocks:tar_base (at /config/.minetest/mods/homedecor_modpack/building_blocks/others.lua:8)
+2026-03-11 13:35:38: WARNING[Main]: Undeclared global variable "default" accessed at ....minetest/mods/homedecor_modpack/homedecor_misc/init.lua:100
+2026-03-11 13:35:38: ACTION[Main]: [homedecor_doors_and_gates]: minetest game not detected, disabling as this mod is minetest game only at this time
+2026-03-11 13:35:38: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:rope_light_on_floor_on -> homedecor:rope_light_on_floor_14
+2026-03-11 13:35:38: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:rope_light_on_ceiling_on -> homedecor:rope_light_on_ceiling_14
+2026-03-11 13:35:38: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:plasma_ball_on -> homedecor:plasma_ball_14
+2026-03-11 13:35:38: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:rope_light_on_floor_off -> homedecor:rope_light_on_floor_0
+2026-03-11 13:35:38: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:rope_light_on_ceiling_off -> homedecor:rope_light_on_ceiling_0
+2026-03-11 13:35:38: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:plasma_ball_off -> homedecor:plasma_ball_0
+2026-03-11 13:35:38: WARNING[Main]: Not registering alias, item with same name is already defined: 3dforniture:table_lamp -> homedecor:table_lamp_off
+2026-03-11 13:35:38: ACTION[Main]: [mcl_villages]: Loaded 0 points of interest in 0 ms
+ _                   _   _ 
+| |_   _  __ _ _ __ | |_(_)
+| | | | |/ _` | '_ \| __| |
+| | |_| | (_| | | | | |_| |
+|_|\__,_|\__,_|_| |_|\__|_|  ___ 5.15.0
+2026-03-11 13:35:39: ACTION[Main]: World at [/config/.minetest/worlds/16]
+2026-03-11 13:35:39: ACTION[Main]: Server for gameid="mineclonia" listening on [::]:30000.
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "flowers:viola" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "flowers:rose" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "flowers:dandelion_yellow" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "flowers:tulip" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_granite_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_marble_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_marble" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_marble_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_marble" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_steelblock_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:glass_bottle" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:gold_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "vessels:drinking_glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:micro_marble_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "vessels:drinking_glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_marble" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:glow_glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:coal" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:coal" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:glass_bottle" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_wool:dark_green" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_brick" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:coal_lump" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:yellow" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:red" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:blue" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:yellow" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:red" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:blue" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "homedecor:shingles_glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steelblock" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cottages:glass_pane" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cottages:glass_pane_side" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "xpanes:pane_flat" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:panel_wood_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:iron_lump" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:light_red" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cottages:wool" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:white" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:white" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:light_red" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "flowers:dandelion_white" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_lump" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_lump" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:light_red" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "fake_fire:embers" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_steelblock_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_granite_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_granite_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_marble_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_marble" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_steelblock_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_grate_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:iron_glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:torch" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "vessels:glass_bottle" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:iron_lump" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:iron_lump" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:mese" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "farming:wheat" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:cactus" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "flowers:geranium" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:copper_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:light_red" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:black" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "obsidian_glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_hardwood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:iron_glass" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:dark_green" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_hardwood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "stairs:slab_steelblock" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:black" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "vessels:glass_bottle" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:torch" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:red" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:yellow" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:blue" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:black" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:red" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:yellow" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:blue" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "wool:black" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "cotton:black" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:micro_stone_1" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_stone" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "bucket:bucket_water" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_lump" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_brick" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:steelblock" doesn't exist
+2026-03-11 13:35:39: WARNING[Server]: [mcl_craftguide] ingredient "default:coal_lump" doesn't exist
+Unified Inventory. Inventory size: 1849
+Connection to localhost (::1) 30000 port [udp/*] succeeded!
+2026-03-11 13:35:48: ACTION[Server]: Anca [::ffff:192.168.23.186] joins game. List of players: Anca
+2026-03-11 13:35:48: WARNING[Server]: Deprecated "hud_elem_type" field, use "type" instead. (at /config/.minetest/mods/unified_inventory/item_names.lua:18)
+2026-03-11 13:35:48: WARNING[Server]: Deprecated "hud_elem_type" field, use "type" instead. (at /config/.minetest/mods/areas/hud.lua:68)
+2026-03-11 13:35:51: WARNING[Server]: Undeclared global variable "creative" accessed at ...inetest/mods/homedecor_modpack/homedecor_tables/misc.lua:97
+2026-03-11 13:35:51: ACTION[Main]: Server: Shutting down
+2026-03-11 13:35:52: ERROR[Main]: ServerError: AsyncErr: Lua: Runtime error from mod 'homedecor_tables' in callback item_OnPlace(): ...inetest/mods/homedecor_modpack/homedecor_tables/misc.lua:97: attempt to index global 'creative' (a nil value)
+2026-03-11 13:35:52: ERROR[Main]: stack traceback:
+2026-03-11 13:35:52: ERROR[Main]: 	...inetest/mods/homedecor_modpack/homedecor_tables/misc.lua:97: in function <...inetest/mods/homedecor_modpack/homedecor_tables/misc.lua:89>
+2026-03-11 13:35:52: [Main]: Using world specified by --worldname on the command line
+2026-03-11 13:35:52: WARNING[Main]: Mod we_undo at /config/.minetest/mods/we_undo:
+2026-03-11 13:35:52: WARNING[Main]: 	Mods not having a mod.conf file with the name is deprecated.
+2026-03-11 13:35:52: WARNING[Main]: 	depends.txt is deprecated, please use mod.conf instead.
+[UnifiedDyes] Loaded!
+2026-03-11 13:35:52: WARNING[Main]: Not registering alias, item with same name is already defined: mcl_dyes:dark_green -> mcl_dyes:green
+2026-03-11 13:35:52: WARNING[Main]: Not registering alias, item with same name is already defined: mcl_dyes:dark_grey -> mcl_dyes:grey
+2026-03-11 13:35:52: WARNING[Main]: Not registering alias, item with same name is already defined: mcl_dyes:violet -> mcl_dyes:purple
+2026-03-11 13:35:52: WARNING[Main]: Calling get_connected_players() at mod load time is deprecated (at /config/.minetest/games/mineclonia/mods/CORE/mcl_util/compat.lua:69)
+2026-03-11 13:35:52: WARNING[Main]: Mod world2minetest at /config/.minetest/mods/world2minetest:
+2026-03-11 13:35:52: WARNING[Main]: 	depends.txt is deprecated, please use mod.conf instead.
+2026-03-11 13:35:52: [Main]: [w2mt] Loading map.dat from /config/.minetest/worlds/16/world2minetest/map.dat
+2026-03-11 13:35:53: [Main]: [w2mt] GPS metadata loaded
+2026-03-11 13:35:53: WARNING[Main]: The `image` field in craftitem definitions is deprecated. Use `inventory_image` instead. Craftitem name: building_blocks:sticks (at /config/.minetest/mods/homedecor_modpack/building_blocks/others.lua:3)
+2026-03-11 13:35:53: WARNING[Main]: The `image` field in craftitem definitions is deprecated. Use `inventory_image` instead. Craftitem name: building_blocks:tar_base (at /config/.minetest/mods/homedecor_modpack/building_blocks/others.lua:8)
+2026-03-11 13:35:53: WARNING[Main]: Undeclared global variable "default" accessed at ....minetest/mods/homedecor_modpack/homedecor_misc/init.lua:100
+2026-03-11 13:35:53: ACTION[Main]: [homedecor_doors_and_gates]: minetest game not detected, disabling as this mod is minetest game only at this time
+2026-03-11 13:35:53: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:rope_light_on_floor_on -> homedecor:rope_light_on_floor_14
+2026-03-11 13:35:53: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:rope_light_on_ceiling_on -> homedecor:rope_light_on_ceiling_14
+2026-03-11 13:35:53: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:plasma_ball_on -> homedecor:plasma_ball_14
+2026-03-11 13:35:53: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:rope_light_on_floor_off -> homedecor:rope_light_on_floor_0
+2026-03-11 13:35:53: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:rope_light_on_ceiling_off -> homedecor:rope_light_on_ceiling_0
+2026-03-11 13:35:53: WARNING[Main]: Not registering alias, item with same name is already defined: homedecor:plasma_ball_off -> homedecor:plasma_ball_0
+2026-03-11 13:35:53: WARNING[Main]: Not registering alias, item with same name is already defined: 3dforniture:table_lamp -> homedecor:table_lamp_off
+2026-03-11 13:35:53: ACTION[Main]: [mcl_villages]: Loaded 0 points of interest in 0 ms
+ _                   _   _ 
+| |_   _  __ _ _ __ | |_(_)
+| | | | |/ _` | '_ \| __| |
+| | |_| | (_| | | | | |_| |
+|_|\__,_|\__,_|_| |_|\__|_|  ___ 5.15.0
+2026-03-11 13:35:54: ACTION[Main]: World at [/config/.minetest/worlds/16]
+2026-03-11 13:35:54: ACTION[Main]: Server for gameid="mineclonia" listening on [::]:30000.
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "flowers:geranium" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "flowers:viola" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "flowers:rose" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "flowers:dandelion_yellow" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "flowers:tulip" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:cactus" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_lump" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_lump" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:coal" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:coal" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_granite_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_marble_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_marble" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:torch" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:iron_lump" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "vessels:glass_bottle" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "vessels:glass_bottle" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:iron_lump" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_steelblock_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_steelblock_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_marble_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_marble" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_granite_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_brick" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:glow_glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:gold_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:mese" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:light_red" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "flowers:dandelion_white" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steelblock" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "farming:wheat" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:light_red" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_hardwood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:iron_glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:dark_green" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_hardwood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "stairs:slab_steelblock" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:black" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:iron_glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "fake_fire:embers" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:torch" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:red" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:yellow" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:blue" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:black" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:red" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:yellow" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:blue" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:black" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:black" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:micro_stone_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_stone" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "bucket:bucket_water" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_lump" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:black" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "obsidian_glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:light_red" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_steelblock_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_marble_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_marble" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "technic:slab_granite_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_grate_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:coal_lump" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:iron_lump" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:coal_lump" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:copper_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "vessels:drinking_glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:micro_marble_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "vessels:drinking_glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "building_blocks:slab_marble" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:glass_bottle" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:light_red" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_wool:dark_green" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:yellow" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:red" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cotton:blue" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:yellow" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:red" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:blue" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "homedecor:shingles_glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steel_ingot" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:steelblock" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cottages:glass_pane" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cottages:glass_pane_side" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "xpanes:pane_flat" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:glass" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:panel_wood_1" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "cottages:wool" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:book" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:white" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "wool:white" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "dye:medium_orange" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "farming:string" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "mcl_core:glass_bottle" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "moreblocks:slab_wood" doesn't exist
+2026-03-11 13:35:54: WARNING[Server]: [mcl_craftguide] ingredient "default:clay_brick" doesn't exist
+Unified Inventory. Inventory size: 1849
+2026-03-11 13:35:56: ACTION[Server]: Server: User Angelina at ::ffff:192.168.23.38 supplied wrong password (auth mechanism: SRP).
+Connection to localhost (::1) 30000 port [udp/*] succeeded!
+2026-03-11 13:35:59: ACTION[Server]: Anca [::ffff:192.168.23.186] joins game. List of players: Anca
+2026-03-11 13:35:59: WARNING[Server]: Deprecated "hud_elem_type" field, use "type" instead. (at /config/.minetest/mods/unified_inventory/item_names.lua:18)
+2026-03-11 13:35:59: WARNING[Server]: Deprecated "hud_elem_type" field, use "type" instead. (at /config/.minetest/mods/areas/hud.lua:68)
+2026-03-11 13:35:59: ACTION[Server]: timo [::ffff:192.168.23.34] joins game. List of players: Anca timo
+2026-03-11 13:36:00: ACTION[Server]: Sophia [::ffff:192.168.23.121] joins game. List of players: timo Anca Sophia
+2026-03-11 13:36:03: ACTION[Server]: Moritz [::ffff:192.168.23.60] joins game. List of players: Sophia timo Anca Moritz
