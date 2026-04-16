@@ -149,19 +149,27 @@ if [ -z "$MINIMAP" ]; then
     fi
 fi
 
-# Kommandozeile zusammenbauen
-CMD="python3 w2mt/w2mt.py -p \"$NAME\" -g \"$GAME\" -b \"$BACKEND\""
+# CLI-Befehl für Anzeige zusammenbauen
+CLI_CMD="./generate_world.sh -p \"$NAME\""
 
 if [ -n "$AREA" ]; then
-    CMD="$CMD -a \"$AREA\""
+    CLI_CMD="$CLI_CMD -a \"$AREA\""
+fi
+
+if [ "$GAME" != "mineclonia" ]; then
+    CLI_CMD="$CLI_CMD -g \"$GAME\""
+fi
+
+if [ "$BACKEND" != "leveldb" ]; then
+    CLI_CMD="$CLI_CMD -b \"$BACKEND\""
 fi
 
 if [ -n "$MINIMAP" ]; then
-    CMD="$CMD $MINIMAP"
+    CLI_CMD="$CLI_CMD -m"
 fi
 
 if [ -n "$REUSE" ]; then
-    CMD="$CMD $REUSE"
+    CLI_CMD="$CLI_CMD -r"
 fi
 
 # Zusammenfassung und Kommando anzeigen
@@ -181,8 +189,8 @@ if [ -n "$REUSE" ]; then
     echo -e "  Query reuse:  ${YELLOW}Ja${NC}"
 fi
 echo ""
-echo -e "${GREEN}Auszuführender Befehl:${NC}"
-echo -e "  ${YELLOW}$CMD${NC}"
+echo -e "${GREEN}CLI-Befehl (wiederverwendbar):${NC}"
+echo -e "  ${YELLOW}$CLI_CMD${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 
@@ -223,7 +231,7 @@ fi
 
 if [ "$VENV_OK" = false ]; then
     echo -e "${YELLOW}venv defekt oder fehlt. Erstelle neu...${NC}"
-    deactivate 2>/dev/null
+    deactivate 2>/dev/null || true
     rm -rf venv
     python3 -m venv venv
     source venv/bin/activate

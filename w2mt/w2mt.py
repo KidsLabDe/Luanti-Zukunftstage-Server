@@ -437,11 +437,16 @@ if not args.worldname:
 
 # setup paths:
 if not args.minetest_dir:
-	if os.environ["MINETEST_GAME_PATH"]:
+	if os.environ.get("MINETEST_GAME_PATH"):
 		args.minetest_dir = os.environ["MINETEST_GAME_PATH"]
 	else:
-		args.minetest_dir = os.path.join(os.getcwd(), 'copy_content_to_minetest_dir')
-		log("Neither environment variable MINETEST_GAME_PATH is set nor argument -d is given. Hence we create a local temporary directory in replacement.")
+		sys.exit(
+			"Fehler: MINETEST_GAME_PATH ist nicht gesetzt.\n"
+			"Bitte das generate_world.sh-Skript verwenden:\n"
+			f'  ./generate_world.sh -p "{args.project}" -a "<lat1,lon1,lat2,lon2>"\n'
+			"Oder die Umgebungsvariable manuell setzen:\n"
+			"  export MINETEST_GAME_PATH=/pfad/zum/server-verzeichnis"
+		)
 w2mt_mod_path = os.path.join(args.minetest_dir, "mods", "world2minetest")
 worlds_dir = os.environ.get("MINETEST_WORLDS_PATH", os.path.join(args.minetest_dir, "worlds"))
 project_path = os.path.join(worlds_dir, args.project)
